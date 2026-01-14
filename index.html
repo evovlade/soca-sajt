@@ -1,0 +1,2748 @@
+<!doctype html>
+<html lang="sl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>QR Guest Guide</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    :root {
+      --bg-dark: #0a1612;
+      --bg-dark-secondary: #0f1e18;
+      --glass-bg: rgba(16, 32, 24, 0.7);
+      --glass-border: rgba(52, 211, 153, 0.2);
+      --accent-green: #34d399;
+      --accent-green-dark: #059669;
+      --text-primary: #f0fdf4;
+      --text-secondary: #d1fae5;
+      --shadow: rgba(0, 0, 0, 0.5);
+    }
+    
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-dark-secondary) 100%);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+    
+    /* River Soča Background Animation */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, 
+        rgba(10, 22, 18, 0.95) 0%,
+        rgba(16, 32, 24, 0.9) 30%,
+        rgba(52, 211, 153, 0.15) 50%,
+        rgba(16, 32, 24, 0.9) 70%,
+        rgba(10, 22, 18, 0.95) 100%
+      );
+      z-index: -2;
+      pointer-events: none;
+    }
+    
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 40%;
+      background: linear-gradient(180deg, 
+        transparent 0%,
+        rgba(52, 211, 153, 0.1) 20%,
+        rgba(52, 211, 153, 0.2) 50%,
+        rgba(52, 211, 153, 0.1) 80%,
+        transparent 100%
+      );
+      animation: riverFlow 20s ease-in-out infinite;
+      z-index: -1;
+      pointer-events: none;
+      border-radius: 50% 50% 0 0;
+    }
+    
+    @keyframes riverFlow {
+      0%, 100% {
+        transform: translateX(-50%) translateY(0) rotate(0deg);
+        opacity: 0.3;
+      }
+      25% {
+        transform: translateX(-48%) translateY(-5px) rotate(1deg);
+        opacity: 0.4;
+      }
+      50% {
+        transform: translateX(-50%) translateY(-10px) rotate(0deg);
+        opacity: 0.5;
+      }
+      75% {
+        transform: translateX(-52%) translateY(-5px) rotate(-1deg);
+        opacity: 0.4;
+      }
+    }
+    
+    /* Welcome Overlay */
+    #welcome-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a1612 0%, #1a3a2e 100%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    #welcome-overlay.hide {
+      animation: fadeOut 0.5s ease-out forwards;
+    }
+    
+    .welcome-content {
+      text-align: center;
+      padding: 2rem;
+      animation: scaleIn 0.6s ease-out 0.2s backwards;
+    }
+    
+    .welcome-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      animation: float 2s ease-in-out infinite;
+    }
+    
+    .welcome-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--accent-green) 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .welcome-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+    
+    .welcome-btn {
+      background: var(--accent-green);
+      color: var(--bg-dark);
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      border: none;
+      font-size: 1.125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(52, 211, 153, 0.3);
+    }
+    
+    .welcome-btn:active {
+      transform: scale(0.95);
+    }
+    
+    /* Main App Container */
+    #app-container {
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    #app-container.show {
+      opacity: 1;
+    }
+    
+    /* Glass Header */
+    .glass-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1rem;
+      padding-top: calc(1rem + env(safe-area-inset-top));
+      animation: slideDown 0.5s ease-out;
+    }
+    
+    .header-content {
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .header-title-section {
+      flex: 1;
+    }
+    
+    .app-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    /* Weather Widget */
+    .weather-widget {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.125rem;
+      padding: 0.375rem 0.625rem;
+      background: rgba(52, 211, 153, 0.15);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      animation: weatherPulse 3s ease-in-out infinite;
+      flex-shrink: 0;
+      min-width: 70px;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .weather-widget {
+        animation: none;
+      }
+      .weather-icon {
+        animation: none;
+      }
+    }
+    
+    .weather-temp {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      line-height: 1.2;
+    }
+    
+    .weather-icon {
+      font-size: 1.125rem;
+      animation: weatherFloat 2s ease-in-out infinite;
+    }
+    
+    .weather-desc {
+      font-size: 0.625rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .weather-location {
+      font-size: 0.625rem;
+      color: var(--text-secondary);
+      opacity: 0.8;
+      white-space: nowrap;
+      line-height: 1.2;
+      margin-bottom: 0.125rem;
+    }
+    
+    @keyframes weatherPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 rgba(52, 211, 153, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(52, 211, 153, 0.5);
+      }
+    }
+    
+    @keyframes weatherFloat {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-3px) rotate(5deg);
+      }
+    }
+    
+    .app-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+    
+    .lang-selector {
+      position: relative;
+    }
+    
+    .lang-select {
+      padding: 0.5rem 0.75rem;
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-height: 44px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23d1fae5' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      padding-right: 2.5rem;
+      outline: none;
+    }
+
+    .lang-select:focus {
+      background: var(--accent-green);
+      color: var(--bg-dark);
+      border-color: var(--accent-green);
+      box-shadow: 0 4px 12px rgba(52, 211, 153, 0.3);
+    }
+
+    .lang-select option {
+      background: var(--glass-bg);
+      color: var(--text-primary);
+      padding: 0.5rem;
+    }
+    
+    /* Main Content */
+    .main-content {
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: 100px;
+    }
+    
+    /* Hero Card */
+    .hero-card {
+      position: relative;
+      margin: 1rem;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow);
+      animation: fadeInUp 0.6s ease-out 0.2s backwards;
+    }
+    
+    .hero-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    }
+    
+    .hero-badge {
+      display: inline-block;
+      padding: 0.375rem 0.875rem;
+      background: var(--accent-green);
+      color: var(--bg-dark);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    
+    .hero-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .hero-location {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin: 1rem;
+      animation: fadeInUp 0.6s ease-out 0.3s backwards;
+    }
+    
+    .quick-action-btn {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 1rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .quick-action-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .quick-action-icon {
+      font-size: 1.75rem;
+    }
+    
+    .quick-action-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    /* Menu Cards */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin: 1rem;
+      animation: fadeInUp 0.6s ease-out 0.4s backwards;
+    }
+    
+    .menu-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .menu-card:active {
+      transform: scale(0.95);
+    }
+    
+    .menu-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .menu-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .menu-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    /* Accordion Panel */
+    .accordion-panel {
+      margin: 0 1rem 1rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+      opacity: 0;
+    }
+    
+    .accordion-panel.open {
+      max-height: 2000px;
+      opacity: 1;
+    }
+    
+    .panel-content {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 1.5rem;
+    }
+    
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .panel-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    
+    .close-btn {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: all 0.3s ease;
+      border: none;
+    }
+    
+    .close-btn:active {
+      transform: scale(0.9);
+    }
+    
+    /* Emergency List */
+    .emergency-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .emergency-item {
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .emergency-info {
+      flex: 1;
+    }
+    
+    .emergency-name {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .emergency-number {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-family: monospace;
+    }
+    
+    .call-btn {
+      background: var(--accent-green);
+      color: var(--bg-dark);
+      padding: 0.625rem 1.25rem;
+      border-radius: 20px;
+      border: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .call-btn:active {
+      transform: scale(0.95);
+    }
+    
+    /* Rules Content */
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .rule-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    
+    .rule-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    .rule-text {
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+    
+    /* Parking Cards */
+    .parking-card {
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .parking-card.recommended {
+      background: rgba(52, 211, 153, 0.15);
+      border-color: var(--accent-green);
+    }
+    
+    .parking-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+    
+    .parking-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .parking-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    
+    .parking-badge.paid {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+    
+    .parking-badge.free {
+      background: rgba(52, 211, 153, 0.2);
+      color: var(--accent-green);
+    }
+    
+    .parking-card-address {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .parking-card-details {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .parking-card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      flex-wrap: wrap;
+    }
+    
+    .parking-card-actions .call-btn {
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+      font-size: 0.875rem;
+      padding: 0.625rem 1rem;
+    }
+    
+    /* Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    
+    .gallery-item {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 1;
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-item.placeholder {
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.2) 0%, rgba(16, 32, 24, 0.4) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .gallery-item.placeholder .play-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 100%;
+      max-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-content img,
+    .lightbox-content video {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(239, 68, 68, 0.8);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10001;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(52, 211, 153, 0.8);
+      border: none;
+      color: var(--bg-dark);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10001;
+    }
+
+    .lightbox-nav.prev {
+      left: 1rem;
+    }
+
+    .lightbox-nav.next {
+      right: 1rem;
+    }
+    
+    .recommendations-text {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-top: 1rem;
+    }
+    
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--glass-border);
+      padding: 0.75rem 1rem;
+      padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      z-index: 99;
+    }
+    
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      color: var(--text-secondary);
+    }
+    
+    .nav-item.active {
+      color: var(--accent-green);
+      background: rgba(52, 211, 153, 0.1);
+    }
+    
+    .nav-icon {
+      font-size: 1.5rem;
+    }
+    
+    .nav-label {
+      font-size: 0.625rem;
+      font-weight: 600;
+    }
+    
+    /* Attractions Screen */
+    .screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-dark);
+      z-index: 5000;
+      display: none;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .screen.show {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .screen-header {
+      position: sticky;
+      top: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 1rem;
+      padding-top: calc(1rem + env(safe-area-inset-top));
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 1;
+    }
+    
+    #attractions-back {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      line-height: 1;
+      transition: transform 0.2s ease;
+    }
+    
+    #attractions-back:active {
+      transform: scale(0.9);
+    }
+    
+    .screen-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      flex: 1;
+    }
+    
+    .screen-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .screen-body h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .screen-body h2:first-child {
+      margin-top: 0;
+    }
+    
+    .screen-body h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .screen-body p {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+    
+    .screen-body ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .screen-body li {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .screen-body a {
+      color: var(--accent-green);
+      text-decoration: underline;
+    }
+    
+    /* Footer Credit */
+    .footer-credit {
+      text-align: center;
+      padding: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      opacity: 0.6;
+      position: fixed;
+      bottom: 60px;
+      left: 0;
+      right: 0;
+      z-index: 97;
+    }
+    
+    
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      padding: 1rem 1.5rem;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 10px 30px var(--shadow);
+      z-index: 999;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    .toast-icon {
+      font-size: 1.5rem;
+    }
+    
+    .toast-text {
+      font-size: 0.9375rem;
+      font-weight: 600;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    @keyframes scaleIn {
+      from { 
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to { 
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full"><!-- Welcome Overlay -->
+  <div id="welcome-overlay">
+   <div class="welcome-content">
+    <div class="welcome-icon">
+     🏔️
+    </div>
+    <h1 class="welcome-title" id="welcome-title">Dobrodošli</h1>
+    <p class="welcome-subtitle" id="welcome-subtitle">DOLINA SOČE BOVEC</p><button class="welcome-btn" id="enter-btn" type="button">Vstopi</button>
+   </div>
+  </div><!-- Main App -->
+  <div id="app-container"><!-- Glass Header -->
+   <header class="glass-header">
+    <div class="header-content">
+     <div class="header-title-section">
+      <h1 class="app-title" id="app-title">DOLINA SOČE <span id="bovec-text">BOVEC</span></h1>
+      <p class="app-subtitle" id="app-subtitle">Gostov vodič</p>
+      <div class="lang-selector">
+       <select class="lang-select" id="lang-select">
+        <option value="sl">SL</option>
+        <option value="en">EN</option>
+        <option value="de">DE</option>
+        <option value="it">IT</option>
+       </select>
+      </div>
+     </div>
+     <div class="weather-widget" id="weather-widget">
+      <div class="weather-location" id="weather-location">Bovec</div>
+      <div class="weather-temp">
+       <span class="weather-icon" id="weather-icon">🌤️</span>
+       <span id="weather-temp">--°</span>
+      </div>
+      <div class="weather-desc" id="weather-desc" data-i18n="weather_loading">Nalaganje...</div>
+     </div>
+    </div>
+   </header><!-- Main Content -->
+   <main class="main-content"><!-- Hero Card -->
+    <div class="hero-card"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&amp;h=600&amp;fit=crop" alt="Mountain view" class="hero-image">
+     <div class="hero-overlay"><span class="hero-badge" id="hero-badge" data-i18n="guest_badge">Gostov vodič</span>
+      <h2 class="hero-title" id="hero-title">DOLINA SOČE</h2>
+      <p class="hero-location"><span>📍</span> <span id="hero-location">Bovec, Slovenija</span></p>
+     </div>
+    </div><!-- Quick Actions -->
+    <div class="quick-actions"><a href="tel:+38640123456" class="quick-action-btn" id="call-action"> <span class="quick-action-icon">📞</span> <span class="quick-action-label" data-i18n="call_host">Pokliči gostitelja</span> </a> <a href="#" id="directions-action" target="_blank" rel="noopener noreferrer" class="quick-action-btn"> <span class="quick-action-icon">🗺️</span> <span class="quick-action-label" data-i18n="directions">Navodila</span> </a> <a href="#" id="attractions-action" class="quick-action-btn"> <span class="quick-action-icon">⭐</span> <span class="quick-action-label" data-i18n="attractions">Znamenitosti</span> </a>
+    </div><!-- Menu Grid -->
+    <div class="menu-grid">
+     <div class="menu-card" data-section="emergency">
+      <div class="menu-icon">
+       🚨
+      </div>
+      <h3 class="menu-title" data-i18n="emergency">Nujno</h3>
+      <p class="menu-subtitle" data-i18n="emergency_sub">Klici v sili</p>
+     </div>
+     <div class="menu-card" data-section="rules">
+      <div class="menu-icon">
+       📋
+      </div>
+      <h3 class="menu-title" data-i18n="rules">Hišni red</h3>
+      <p class="menu-subtitle" data-i18n="rules_sub">Pravila</p>
+     </div>
+     <div class="menu-card" data-section="parking">
+      <div class="menu-icon">
+       🅿️
+      </div>
+      <h3 class="menu-title" data-i18n="parking">Parkiranje</h3>
+      <p class="menu-subtitle" data-i18n="parking_sub">Informacije</p>
+     </div>
+     <div class="menu-card" data-section="recommendations">
+      <div class="menu-icon">
+       ⭐
+      </div>
+      <h3 class="menu-title" data-i18n="recommendations">Priporočila</h3>
+      <p class="menu-subtitle" data-i18n="recommendations_sub">Okolica</p>
+     </div>
+    </div><!-- Emergency Panel -->
+    <div class="accordion-panel" id="emergency-panel">
+     <div class="panel-content">
+      <div class="panel-header">
+       <h3 class="panel-title" data-i18n="emergency">Nujno</h3><button class="close-btn" data-close="emergency" type="button">×</button>
+      </div>
+      <div class="emergency-list">
+       <div class="emergency-item">
+        <div class="emergency-info">
+         <div class="emergency-name" data-i18n="ambulance">
+          Nujna pomoč
+         </div>
+         <div class="emergency-number">
+          112
+         </div>
+        </div><a href="tel:112" class="call-btn" data-i18n="call_btn">Pokliči</a>
+       </div>
+       <div class="emergency-item">
+        <div class="emergency-info">
+         <div class="emergency-name" data-i18n="police">
+          Policija
+         </div>
+         <div class="emergency-number">
+          113
+         </div>
+        </div><a href="tel:113" class="call-btn" data-i18n="call_btn">Pokliči</a>
+       </div>
+       <div class="emergency-item">
+        <div class="emergency-info">
+         <div class="emergency-name" data-i18n="fire">
+          Gasilci
+         </div>
+         <div class="emergency-number">
+          113
+         </div>
+        </div><a href="tel:113" class="call-btn" data-i18n="call_btn">Pokliči</a>
+       </div>
+       <div class="emergency-item">
+        <div class="emergency-info">
+         <div class="emergency-name" data-i18n="dentist">
+          Dežurni zobozdravnik
+         </div>
+         <div class="emergency-number">
+          +386 31 234 567
+         </div>
+        </div><a href="tel:+38631234567" class="call-btn" data-i18n="call_btn">Pokliči</a>
+       </div>
+       <div class="emergency-item">
+        <div class="emergency-info">
+         <div class="emergency-name" data-i18n="hospital">
+          Bolnišnica Bovec
+         </div>
+         <div class="emergency-number">
+          +386 41 234 568
+         </div>
+        </div><a href="tel:+38641234568" class="call-btn" data-i18n="call_btn">Pokliči</a>
+       </div>
+       <div class="emergency-item">
+        <div class="emergency-info">
+         <div class="emergency-name" data-i18n="pharmacy">
+          Lekarna 24h
+         </div>
+         <div class="emergency-number">
+          +386 51 234 569
+         </div>
+        </div><a href="tel:+38651234569" class="call-btn" data-i18n="call_btn">Pokliči</a>
+       </div>
+      </div>
+     </div>
+    </div><!-- Rules Panel -->
+    <div class="accordion-panel" id="rules-panel">
+     <div class="panel-content">
+      <div class="panel-header">
+       <h3 class="panel-title" data-i18n="rules">Hišni red</h3><button class="close-btn" data-close="rules" type="button">×</button>
+      </div>
+      <div class="rules-list">
+       <div class="rule-item"><span class="rule-icon">🔇</span>
+        <p class="rule-text" data-i18n="rule1">Prosimo za spoštovanje miru po 22. uri</p>
+       </div>
+       <div class="rule-item"><span class="rule-icon">🚭</span>
+        <p class="rule-text" data-i18n="rule2">Kajenje je dovoljeno samo na terasi</p>
+       </div>
+       <div class="rule-item"><span class="rule-icon">🗑️</span>
+        <p class="rule-text" data-i18n="rule3">Smeti odložite v zabojnik na hodniku</p>
+       </div>
+       <div class="rule-item"><span class="rule-icon">🔐</span>
+        <p class="rule-text" data-i18n="rule4">Zaklenite vrata ob odhodu iz apartmaja</p>
+       </div>
+       <div class="rule-item"><span class="rule-icon">🚪</span>
+        <p class="rule-text" data-i18n="rule5">Check-out ob 11:00. Ključe pustite v varnostni škatli</p>
+       </div>
+      </div>
+     </div>
+    </div><!-- Parking Panel -->
+    <div class="accordion-panel" id="parking-panel">
+     <div class="panel-content">
+      <div class="panel-header">
+       <h3 class="panel-title" data-i18n="parking">Parkiranje</h3><button class="close-btn" data-close="parking" type="button">×</button>
+      </div>
+      <div class="rules-list">
+       <div class="rule-item"><span class="rule-icon">📍</span>
+        <div><strong data-i18n="parking_location">Lokacija:</strong>
+         <p class="rule-text">Trg golobarskih žrtev 12, 5230 Bovec</p>
+        </div>
+       </div>
+       <div class="rule-item"><span class="rule-icon">🅿️</span>
+        <div><strong data-i18n="parking_spot">Parkirno mesto:</strong>
+         <p class="rule-text" data-i18n="parking_number">Označeno št. 15</p>
+        </div>
+       </div>
+       <div class="rule-item"><span class="rule-icon">💰</span>
+        <div><strong data-i18n="parking_price">Cena:</strong>
+         <p class="rule-text" data-i18n="parking_free">Brezplačno za goste</p>
+        </div>
+       </div>
+       <div class="rule-item"><span class="rule-icon">🕐</span>
+        <div><strong data-i18n="parking_hours">Čas:</strong>
+         <p class="rule-text" data-i18n="parking_24">24/7 tekom vašega bivanja</p>
+        </div>
+       </div>
+      </div><a href="https://www.google.com/maps/dir/?api=1&amp;destination=Trg+golobarskih+žrtev+12+5230+Bovec" target="_blank" rel="noopener noreferrer" class="call-btn" style="width: 100%; text-align: center; margin-top: 1rem; display: block;"> <span data-i18n="open_maps">🗺️ Odpri v Google Maps</span> </a>
+     </div>
+    </div><!-- Recommendations Panel -->
+    <div class="accordion-panel" id="recommendations-panel">
+     <div class="panel-content">
+      <div class="panel-header">
+       <h3 class="panel-title" data-i18n="recommendations">Priporočila</h3><button class="close-btn" data-close="recommendations" type="button">×</button>
+      </div>
+      <div class="gallery-grid">
+       <div class="gallery-item" data-gallery-index="0"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop" alt="Rafting" onerror="this.onerror=null; this.parentElement.classList.add('placeholder'); this.style.display='none'; this.parentElement.innerHTML='<div class=\'placeholder\'><div class=\'play-icon\'>🖼️</div><div data-i18n=\'gallery_placeholder\'>Slika</div></div>';">
+       </div>
+       <div class="gallery-item" data-gallery-index="1"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&h=400&fit=crop" alt="Mountains" onerror="this.onerror=null; this.parentElement.classList.add('placeholder'); this.style.display='none'; this.parentElement.innerHTML='<div class=\'placeholder\'><div class=\'play-icon\'>🖼️</div><div data-i18n=\'gallery_placeholder\'>Slika</div></div>';">
+       </div>
+       <div class="gallery-item" data-gallery-index="2"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop" alt="Waterfall" onerror="this.onerror=null; this.parentElement.classList.add('placeholder'); this.style.display='none'; this.parentElement.innerHTML='<div class=\'placeholder\'><div class=\'play-icon\'>🖼️</div><div data-i18n=\'gallery_placeholder\'>Slika</div></div>';">
+       </div>
+       <div class="gallery-item" data-gallery-index="3"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&h=400&fit=crop" alt="Mountain view" onerror="this.onerror=null; this.parentElement.classList.add('placeholder'); this.style.display='none'; this.parentElement.innerHTML='<div class=\'placeholder\'><div class=\'play-icon\'>🖼️</div><div data-i18n=\'gallery_placeholder\'>Slika</div></div>';">
+       </div>
+      </div>
+      <div class="recommendations-text">
+       <p data-i18n="rec_text1"><strong>🚣 Rafting na Soči:</strong> Nezaboravna izkušnja na najlepši smaragdni reki. 5 min vožnje, 40-60€.</p>
+       <p style="margin-top: 0.75rem;" data-i18n="rec_text2"><strong>🪂 Paragliding:</strong> Poletite nad dolino Soče s spektakularnimi pogledi. 10 min vožnje, 100-150€.</p>
+       <p style="margin-top: 0.75rem;" data-i18n="rec_text3"><strong>🥾 Slap Boka:</strong> Najvišji slap v Sloveniji (144m). Lahka sprehod z neverjetnim razgledom. Brezplačno.</p>
+       <p style="margin-top: 0.75rem;" data-i18n="rec_text4"><strong>🍽️ Gostilna Sovdat:</strong> Tradicionalna slovenska kuhinja. 3 min hoje, 15-30€.</p>
+      </div>
+     </div>
+    </div><!-- Info Panel -->
+    <div class="accordion-panel" id="info-panel">
+     <div class="panel-content">
+      <div class="panel-header">
+       <h3 class="panel-title" data-i18n="info_title">Info</h3><button class="close-btn" data-close="info" type="button">×</button>
+      </div>
+      <!-- Location -->
+      <div style="margin-bottom: 1.5rem;">
+       <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;" data-i18n="info_location">Lokacija</h4>
+       <p class="rule-text" id="info-address" style="margin-bottom: 0.75rem;">Trg golobarskih žrtev 12, 5230 Bovec, Slovenija</p>
+       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button class="call-btn" id="copy-address-btn" type="button" style="flex: 1; min-width: 120px;"><span data-i18n="copy_address">Kopiraj naslov</span></button>
+        <a href="#" id="directions-link" target="_blank" rel="noopener noreferrer" class="call-btn" style="flex: 1; min-width: 120px; text-align: center; display: inline-block;"><span data-i18n="directions">Navodila</span></a>
+       </div>
+      </div>
+      <!-- Check-in / Check-out -->
+      <div style="margin-bottom: 1.5rem;">
+       <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;" data-i18n="info_checkinout">Prijava / Odjava</h4>
+       <p class="rule-text" style="margin-bottom: 0.5rem;"><span data-i18n="checkin_from">Prijava: od</span> <span id="checkin-time">15:00</span></p>
+       <p class="rule-text" style="margin-bottom: 0.5rem;"><span data-i18n="checkout_until">Odjava: do</span> <span id="checkout-time">11:00</span></p>
+       <p class="rule-text" style="font-size: 0.875rem; color: var(--text-secondary);" data-i18n="checkin_helper">Samopostrežna prijava / ključna škatla</p>
+      </div>
+      <!-- Wi-Fi -->
+      <div style="margin-bottom: 1.5rem;">
+       <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;" data-i18n="info_wifi">Wi-Fi</h4>
+       <p class="rule-text" style="margin-bottom: 0.5rem;"><strong data-i18n="wifi_ssid_label">SSID:</strong> <span id="info-wifi-ssid">BovecMountain_5G</span></p>
+       <p class="rule-text" style="margin-bottom: 0.75rem;"><strong data-i18n="wifi_password_label">Geslo:</strong> <span id="info-wifi-password">AlpineView2024</span></p>
+       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <button class="call-btn" id="copy-wifi-info-btn" type="button" style="flex: 1; min-width: 120px;"><span data-i18n="copy_wifi">Kopiraj Wi-Fi</span></button>
+        <button class="call-btn" id="show-qr-btn" type="button" style="flex: 1; min-width: 120px; background: rgba(52, 211, 153, 0.2); color: var(--accent-green); border: 1px solid var(--glass-border);"><span data-i18n="show_qr">Prikaži QR</span></button>
+       </div>
+      </div>
+      <!-- Host -->
+      <div style="margin-bottom: 1.5rem;">
+       <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;" data-i18n="info_host">Gostitelj</h4>
+       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+        <a href="tel:+38640123456" id="host-call-link" class="call-btn" style="flex: 1; min-width: 100px; text-align: center; display: inline-block;"><span data-i18n="call_host">Pokliči</span></a>
+        <a href="https://wa.me/38640123456" id="host-whatsapp-link" target="_blank" rel="noopener noreferrer" class="call-btn" style="flex: 1; min-width: 100px; text-align: center; display: inline-block; background: rgba(52, 211, 153, 0.2); color: var(--accent-green); border: 1px solid var(--glass-border);"><span data-i18n="whatsapp">WhatsApp</span></a>
+       </div>
+       <p class="rule-text" style="font-size: 0.875rem; color: var(--text-secondary);" data-i18n="host_helper">Veseli smo, da vam lahko pomagamo.</p>
+      </div>
+      <!-- House basics -->
+      <div>
+       <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;" data-i18n="info_basics">Osnove hiše</h4>
+       <p class="rule-text" style="margin-bottom: 0.5rem;" data-i18n="basics_quiet">🔇 Tihe ure: Po 22. uri</p>
+       <p class="rule-text" style="margin-bottom: 0.5rem;" data-i18n="basics_smoking">🚭 Kajenje: Samo na terasi</p>
+       <p class="rule-text" data-i18n="basics_trash">🗑️ Smeti: Zabojnik na hodniku</p>
+      </div>
+     </div>
+    </div>
+   </main><!-- Lightbox -->
+   <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">×</button>
+    <button class="lightbox-nav prev" id="lightbox-prev">‹</button>
+    <button class="lightbox-nav next" id="lightbox-next">›</button>
+    <div class="lightbox-content" id="lightbox-content"></div>
+   </div><!-- Attractions Screen -->
+   <div id="attractions-screen" class="screen">
+    <div class="screen-header">
+     <button id="attractions-back" type="button">←</button>
+     <div class="screen-title" data-i18n="attractions_page_title">Znamenitosti</div>
+    </div>
+    <div class="screen-body" id="attractions-body"></div>
+   </div><!-- Bottom Navigation -->
+   <nav class="bottom-nav">
+    <div class="nav-item active" data-nav="home"><span class="nav-icon">🏠</span> <span class="nav-label" data-i18n="nav_home">Domov</span>
+    </div>
+    <div class="nav-item" data-nav="info"><span class="nav-icon">ℹ️</span> <span class="nav-label" data-i18n="nav_info">Info</span>
+    </div>
+    <div class="nav-item" data-nav="emergency"><span class="nav-icon">🚨</span> <span class="nav-label" data-i18n="nav_emergency">Nujno</span>
+    </div>
+    <div class="nav-item" data-nav="more"><span class="nav-icon">⋯</span> <span class="nav-label" data-i18n="nav_more">Več</span>
+    </div>
+   </nav>
+   <div class="footer-credit">MADE BY V.N.</div>
+  </div><!-- Toast -->
+  <div class="toast" id="toast"><span class="toast-icon">✓</span> <span class="toast-text" id="toast-text" data-i18n="copied">Kopirano!</span>
+  </div>
+  <script>
+    const defaultConfig = {
+      background_color: "#0a1612",
+      card_color: "#10201880",
+      text_color: "#f0fdf4",
+      accent_color: "#34d399",
+      highlight_color: "#059669",
+      font_family: "system-ui",
+      font_size: 16,
+      apartment_name: "DOLINA SOČE BOVEC",
+      location_subtitle: "Bovec, Slovenija",
+      full_address: "Trg golobarskih žrtev 12, 5230 Bovec, Slovenija",
+      checkin_time: "15:00",
+      checkout_time: "11:00",
+      host_phone: "+386 40 123 456",
+      host_whatsapp: "+386 40 123 456",
+      host_email: "",
+      wifi_ssid: "BovecMountain_5G",
+      wifi_password: "AlpineView2024",
+      maps_link: "https://www.google.com/maps/dir/?api=1&destination=Trg+golobarskih+žrtev+12+5230+Bovec"
+    };
+
+    // Translations
+    const translations = {
+      sl: {
+        welcome: "Dobrodošli",
+        enter: "Vstopi",
+        guest_guide: "Gostov vodič",
+        call: "Pokliči",
+        call_host: "Pokliči vlasnika",
+        navigate: "Navigacija",
+        directions: "Navodila",
+        attractions: "Znamenitosti",
+        wifi: "WiFi",
+        emergency: "Nujno",
+        emergency_sub: "Klici v sili",
+        rules: "Hišni red",
+        rules_sub: "Pravila",
+        parking: "Parkiranje",
+        parking_sub: "Informacije",
+        recommendations: "Priporočila",
+        recommendations_sub: "Okolica",
+        ambulance: "Nujna pomoč",
+        police: "Policija",
+        fire: "Gasilci",
+        dentist: "Dežurni zobozdravnik",
+        hospital: "Bolnišnica Bovec",
+        pharmacy: "Lekarna 24h",
+        call_btn: "Pokliči",
+        rule1: "Prosimo za spoštovanje miru po 22. uri",
+        rule2: "Kajenje je dovoljeno samo na terasi",
+        rule3: "Smeti odložite v zabojnik na hodniku",
+        rule4: "Zaklenite vrata ob odhodu iz apartmaja",
+        rule5: "Check-out ob 11:00. Ključe pustite v varnostni škatli",
+        parking_location: "Lokacija:",
+        parking_spot: "Parkirno mesto:",
+        parking_number: "Označeno št. 15",
+        parking_price: "Cena:",
+        parking_free: "Brezplačno za goste",
+        parking_hours: "Čas:",
+        parking_24: "24/7 tekom vašega bivanja",
+        open_maps: "🗺️ Odpri v Google Maps",
+        rec_text1: "🚣 Rafting na Soči: Nezaboravna izkušnja na najlepši smaragdni reki. 5 min vožnje, 40-60€.",
+        rec_text2: "🪂 Paragliding: Poletite nad dolino Soče s spektakularnimi pogledi. 10 min vožnje, 100-150€.",
+        rec_text3: "🥾 Slap Boka: Najvišji slap v Sloveniji (144m). Lahka sprehod z neverjetnim razgledom. Brezplačno.",
+        rec_text4: "🍽️ Gostilna Sovdat: Tradicionalna slovenska kuhinja. 3 min hoje, 15-30€.",
+        wifi_copied: "WiFi podatki kopirani!",
+        nav_home: "Domov",
+        nav_info: "Info",
+        nav_emergency: "Nujno",
+        nav_more: "Več",
+        guest_badge: "Gostov vodič",
+        weather_loading: "Nalaganje...",
+        copied: "Kopirano!",
+        coming_soon: "Kmalu",
+        info_title: "Info",
+        info_location: "Lokacija",
+        copy_address: "Kopiraj naslov",
+        directions: "Navodila do apartmaja",
+        address_copied: "Naslov kopiran!",
+        info_checkinout: "Prijava / Odjava",
+        checkin_from: "Prijava: od",
+        checkout_until: "Odjava: do",
+        checkin_helper: "Samopostrežna prijava / ključna škatla",
+        info_wifi: "Wi-Fi",
+        wifi_ssid_label: "SSID:",
+        wifi_password_label: "Geslo:",
+        copy_wifi: "Kopiraj Wi-Fi",
+        show_qr: "Prikaži QR",
+        qr_coming: "QR prihaja naslednjič",
+        info_host: "Gostitelj",
+        call_host: "Pokliči",
+        whatsapp: "WhatsApp",
+        host_helper: "Veseli smo, da vam lahko pomagamo.",
+        info_basics: "Osnove hiše",
+        basics_quiet: "🔇 Tihe ure: Po 22. uri",
+        basics_smoking: "🚭 Kajenje: Samo na terasi",
+        basics_trash: "🗑️ Smeti: Zabojnik na hodniku",
+        gallery_placeholder: "Slika",
+        video_placeholder: "Video",
+        attractions_page_title: "Znamenitosti",
+        attractions_content_html: "<h2>Bovec</h2><p>Bovec je srce doline Soče, obkrožen z Julijskimi Alpami. Mesto ponuja nepozabne naravne lepote in zgodovinske znamenitosti.</p><h3>Naravne znamenitosti</h3><p>Soča je najlepša smaragdna reka v Evropi. Ob njej so številne sprehajalne poti, ki vodijo ob reki ali po bližnjih hribih. Velika Korita Soče so spektakularen naravni pojav, kjer reka seka skozi globoke kanjone.</p><p>Slap Boka je najvišji slap v Sloveniji (144 metrov). Do njega vodi lahek sprehod, primeren za vse starosti. Razgled je neverjeten, posebej po deževju, ko je slap najmočnejši.</p><h3>Kulturna dediščina</h3><p>Bovec je bil pomemben med prvo svetovno vojno. V okolici najdete številne spominske poti in muzeje, ki pripovedujejo zgodbo o soški fronti. Kobaridski muzej je eden najboljših vojaških muzejev v regiji.</p><h3>Razgledne točke</h3><p>Vzpon na Rombon ali na bližnje hribe ponuja panoramske razglede na dolino Soče in okoliške gore. Najboljši čas za obisk je zgodaj zjutraj ali pozno popoldne, ko je svetloba najlepša.</p><h3>Praktični nasveti</h3><ul><li>Parkiranje je na voljo v centru mesta, večinoma brezplačno.</li><li>Spoštujte naravo: ne puščajte smeti, ostajajte na označenih poteh.</li><li>Najboljši čas za obisk: spomlad in jesen za sprehode, poletje za kopanje v Soči.</li><li>Vreme v gorah se hitro spreminja, zato prinesite primerno obleko.</li></ul><h2>Kobarid</h2><p>Kobarid je zgodovinsko mesto, znano predvsem po Kobaridskem muzeju in spominski poti, ki prikazuje pomembne dogodke prve svetovne vojne.</p><h3>Kobaridski muzej</h3><p>Muzej prikazuje zgodbo o soški fronti skozi interaktivne razstave in artefakte. To je ena najpomembnejših kulturnih znamenitosti v regiji.</p><h3>Spominska pot</h3><p>Pot vodi po pomembnih lokacijah iz prve svetovne vojne. Ob poti so informativne table, ki razlagajo zgodovinske dogodke. Sprehod je primeren za vse starosti.</p><h3>Naravne lepote</h3><p>Kobarid leži ob Soči, zato so dostopne številne sprehajalne poti ob reki. Okolica ponuja tudi možnosti za lažje gorske sprehode.</p><h3>Mestni center</h3><p>Zgodovinski center Kobarida je prijeten za sprehode. Najdete tradicionalno arhitekturo in lokalne trgovine.</p><h2>Tolmin</h2><p>Tolmin je največje mesto v dolini Soče, z bogato zgodovino in naravnimi znamenitostmi.</p><h3>Tolminske klisure</h3><p>Ena najbolj znanih naravnih znamenitosti v Sloveniji. Klisure ponujajo spektakularen sprehod ob reki Tolminki, ki se spušča skozi globoke kanjone. Obisk je primeren za vse, ki lahko hodijo po stopnicah.</p><h3>Naravni rezervat</h3><p>Okolica Tolmina je bogata z naravnimi rezervati, kjer lahko opazujete lokalno floro in favno. Obstajajo označene poti za različne stopnje težavnosti.</p><h3>Kulturna dediščina</h3><p>Tolmin ima zgodovinski center z zanimivo arhitekturo. Mestni muzej prikazuje lokalno zgodovino in kulturo.</p><h3>Razgledne točke</h3><p>Vzpon na bližnje hribe ponuja lepe razglede na dolino. Najboljši čas za obisk je zgodaj zjutraj ali ob sončnem zahodu.</p><h3>Praktični nasveti</h3><ul><li>Parkiranje je na voljo blizu glavnih znamenitosti.</li><li>Za obisk Tolminskih klisurev prinesite udobne čevlje za hojo.</li><li>Spoštujte naravne rezervate in ostajajte na označenih poteh.</li><li>Vreme se lahko hitro spremeni, zato prinesite dodatno obleko.</li></ul>"
+      },
+      en: {
+        welcome: "Welcome",
+        enter: "Enter",
+        guest_guide: "Guest Guide",
+        call: "Call",
+        call_host: "Call host",
+        navigate: "Navigate",
+        directions: "Directions to apartment",
+        attractions: "Attractions",
+        wifi: "WiFi",
+        brand_title: "SOČA VALLEY",
+        brand_subtitle: "BOVEC",
+        emergency: "Emergency",
+        emergency_sub: "Emergency calls",
+        rules: "House Rules",
+        rules_sub: "Rules",
+        parking: "Parking",
+        parking_sub: "Information",
+        recommendations: "Recommendations",
+        recommendations_sub: "Area",
+        ambulance: "Emergency Medical",
+        police: "Police",
+        fire: "Fire Department",
+        dentist: "Emergency Dentist",
+        hospital: "Bovec Hospital",
+        pharmacy: "24h Pharmacy",
+        call_btn: "Call",
+        rule1: "Please respect quiet hours after 10 PM",
+        rule2: "Smoking allowed only on the terrace",
+        rule3: "Dispose trash in the hallway container",
+        rule4: "Lock doors when leaving the apartment",
+        rule5: "Check-out at 11:00 AM. Leave keys in security box",
+        parking_location: "Location:",
+        parking_spot: "Parking spot:",
+        parking_number: "Marked #15",
+        parking_price: "Price:",
+        parking_free: "Free for guests",
+        parking_hours: "Hours:",
+        parking_24: "24/7 during your stay",
+        open_maps: "🗺️ Open in Google Maps",
+        parking_recommended: "Recommended (Apartment)",
+        parking_more_options: "More parking options nearby",
+        parking_paid_badge: "Paid",
+        parking_free_badge: "Free",
+        parking_hours_label: "Hours:",
+        parking_notes_label: "Notes:",
+        parking_open_maps: "🗺️ Open in Google Maps",
+        parking_official_info: "Official info",
+        parking_loading: "Loading...",
+        parking_updated_from_official: "Updated from official source",
+        parking_fallback_notice: "Could not load official data. Showing default options + links to official pages.",
+        parking_suggested_areas: "Suggested areas (via Maps search)",
+        rec_text1: "🚣 Rafting on Soča: Unforgettable experience on the most beautiful emerald river. 5 min drive, 40-60€.",
+        rec_text2: "🪂 Paragliding: Fly over Soča valley with spectacular views. 10 min drive, 100-150€.",
+        rec_text3: "🥾 Boka Waterfall: Highest waterfall in Slovenia (144m). Easy walk with amazing views. Free.",
+        rec_text4: "🍽️ Gostilna Sovdat: Traditional Slovenian cuisine. 3 min walk, 15-30€.",
+        wifi_copied: "WiFi credentials copied!",
+        nav_home: "Home",
+        nav_info: "Info",
+        nav_emergency: "Emergency",
+        nav_more: "More",
+        guest_badge: "Guest Guide",
+        weather_loading: "Loading...",
+        copied: "Copied!",
+        coming_soon: "Coming soon",
+        info_title: "Info",
+        info_location: "Location",
+        copy_address: "Copy address",
+        directions: "Directions to apartment",
+        address_copied: "Address copied!",
+        info_checkinout: "Check-in / Check-out",
+        checkin_from: "Check-in: from",
+        checkout_until: "Check-out: until",
+        checkin_helper: "Self check-in / key box",
+        info_wifi: "Wi-Fi",
+        wifi_ssid_label: "SSID:",
+        wifi_password_label: "Password:",
+        copy_wifi: "Copy Wi-Fi",
+        show_qr: "Show QR",
+        qr_coming: "QR coming next",
+        info_host: "Host",
+        call_host: "Call host",
+        whatsapp: "WhatsApp",
+        host_helper: "We're happy to help.",
+        info_basics: "House basics",
+        basics_quiet: "🔇 Quiet hours: After 10 PM",
+        basics_smoking: "🚭 Smoking: Terrace only",
+        basics_trash: "🗑️ Trash: Hallway container",
+        gallery_placeholder: "Image",
+        video_placeholder: "Video",
+        attractions_page_title: "Attractions",
+        attractions_content_html: "<h2>Bovec</h2><p>Bovec is the heart of the Soča Valley, surrounded by the Julian Alps. The town offers unforgettable natural beauty and historical sites.</p><h3>Natural Attractions</h3><p>The Soča River is the most beautiful emerald river in Europe. Along it are numerous walking trails that follow the river or nearby hills. The Great Soča Gorge is a spectacular natural phenomenon where the river cuts through deep canyons.</p><p>Boka Waterfall is the highest waterfall in Slovenia (144 meters). A gentle walk leads to it, suitable for all ages. The view is incredible, especially after rain when the waterfall is at its strongest.</p><h3>Cultural Heritage</h3><p>Bovec was significant during World War I. In the surrounding area, you'll find numerous memorial trails and museums that tell the story of the Isonzo Front. The Kobarid Museum is one of the best military museums in the region.</p><h3>Viewpoints</h3><p>Climbing Rombon or nearby hills offers panoramic views of the Soča Valley and surrounding mountains. The best time to visit is early morning or late afternoon when the light is most beautiful.</p><h3>Practical Tips</h3><ul><li>Parking is available in the town center, mostly free.</li><li>Respect nature: don't leave trash, stay on marked trails.</li><li>Best time to visit: spring and autumn for walks, summer for swimming in the Soča.</li><li>Mountain weather changes quickly, so bring appropriate clothing.</li></ul><h2>Kobarid</h2><p>Kobarid is a historic town, best known for the Kobarid Museum and the Walk of Peace, which displays important events from World War I.</p><h3>Kobarid Museum</h3><p>The museum showcases the story of the Isonzo Front through interactive exhibits and artifacts. This is one of the most important cultural sites in the region.</p><h3>Walk of Peace</h3><p>The trail leads through important locations from World War I. Along the path are informative panels explaining historical events. The walk is suitable for all ages.</p><h3>Natural Beauty</h3><p>Kobarid lies along the Soča, so numerous walking trails along the river are accessible. The surroundings also offer opportunities for easier mountain walks.</p><h3>Town Center</h3><p>The historic center of Kobarid is pleasant for strolling. You'll find traditional architecture and local shops.</p><h2>Tolmin</h2><p>Tolmin is the largest town in the Soča Valley, with rich history and natural attractions.</p><h3>Tolmin Gorges</h3><p>One of the most famous natural attractions in Slovenia. The gorges offer a spectacular walk along the Tolminka River, which descends through deep canyons. The visit is suitable for anyone who can walk on stairs.</p><h3>Nature Reserve</h3><p>The area around Tolmin is rich with nature reserves where you can observe local flora and fauna. There are marked trails for different difficulty levels.</p><h3>Cultural Heritage</h3><p>Tolmin has a historic center with interesting architecture. The town museum displays local history and culture.</p><h3>Viewpoints</h3><p>Climbing nearby hills offers beautiful views of the valley. The best time to visit is early morning or at sunset.</p><h3>Practical Tips</h3><ul><li>Parking is available near main attractions.</li><li>For visiting Tolmin Gorges, bring comfortable walking shoes.</li><li>Respect nature reserves and stay on marked trails.</li><li>Weather can change quickly, so bring extra clothing.</li></ul>"
+      },
+      de: {
+        welcome: "Willkommen",
+        enter: "Eintreten",
+        guest_guide: "Gästeführer",
+        call: "Anrufen",
+        call_host: "Vermieter anrufen",
+        navigate: "Navigation",
+        directions: "Zur Unterkunft",
+        directions_to_apartment: "Zur Unterkunft",
+        brand_title: "SOČA-TAL",
+        brand_subtitle: "BOVEC",
+        attractions: "Sehenswürdigkeiten",
+        wifi: "WLAN",
+        emergency: "Notfall",
+        emergency_sub: "Notrufe",
+        rules: "Hausordnung",
+        rules_sub: "Regeln",
+        parking: "Parken",
+        parking_sub: "Informationen",
+        recommendations: "Empfehlungen",
+        recommendations_sub: "Umgebung",
+        ambulance: "Notarzt",
+        police: "Polizei",
+        fire: "Feuerwehr",
+        dentist: "Notfallzahnarzt",
+        hospital: "Krankenhaus Bovec",
+        pharmacy: "24h Apotheke",
+        call_btn: "Anrufen",
+        rule1: "Bitte beachten Sie die Ruhezeiten nach 22 Uhr",
+        rule2: "Rauchen nur auf der Terrasse erlaubt",
+        rule3: "Müll im Behälter im Flur entsorgen",
+        rule4: "Türen beim Verlassen der Wohnung abschließen",
+        rule5: "Check-out um 11:00 Uhr. Schlüssel im Sicherheitskasten lassen",
+        parking_location: "Standort:",
+        parking_spot: "Parkplatz:",
+        parking_number: "Markiert Nr. 15",
+        parking_price: "Preis:",
+        parking_free: "Kostenlos für Gäste",
+        parking_hours: "Zeiten:",
+        parking_24: "24/7 während Ihres Aufenthalts",
+        open_maps: "🗺️ In Google Maps öffnen",
+        rec_text1: "🚣 Rafting auf der Soča: Unvergessliches Erlebnis auf dem schönsten Smaragdfluss. 5 Min. Fahrt, 40-60€.",
+        rec_text2: "🪂 Paragliding: Fliegen Sie über das Soča-Tal mit spektakulären Aussichten. 10 Min. Fahrt, 100-150€.",
+        rec_text3: "🥾 Boka-Wasserfall: Höchster Wasserfall in Slowenien (144m). Leichter Spaziergang mit herrlicher Aussicht. Kostenlos.",
+        rec_text4: "🍽️ Gostilna Sovdat: Traditionelle slowenische Küche. 3 Min. zu Fuß, 15-30€.",
+        wifi_copied: "WLAN-Daten kopiert!",
+        nav_home: "Startseite",
+        nav_info: "Info",
+        nav_emergency: "Notfall",
+        nav_more: "Mehr",
+        guest_badge: "Gästeführer",
+        weather_loading: "Laden...",
+        copied: "Kopiert!",
+        coming_soon: "Bald",
+        info_title: "Info",
+        info_location: "Standort",
+        copy_address: "Adresse kopieren",
+        directions: "Wegbeschreibung",
+        address_copied: "Adresse kopiert!",
+        info_checkinout: "Check-in / Check-out",
+        checkin_from: "Check-in: ab",
+        checkout_until: "Check-out: bis",
+        checkin_helper: "Selbst-Check-in / Schlüsselkasten",
+        info_wifi: "WLAN",
+        wifi_ssid_label: "SSID:",
+        wifi_password_label: "Passwort:",
+        copy_wifi: "WLAN kopieren",
+        show_qr: "QR anzeigen",
+        qr_coming: "QR kommt als Nächstes",
+        info_host: "Gastgeber",
+        call_host: "Vermieter anrufen",
+        whatsapp: "WhatsApp",
+        host_helper: "Wir helfen Ihnen gerne.",
+        info_basics: "Hausgrundlagen",
+        basics_quiet: "🔇 Ruhezeiten: Nach 22 Uhr",
+        basics_smoking: "🚭 Rauchen: Nur auf der Terrasse",
+        basics_trash: "🗑️ Müll: Behälter im Flur",
+        gallery_placeholder: "Bild",
+        video_placeholder: "Video",
+        attractions_page_title: "Sehenswürdigkeiten",
+        attractions_content_html: "<h2>Bovec</h2><p>Bovec ist das Herz des Soča-Tals, umgeben von den Julischen Alpen. Die Stadt bietet unvergessliche Naturschönheit und historische Stätten.</p><h3>Naturschönheiten</h3><p>Die Soča ist der schönste Smaragdfluss Europas. Entlang des Flusses gibt es zahlreiche Wanderwege, die dem Fluss oder nahegelegenen Hügeln folgen. Die Große Soča-Schlucht ist ein spektakuläres Naturphänomen, bei dem der Fluss durch tiefe Schluchten schneidet.</p><p>Der Boka-Wasserfall ist der höchste Wasserfall Sloweniens (144 Meter). Ein leichter Spaziergang führt dorthin, geeignet für alle Altersgruppen. Die Aussicht ist unglaublich, besonders nach Regen, wenn der Wasserfall am stärksten ist.</p><h3>Kulturerbe</h3><p>Bovec war während des Ersten Weltkriegs bedeutsam. In der Umgebung finden Sie zahlreiche Gedenkwege und Museen, die die Geschichte der Isonzo-Front erzählen. Das Kobarid-Museum ist eines der besten Militärmuseen der Region.</p><h3>Aussichtspunkte</h3><p>Der Aufstieg auf den Rombon oder nahegelegene Hügel bietet Panoramablicke auf das Soča-Tal und die umliegenden Berge. Die beste Zeit für einen Besuch ist frühmorgens oder spätnachmittags, wenn das Licht am schönsten ist.</p><h3>Praktische Tipps</h3><ul><li>Parkplätze sind im Stadtzentrum verfügbar, meist kostenlos.</li><li>Respektieren Sie die Natur: hinterlassen Sie keinen Müll, bleiben Sie auf markierten Wegen.</li><li>Beste Besuchszeit: Frühling und Herbst für Spaziergänge, Sommer zum Schwimmen in der Soča.</li><li>Das Wetter in den Bergen ändert sich schnell, bringen Sie daher angemessene Kleidung mit.</li></ul><h2>Kobarid</h2><p>Kobarid ist eine historische Stadt, bekannt vor allem für das Kobarid-Museum und den Friedensweg, der wichtige Ereignisse des Ersten Weltkriegs zeigt.</p><h3>Kobarid-Museum</h3><p>Das Museum zeigt die Geschichte der Isonzo-Front durch interaktive Ausstellungen und Artefakte. Dies ist eine der wichtigsten kulturellen Stätten der Region.</p><h3>Friedensweg</h3><p>Der Weg führt durch wichtige Orte des Ersten Weltkriegs. Entlang des Weges befinden sich informative Tafeln, die historische Ereignisse erklären. Der Spaziergang ist für alle Altersgruppen geeignet.</p><h3>Naturschönheit</h3><p>Kobarid liegt an der Soča, daher sind zahlreiche Wanderwege entlang des Flusses zugänglich. Die Umgebung bietet auch Möglichkeiten für leichtere Bergwanderungen.</p><h3>Stadtzentrum</h3><p>Das historische Zentrum von Kobarid ist angenehm zum Spazieren. Sie finden traditionelle Architektur und lokale Geschäfte.</p><h2>Tolmin</h2><p>Tolmin ist die größte Stadt im Soča-Tal mit reicher Geschichte und natürlichen Attraktionen.</p><h3>Tolminer Klammen</h3><p>Eine der berühmtesten natürlichen Attraktionen Sloweniens. Die Klammen bieten einen spektakulären Spaziergang entlang der Tolminka, die durch tiefe Schluchten absteigt. Der Besuch ist für alle geeignet, die Treppen steigen können.</p><h3>Naturschutzgebiet</h3><p>Die Umgebung von Tolmin ist reich an Naturschutzgebieten, in denen Sie lokale Flora und Fauna beobachten können. Es gibt markierte Wege für verschiedene Schwierigkeitsgrade.</p><h3>Kulturerbe</h3><p>Tolmin hat ein historisches Zentrum mit interessanter Architektur. Das Stadtmuseum zeigt lokale Geschichte und Kultur.</p><h3>Aussichtspunkte</h3><p>Der Aufstieg auf nahegelegene Hügel bietet schöne Ausblicke auf das Tal. Die beste Zeit für einen Besuch ist frühmorgens oder bei Sonnenuntergang.</p><h3>Praktische Tipps</h3><ul><li>Parkplätze sind in der Nähe der Hauptattraktionen verfügbar.</li><li>Für den Besuch der Tolminer Klammen bringen Sie bequeme Wanderschuhe mit.</li><li>Respektieren Sie Naturschutzgebiete und bleiben Sie auf markierten Wegen.</li><li>Das Wetter kann sich schnell ändern, bringen Sie daher zusätzliche Kleidung mit.</li></ul>"
+      },
+      it: {
+        welcome: "Benvenuto",
+        enter: "Entra",
+        guest_guide: "Guida Ospite",
+        call: "Chiama",
+        call_host: "Chiama ospite",
+        navigate: "Naviga",
+        directions: "Verso l'appartamento",
+        attractions: "Attrazioni",
+        brand_title: "VALLE DELL'ISONZO",
+        brand_subtitle: "BOVEC",
+        wifi: "WiFi",
+        emergency: "Emergenza",
+        emergency_sub: "Chiamate d'emergenza",
+        rules: "Regole Casa",
+        rules_sub: "Regolamento",
+        parking: "Parcheggio",
+        parking_sub: "Informazioni",
+        recommendations: "Raccomandazioni",
+        recommendations_sub: "Zona",
+        ambulance: "Ambulanza",
+        police: "Polizia",
+        fire: "Vigili del Fuoco",
+        dentist: "Dentista di Emergenza",
+        hospital: "Ospedale Bovec",
+        pharmacy: "Farmacia 24h",
+        call_btn: "Chiama",
+        rule1: "Si prega di rispettare il silenzio dopo le 22:00",
+        rule2: "Fumare consentito solo sulla terrazza",
+        rule3: "Smaltire i rifiuti nel contenitore del corridoio",
+        rule4: "Chiudere a chiave le porte quando si esce dall'appartamento",
+        rule5: "Check-out alle 11:00. Lasciare le chiavi nella cassetta di sicurezza",
+        parking_location: "Posizione:",
+        parking_spot: "Posto auto:",
+        parking_number: "Contrassegnato #15",
+        parking_price: "Prezzo:",
+        parking_free: "Gratuito per gli ospiti",
+        parking_hours: "Orari:",
+        parking_24: "24/7 durante il soggiorno",
+        open_maps: "🗺️ Apri in Google Maps",
+        parking_recommended: "Consigliato (Appartamento)",
+        parking_more_options: "Altre opzioni di parcheggio nelle vicinanze",
+        parking_paid_badge: "A pagamento",
+        parking_free_badge: "Gratuito",
+        parking_hours_label: "Orari:",
+        parking_notes_label: "Note:",
+        parking_open_maps: "🗺️ Apri in Google Maps",
+        parking_official_info: "Info ufficiali",
+        parking_loading: "Caricamento...",
+        parking_updated_from_official: "Aggiornato da fonte ufficiale",
+        parking_fallback_notice: "Impossibile caricare i dati ufficiali. Mostrate opzioni predefinite + link alle pagine ufficiali.",
+        parking_suggested_areas: "Aree suggerite (tramite ricerca Maps)"
+      },
+      en: {
+        rec_text1: "🚣 Rafting sulla Soča: Esperienza indimenticabile sul più bel fiume smeraldo. 5 min di auto, 40-60€.",
+        rec_text2: "🪂 Parapendio: Vola sopra la valle della Soča con viste spettacolari. 10 min di auto, 100-150€.",
+        rec_text3: "🥾 Cascata Boka: La cascata più alta della Slovenia (144m). Facile passeggiata con vista mozzafiato. Gratuito.",
+        rec_text4: "🍽️ Gostilna Sovdat: Cucina tradizionale slovena. 3 min a piedi, 15-30€.",
+        wifi_copied: "Credenziali WiFi copiate!",
+        nav_home: "Home",
+        nav_info: "Info",
+        nav_emergency: "Emergenza",
+        nav_more: "Altro",
+        guest_badge: "Guida Ospite",
+        weather_loading: "Caricamento...",
+        copied: "Copiato!",
+        coming_soon: "Prossimamente",
+        info_title: "Info",
+        info_location: "Posizione",
+        copy_address: "Copia indirizzo",
+        directions: "Verso l'appartamento",
+        directions_to_apartment: "Verso l'appartamento",
+        address_copied: "Indirizzo copiato!",
+        info_checkinout: "Check-in / Check-out",
+        checkin_from: "Check-in: dalle",
+        checkout_until: "Check-out: entro",
+        checkin_helper: "Self check-in / cassetta chiavi",
+        info_wifi: "Wi-Fi",
+        wifi_ssid_label: "SSID:",
+        wifi_password_label: "Password:",
+        copy_wifi: "Copia Wi-Fi",
+        show_qr: "Mostra QR",
+        qr_coming: "QR in arrivo",
+        info_host: "Ospite",
+        call_host: "Chiama host",
+        whatsapp: "WhatsApp",
+        host_helper: "Siamo felici di aiutare.",
+        info_basics: "Basi della casa",
+        basics_quiet: "🔇 Orari di silenzio: Dopo le 22:00",
+        basics_smoking: "🚭 Fumo: Solo in terrazza",
+        basics_trash: "🗑️ Rifiuti: Contenitore nel corridoio",
+        gallery_placeholder: "Immagine",
+        video_placeholder: "Video",
+        attractions_page_title: "Attrazioni",
+        attractions_content_html: "<h2>Bovec</h2><p>Bovec è il cuore della valle dell'Isonzo, circondato dalle Alpi Giulie. La città offre una bellezza naturale indimenticabile e siti storici.</p><h3>Attrazioni Naturali</h3><p>L'Isonzo è il fiume smeraldo più bello d'Europa. Lungo il fiume ci sono numerosi sentieri escursionistici che seguono il fiume o le colline vicine. Le Grandi Gole dell'Isonzo sono un fenomeno naturale spettacolare dove il fiume taglia attraverso canyon profondi.</p><p>La Cascata Boka è la cascata più alta della Slovenia (144 metri). Una passeggiata facile porta ad essa, adatta a tutte le età. La vista è incredibile, specialmente dopo la pioggia quando la cascata è al massimo della sua potenza.</p><h3>Patrimonio Culturale</h3><p>Bovec fu significativo durante la Prima Guerra Mondiale. Nella zona circostante troverete numerosi sentieri commemorativi e musei che raccontano la storia del Fronte dell'Isonzo. Il Museo di Kobarid è uno dei migliori musei militari della regione.</p><h3>Punti Panoramici</h3><p>La salita al Rombon o alle colline vicine offre viste panoramiche sulla valle dell'Isonzo e le montagne circostanti. Il momento migliore per visitare è la mattina presto o il tardo pomeriggio quando la luce è più bella.</p><h3>Consigli Pratici</h3><ul><li>Il parcheggio è disponibile nel centro città, principalmente gratuito.</li><li>Rispettate la natura: non lasciate rifiuti, rimanete sui sentieri segnati.</li><li>Miglior periodo per visitare: primavera e autunno per passeggiate, estate per nuotare nell'Isonzo.</li><li>Il tempo in montagna cambia rapidamente, quindi portate abbigliamento appropriato.</li></ul><h2>Kobarid</h2><p>Kobarid è una città storica, conosciuta soprattutto per il Museo di Kobarid e il Sentiero della Pace, che mostra eventi importanti della Prima Guerra Mondiale.</p><h3>Museo di Kobarid</h3><p>Il museo mostra la storia del Fronte dell'Isonzo attraverso mostre interattive e manufatti. Questo è uno dei siti culturali più importanti della regione.</p><h3>Sentiero della Pace</h3><p>Il sentiero porta attraverso luoghi importanti della Prima Guerra Mondiale. Lungo il percorso ci sono pannelli informativi che spiegano eventi storici. La passeggiata è adatta a tutte le età.</p><h3>Bellezza Naturale</h3><p>Kobarid si trova lungo l'Isonzo, quindi numerosi sentieri escursionistici lungo il fiume sono accessibili. I dintorni offrono anche opportunità per escursioni montane più facili.</p><h3>Centro Città</h3><p>Il centro storico di Kobarid è piacevole per passeggiare. Troverete architettura tradizionale e negozi locali.</p><h2>Tolmin</h2><p>Tolmin è la città più grande della valle dell'Isonzo, con una ricca storia e attrazioni naturali.</p><h3>Gole di Tolmin</h3><p>Una delle attrazioni naturali più famose della Slovenia. Le gole offrono una passeggiata spettacolare lungo il fiume Tolminka, che scende attraverso canyon profondi. La visita è adatta a chiunque possa camminare su scale.</p><h3>Riserva Naturale</h3><p>L'area intorno a Tolmin è ricca di riserve naturali dove è possibile osservare la flora e la fauna locale. Ci sono sentieri segnati per diversi livelli di difficoltà.</p><h3>Patrimonio Culturale</h3><p>Tolmin ha un centro storico con architettura interessante. Il museo cittadino mostra la storia e la cultura locale.</p><h3>Punti Panoramici</h3><p>La salita alle colline vicine offre belle viste sulla valle. Il momento migliore per visitare è la mattina presto o al tramonto.</p><h3>Consigli Pratici</h3><ul><li>Il parcheggio è disponibile vicino alle principali attrazioni.</li><li>Per visitare le Gole di Tolmin, portate scarpe comode da passeggio.</li><li>Rispettate le riserve naturali e rimanete sui sentieri segnati.</li><li>Il tempo può cambiare rapidamente, quindi portate abbigliamento extra.</li></ul>"
+      }
+    };
+
+    let currentLang = 'sl';
+    let activePanel = null;
+    let langChangeTime = null;
+    let langChangeTimer = null;
+
+    // Load saved language preference
+    const savedLang = localStorage.getItem('preferredLanguage');
+    if (savedLang && translations[savedLang]) {
+      currentLang = savedLang;
+    }
+
+    // Welcome overlay logic - 5 seconds minimum
+    function initWelcomeScreen() {
+      const welcomeOverlay = document.getElementById('welcome-overlay');
+      const appContainer = document.getElementById('app-container');
+      const enterBtn = document.getElementById('enter-btn');
+      
+      if (!welcomeOverlay || !appContainer) {
+        setTimeout(initWelcomeScreen, 100);
+        return;
+      }
+      
+      let welcomeStartTime = Date.now();
+      const MIN_WELCOME_TIME = 5000; // 5 seconds
+
+      function hideWelcome() {
+        const elapsed = Date.now() - welcomeStartTime;
+        const remaining = Math.max(0, MIN_WELCOME_TIME - elapsed);
+        
+        setTimeout(() => {
+          if (welcomeOverlay) {
+            welcomeOverlay.classList.add('hide');
+            setTimeout(() => {
+              if (welcomeOverlay) welcomeOverlay.style.display = 'none';
+              if (appContainer) appContainer.classList.add('show');
+            }, 500);
+          }
+        }, remaining);
+      }
+
+      // Don't auto-hide if already shown in this session
+      if (!sessionStorage.getItem('welcomeShown')) {
+        // Auto-hide after 5 seconds minimum
+        setTimeout(() => {
+          hideWelcome();
+          sessionStorage.setItem('welcomeShown', 'true');
+        }, MIN_WELCOME_TIME);
+      } else {
+        if (welcomeOverlay) welcomeOverlay.style.display = 'none';
+        if (appContainer) appContainer.classList.add('show');
+      }
+
+      if (enterBtn) {
+        enterBtn.addEventListener('click', () => {
+          hideWelcome();
+          sessionStorage.setItem('welcomeShown', 'true');
+        });
+      }
+    }
+    
+    // Initialize welcome screen when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initWelcomeScreen);
+    } else {
+      initWelcomeScreen();
+    }
+
+    // Language switching with 10 second timer
+    function updateLanguage(lang) {
+      currentLang = lang;
+      const trans = translations[lang];
+      
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (trans[key]) {
+          el.textContent = trans[key];
+        }
+      });
+      
+      const welcomeTitle = document.getElementById('welcome-title');
+      if (welcomeTitle) welcomeTitle.textContent = trans.welcome;
+      const enterBtn = document.getElementById('enter-btn');
+      if (enterBtn) enterBtn.textContent = trans.enter;
+      const appSubtitle = document.getElementById('app-subtitle');
+      if (appSubtitle) appSubtitle.textContent = trans.guest_guide;
+      const heroBadge = document.getElementById('hero-badge');
+      if (heroBadge) heroBadge.textContent = trans.guest_badge;
+      const weatherDesc = document.getElementById('weather-desc');
+      if (weatherDesc && (weatherDesc.textContent === 'Loading...' || weatherDesc.textContent === 'Nalaganje...' || weatherDesc.textContent === 'Laden...' || weatherDesc.textContent === 'Caricamento...')) {
+        weatherDesc.textContent = trans.weather_loading;
+      }
+      
+      const langSelect = document.getElementById('lang-select');
+      if (langSelect) {
+        langSelect.value = lang;
+      }
+
+      // Save language preference instantly
+      localStorage.setItem('preferredLanguage', lang);
+      
+      // Update brand/title text
+      const appTitle = document.getElementById('app-title');
+      if (appTitle) {
+        const apartmentName = defaultConfig.apartment_name;
+        if (apartmentName && apartmentName !== 'DOLINA SOČE BOVEC') {
+          appTitle.textContent = apartmentName;
+        } else {
+          const brandTitle = trans.brand_title || 'DOLINA SOČE';
+          const brandSubtitle = trans.brand_subtitle || 'BOVEC';
+          appTitle.innerHTML = brandTitle + ' <span id="bovec-text">' + brandSubtitle + '</span>';
+        }
+      }
+      
+      const heroTitle = document.getElementById('hero-title');
+      if (heroTitle) {
+        const apartmentName = defaultConfig.apartment_name;
+        if (apartmentName && apartmentName !== 'DOLINA SOČE BOVEC') {
+          heroTitle.textContent = apartmentName.split(' ')[0];
+        } else {
+          heroTitle.textContent = trans.brand_title || 'DOLINA SOČE';
+        }
+      }
+      
+      const welcomeSubtitle = document.getElementById('welcome-subtitle');
+      if (welcomeSubtitle) {
+        const apartmentName = defaultConfig.apartment_name;
+        if (apartmentName && apartmentName !== 'DOLINA SOČE BOVEC') {
+          welcomeSubtitle.textContent = apartmentName;
+        } else {
+          const brandTitle = trans.brand_title || 'DOLINA SOČE';
+          const brandSubtitle = trans.brand_subtitle || 'BOVEC';
+          welcomeSubtitle.textContent = brandTitle + ' ' + brandSubtitle;
+        }
+      }
+      
+      // Update weather description and location when language changes
+      updateWeather();
+      updateWeatherLocation();
+      
+      // Update attractions content if screen is open
+      const attractionsScreen = document.getElementById('attractions-screen');
+      if (attractionsScreen && attractionsScreen.classList.contains('show')) {
+        renderAttractionsContent();
+      }
+      
+      // Update parking panel if open
+      const parkingPanel = document.getElementById('parking-panel');
+      if (parkingPanel && parkingPanel.classList.contains('open')) {
+        const container = document.getElementById('parking-dynamic');
+        if (container && container.innerHTML) {
+          renderParkingPanel(parkingOptionsCache || parkingFallbackData);
+        }
+      }
+    }
+
+    // Initialize with saved language
+    try {
+      updateLanguage(currentLang);
+    } catch (e) {
+      // Ensure welcome screen still works even if language init fails
+      console.error('Language initialization error:', e);
+    }
+
+    // Language dropdown
+      const langSelect = document.getElementById('lang-select');
+      if (langSelect) {
+        langSelect.value = currentLang;
+        langSelect.addEventListener('change', (e) => {
+          updateLanguage(e.target.value);
+        });
+      }
+
+    // Accordion panels
+    function openPanel(panelId) {
+      if (activePanel && activePanel !== panelId) {
+        document.getElementById(activePanel + '-panel').classList.remove('open');
+      }
+      const panel = document.getElementById(panelId + '-panel');
+      panel.classList.add('open');
+      activePanel = panelId;
+      
+      if (panelId === 'parking') {
+        loadParkingOptions();
+      }
+      
+      setTimeout(() => {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+
+    function closePanel(panelId) {
+      document.getElementById(panelId + '-panel').classList.remove('open');
+      if (activePanel === panelId) {
+        activePanel = null;
+      }
+    }
+
+    document.querySelectorAll('.menu-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const section = card.getAttribute('data-section');
+        openPanel(section);
+      });
+    });
+
+    document.querySelectorAll('[data-close]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        closePanel(btn.getAttribute('data-close'));
+      });
+    });
+
+    // WiFi copy
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+      toastText.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    function copyToClipboard(text, successMessage) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(successMessage);
+        }).catch(() => {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          try {
+            document.execCommand('copy');
+            showToast(successMessage);
+          } catch (err) {
+            showToast(translations[currentLang].copied);
+          }
+          document.body.removeChild(textarea);
+        });
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showToast(successMessage);
+        } catch (err) {
+          showToast(translations[currentLang].copied);
+        }
+        document.body.removeChild(textarea);
+      }
+    }
+
+    const wifiAction = document.getElementById('wifi-action');
+    if (wifiAction) {
+      wifiAction.addEventListener('click', () => {
+        const ssid = defaultConfig.wifi_ssid;
+        const password = defaultConfig.wifi_password;
+        const text = `SSID: ${ssid}\nPassword: ${password}`;
+        copyToClipboard(text, translations[currentLang].wifi_copied);
+      });
+    }
+
+    // Info panel copy functions
+    const copyAddressBtn = document.getElementById('copy-address-btn');
+    if (copyAddressBtn) {
+      copyAddressBtn.addEventListener('click', () => {
+        const address = defaultConfig.full_address || 'Trg golobarskih žrtev 12, 5230 Bovec, Slovenija';
+        copyToClipboard(address, translations[currentLang].address_copied);
+      });
+    }
+
+    const copyWifiInfoBtn = document.getElementById('copy-wifi-info-btn');
+    if (copyWifiInfoBtn) {
+      copyWifiInfoBtn.addEventListener('click', () => {
+        const ssid = defaultConfig.wifi_ssid;
+        const password = defaultConfig.wifi_password;
+        const text = `SSID: ${ssid}\nPassword: ${password}`;
+        copyToClipboard(text, translations[currentLang].wifi_copied);
+      });
+    }
+
+    const showQrBtn = document.getElementById('show-qr-btn');
+    if (showQrBtn) {
+      showQrBtn.addEventListener('click', () => {
+        showToast(translations[currentLang].qr_coming);
+      });
+    }
+
+    // Update info panel with config values
+    function updateInfoPanel() {
+      const addressEl = document.getElementById('info-address');
+      if (addressEl) {
+        addressEl.textContent = defaultConfig.full_address || 'Trg golobarskih žrtev 12, 5230 Bovec, Slovenija';
+      }
+      const checkinTimeEl = document.getElementById('checkin-time');
+      if (checkinTimeEl) {
+        checkinTimeEl.textContent = defaultConfig.checkin_time || '15:00';
+      }
+      const checkoutTimeEl = document.getElementById('checkout-time');
+      if (checkoutTimeEl) {
+        checkoutTimeEl.textContent = defaultConfig.checkout_time || '11:00';
+      }
+      const wifiSsidEl = document.getElementById('info-wifi-ssid');
+      if (wifiSsidEl) {
+        wifiSsidEl.textContent = defaultConfig.wifi_ssid || 'BovecMountain_5G';
+      }
+      const wifiPasswordEl = document.getElementById('info-wifi-password');
+      if (wifiPasswordEl) {
+        wifiPasswordEl.textContent = defaultConfig.wifi_password || 'AlpineView2024';
+      }
+      const directionsLink = document.getElementById('directions-link');
+      if (directionsLink && defaultConfig.maps_link) {
+        directionsLink.href = defaultConfig.maps_link;
+      }
+      const hostCallLink = document.getElementById('host-call-link');
+      if (hostCallLink && defaultConfig.host_phone) {
+        hostCallLink.href = `tel:${defaultConfig.host_phone.replace(/\s/g, '')}`;
+      }
+      const hostWhatsappLink = document.getElementById('host-whatsapp-link');
+      if (hostWhatsappLink && defaultConfig.host_whatsapp) {
+        hostWhatsappLink.href = `https://wa.me/${defaultConfig.host_whatsapp.replace(/[^\d]/g, '')}`;
+      }
+    }
+
+    updateInfoPanel();
+
+    const directionsAction = document.getElementById('directions-action');
+    if (directionsAction && defaultConfig.maps_link) {
+      directionsAction.href = defaultConfig.maps_link;
+    }
+
+    // Close all panels
+    function closeAllPanels() {
+      document.querySelectorAll('.accordion-panel').forEach(panel => {
+        panel.classList.remove('open');
+      });
+      activePanel = null;
+    }
+    
+    // Parking data model and functions
+    const parkingFallbackData = [
+      {
+        id: 'apartment',
+        title: { sl: 'Parkirno mesto apartmaja', en: 'Apartment parking', de: 'Apartment-Parkplatz', it: 'Parcheggio appartamento' },
+        address: 'Trg golobarskih žrtev 12, 5230 Bovec',
+        town: 'Bovec',
+        type: 'apartment',
+        paid: false,
+        hours: '24/7',
+        notes: { sl: 'Brezplačno za goste', en: 'Free for guests', de: 'Kostenlos für Gäste', it: 'Gratuito per gli ospiti' },
+        mapsQuery: 'Trg golobarskih žrtev 12, 5230 Bovec',
+        officialSourceLabel: { sl: 'Uradne informacije', en: 'Official info', de: 'Offizielle Infos', it: 'Info ufficiali' },
+        officialSourceUrl: 'https://www.bovec.si'
+      },
+      {
+        id: 'bovec-center',
+        title: { sl: 'Parkiranje v centru Bovec', en: 'Bovec center parking', de: 'Parken im Zentrum Bovec', it: 'Parcheggio centro Bovec' },
+        address: 'Bovec center',
+        town: 'Bovec',
+        type: 'center',
+        paid: null,
+        hours: null,
+        notes: { sl: 'Preverite uradne pravila parkiranja', en: 'Check official parking rules', de: 'Offizielle Parkregeln prüfen', it: 'Verificare regole parcheggio ufficiali' },
+        mapsQuery: 'parking Bovec center',
+        officialSourceLabel: { sl: 'Uradne informacije', en: 'Official info', de: 'Offizielle Infos', it: 'Info ufficiali' },
+        officialSourceUrl: 'https://www.bovec.si'
+      },
+      {
+        id: 'kobarid-center',
+        title: { sl: 'Parkiranje v Kobaridu', en: 'Kobarid parking', de: 'Parken in Kobarid', it: 'Parcheggio Kobarid' },
+        address: 'Kobarid center',
+        town: 'Kobarid',
+        type: 'center',
+        paid: null,
+        hours: null,
+        notes: { sl: 'Preverite uradne pravila parkiranja', en: 'Check official parking rules', de: 'Offizielle Parkregeln prüfen', it: 'Verificare regole parcheggio ufficiali' },
+        mapsQuery: 'parking Kobarid',
+        officialSourceLabel: { sl: 'Uradne informacije', en: 'Official info', de: 'Offizielle Infos', it: 'Info ufficiali' },
+        officialSourceUrl: 'https://www.kobarid.si'
+      },
+      {
+        id: 'tolmin-center',
+        title: { sl: 'Parkiranje v Tolminu', en: 'Tolmin parking', de: 'Parken in Tolmin', it: 'Parcheggio Tolmin' },
+        address: 'Tolmin center',
+        town: 'Tolmin',
+        type: 'center',
+        paid: null,
+        hours: null,
+        notes: { sl: 'Preverite uradne pravila parkiranja', en: 'Check official parking rules', de: 'Offizielle Parkregeln prüfen', it: 'Verificare regole parcheggio ufficiali' },
+        mapsQuery: 'parking Tolmin',
+        officialSourceLabel: { sl: 'Uradne informacije', en: 'Official info', de: 'Offizielle Infos', it: 'Info ufficiali' },
+        officialSourceUrl: 'https://www.tolmin.si'
+      }
+    ];
+    
+    const parkingDataSources = [
+      {
+        town: 'Bovec',
+        kind: 'json',
+        url: 'OFFICIAL_URL_HERE',
+        officialLabel: { sl: 'Občina Bovec', en: 'Bovec Municipality', de: 'Gemeinde Bovec', it: 'Comune di Bovec' },
+        parse: function(raw) {
+          try {
+            const data = JSON.parse(raw);
+            return data.parking || [];
+          } catch (e) {
+            return [];
+          }
+        }
+      }
+    ];
+    
+    let parkingOptionsCache = null;
+    const PARKING_CACHE_KEY = 'parkingOptionsCache';
+    const PARKING_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+    
+    async function loadParkingOptions() {
+      const container = document.getElementById('parking-dynamic');
+      const status = document.getElementById('parking-status');
+      
+      if (!container) return;
+      
+      // Show fallback immediately
+      renderParkingPanel(parkingFallbackData);
+      if (status) {
+        status.textContent = translations[currentLang].parking_loading;
+      }
+      
+      // Try to load from cache first
+      try {
+        const cached = localStorage.getItem(PARKING_CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.timestamp < PARKING_CACHE_TTL) {
+            parkingOptionsCache = parsed.data;
+            renderParkingPanel(parsed.data);
+            if (status) {
+              status.textContent = translations[currentLang].parking_updated_from_official;
+            }
+            return;
+          }
+        }
+      } catch (e) {}
+      
+      // Try to fetch from official sources
+      let fetched = false;
+      for (const source of parkingDataSources) {
+        if (source.url === 'OFFICIAL_URL_HERE') continue;
+        
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000);
+          
+          const response = await fetch(source.url, {
+            signal: controller.signal,
+            headers: { 'Accept': 'application/json' }
+          });
+          
+          clearTimeout(timeoutId);
+          
+          if (response.ok) {
+            const raw = await response.text();
+            const parsed = source.parse(raw);
+            if (parsed && parsed.length > 0) {
+              const merged = [...parkingFallbackData.filter(p => p.id === 'apartment'), ...parsed];
+              parkingOptionsCache = merged;
+              renderParkingPanel(merged);
+              localStorage.setItem(PARKING_CACHE_KEY, JSON.stringify({
+                data: merged,
+                timestamp: Date.now()
+              }));
+              if (status) {
+                status.textContent = translations[currentLang].parking_updated_from_official;
+              }
+              fetched = true;
+              break;
+            }
+          }
+        } catch (e) {
+          // Continue to next source or fallback
+        }
+      }
+      
+      if (!fetched) {
+        parkingOptionsCache = parkingFallbackData;
+        renderParkingPanel(parkingFallbackData);
+        if (status) {
+          status.innerHTML = translations[currentLang].parking_fallback_notice + '<br><a href="https://www.bovec.si" target="_blank" rel="noopener noreferrer" style="color: var(--accent-green); text-decoration: underline; margin-top: 0.5rem; display: inline-block;">' + translations[currentLang].parking_official_info + '</a>';
+        }
+      }
+    }
+    
+    function renderParkingPanel(options) {
+      const container = document.getElementById('parking-dynamic');
+      if (!container) return;
+      
+      const trans = translations[currentLang];
+      const recommended = options.filter(p => p.type === 'apartment');
+      const others = options.filter(p => p.type !== 'apartment');
+      
+      let html = '';
+      
+      if (recommended.length > 0) {
+        html += '<div style="margin-bottom: 1.5rem;"><h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">' + trans.parking_recommended + '</h4>';
+        recommended.forEach(opt => {
+          html += renderParkingCard(opt, true);
+        });
+        html += '</div>';
+      }
+      
+      if (others.length > 0) {
+        html += '<div><h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">' + trans.parking_more_options + '</h4>';
+        others.forEach(opt => {
+          html += renderParkingCard(opt, false);
+        });
+        html += '</div>';
+      }
+      
+      container.innerHTML = html;
+    }
+    
+    function renderParkingCard(opt, isRecommended) {
+      const trans = translations[currentLang];
+      const title = opt.title[currentLang] || opt.title.sl || opt.title.en;
+      const notes = opt.notes ? (opt.notes[currentLang] || opt.notes.sl || opt.notes.en) : null;
+      const officialLabel = opt.officialSourceLabel[currentLang] || opt.officialSourceLabel.sl || opt.officialSourceLabel.en;
+      
+      const mapsLink = opt.mapsLink || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(opt.mapsQuery || opt.address)}`;
+      
+      let html = '<div class="parking-card' + (isRecommended ? ' recommended' : '') + '">';
+      html += '<div class="parking-card-header">';
+      html += '<div><div class="parking-card-title">' + title + '</div>';
+      html += '<div class="parking-card-address">📍 ' + opt.address + '</div></div>';
+      if (opt.paid !== null) {
+        html += '<span class="parking-badge ' + (opt.paid ? 'paid' : 'free') + '">' + (opt.paid ? trans.parking_paid_badge : trans.parking_free_badge) + '</span>';
+      }
+      html += '</div>';
+      
+      if (opt.hours) {
+        html += '<div class="parking-card-details"><strong>' + trans.parking_hours_label + '</strong> ' + opt.hours + '</div>';
+      }
+      
+      if (notes) {
+        html += '<div class="parking-card-details"><strong>' + trans.parking_notes_label + '</strong> ' + notes + '</div>';
+      }
+      
+      html += '<div class="parking-card-actions">';
+      html += '<a href="' + mapsLink + '" target="_blank" rel="noopener noreferrer" class="call-btn">' + trans.parking_open_maps + '</a>';
+      if (opt.officialSourceUrl) {
+        html += '<a href="' + opt.officialSourceUrl + '" target="_blank" rel="noopener noreferrer" class="call-btn" style="background: rgba(52, 211, 153, 0.2); color: var(--accent-green); border: 1px solid var(--glass-border);">' + officialLabel + '</a>';
+      }
+      html += '</div></div>';
+      
+      return html;
+    }
+    
+    // Attractions screen functions
+    function scrollToTopReliable() {
+      const root = document.scrollingElement || document.documentElement;
+      root.scrollTop = 0;
+      requestAnimationFrame(() => {
+        root.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const header = document.querySelector('.glass-header');
+        if (header) header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+    
+    function showAttractionsScreen() {
+      const screen = document.getElementById('attractions-screen');
+      if (screen) {
+        screen.classList.add('show');
+        renderAttractionsContent();
+      }
+    }
+    
+    function hideAttractionsScreen() {
+      const screen = document.getElementById('attractions-screen');
+      if (screen) {
+        screen.classList.remove('show');
+      }
+    }
+    
+    function renderAttractionsContent() {
+      const body = document.getElementById('attractions-body');
+      if (body && translations[currentLang] && translations[currentLang].attractions_content_html) {
+        body.innerHTML = translations[currentLang].attractions_content_html;
+      }
+    }
+    
+    function openAttractions() {
+      closeAllPanels();
+      showAttractionsScreen();
+    }
+    
+    function closeAttractions() {
+      hideAttractionsScreen();
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      const homeNav = document.querySelector('.nav-item[data-nav="home"]');
+      if (homeNav) homeNav.classList.add('active');
+      scrollToTopReliable();
+    }
+
+    // Bottom nav
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        const section = item.getAttribute('data-nav');
+        if (section === 'home') {
+          closeAllPanels();
+          activePanel = null;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (section === 'info') {
+          showToast(translations[currentLang].coming_soon);
+        } else if (section === 'emergency') {
+          closeAllPanels();
+          openPanel('emergency');
+        } else if (section === 'more') {
+          openPanel('recommendations');
+        }
+      });
+    });
+
+    // Weather Widget
+    function updateWeatherLocation() {
+      const weatherLocation = document.getElementById('weather-location');
+      if (weatherLocation) {
+        const locationSubtitle = defaultConfig.location_subtitle || 'Bovec, Slovenija';
+        const locationMap = {
+          sl: { 'Bovec, Slovenija': 'Bovec', 'Bovec': 'Bovec' },
+          en: { 'Bovec, Slovenija': 'Bovec, SI', 'Bovec': 'Bovec, SI' },
+          de: { 'Bovec, Slovenija': 'Bovec, SI', 'Bovec': 'Bovec, SI' },
+          it: { 'Bovec, Slovenija': 'Bovec, SI', 'Bovec': 'Bovec, SI' }
+        };
+        const locationText = locationMap[currentLang]?.[locationSubtitle] || locationSubtitle.split(',')[0] || 'Bovec';
+        weatherLocation.textContent = locationText;
+      }
+    }
+
+    async function updateWeather() {
+      const weatherTemp = document.getElementById('weather-temp');
+      const weatherIcon = document.getElementById('weather-icon');
+      const weatherDesc = document.getElementById('weather-desc');
+      
+      // Update location
+      updateWeatherLocation();
+      
+      // Bovec, Slovenia coordinates: 46.3378, 13.5528
+      const lat = 46.3378;
+      const lon = 13.5528;
+      
+      // Weather descriptions in different languages
+      const weatherDescMap = {
+        sl: {
+          'Clear': 'Jasno',
+          'Clouds': 'Oblačno',
+          'Rain': 'Dež',
+          'Drizzle': 'Rosilo',
+          'Thunderstorm': 'Nevihta',
+          'Snow': 'Sneg',
+          'Mist': 'Megla',
+          'Fog': 'Megla'
+        },
+        en: {
+          'Clear': 'Clear',
+          'Clouds': 'Cloudy',
+          'Rain': 'Rain',
+          'Drizzle': 'Drizzle',
+          'Thunderstorm': 'Storm',
+          'Snow': 'Snow',
+          'Mist': 'Mist',
+          'Fog': 'Fog'
+        },
+        de: {
+          'Clear': 'Klar',
+          'Clouds': 'Bewölkt',
+          'Rain': 'Regen',
+          'Drizzle': 'Niesel',
+          'Thunderstorm': 'Gewitter',
+          'Snow': 'Schnee',
+          'Mist': 'Nebel',
+          'Fog': 'Nebel'
+        },
+        it: {
+          'Clear': 'Sereno',
+          'Clouds': 'Nuvoloso',
+          'Rain': 'Pioggia',
+          'Drizzle': 'Pioggerella',
+          'Thunderstorm': 'Temporale',
+          'Snow': 'Neve',
+          'Mist': 'Nebbia',
+          'Fog': 'Nebbia'
+        }
+      };
+      
+      // Map weather condition to emoji
+      const weatherMap = {
+        'Clear': '☀️',
+        'Clouds': '⛅',
+        'Rain': '🌧️',
+        'Drizzle': '🌦️',
+        'Thunderstorm': '⛈️',
+        'Snow': '❄️',
+        'Mist': '🌫️',
+        'Fog': '🌫️'
+      };
+      
+      // Generate realistic mock weather based on time of day and season
+      const now = new Date();
+      const hour = now.getHours();
+      const month = now.getMonth();
+      
+      // Seasonal temperature adjustment (Bovec is in mountains)
+      let baseTemp = 12;
+      if (month >= 5 && month <= 8) baseTemp = 20; // Summer
+      else if (month >= 2 && month <= 4) baseTemp = 15; // Spring
+      else if (month >= 9 && month <= 11) baseTemp = 10; // Fall
+      else baseTemp = 5; // Winter
+      
+      // Time of day adjustment
+      if (hour >= 6 && hour < 12) baseTemp += 2; // Morning
+      else if (hour >= 12 && hour < 18) baseTemp += 5; // Afternoon
+      else if (hour >= 18 && hour < 22) baseTemp += 1; // Evening
+      else baseTemp -= 2; // Night
+      
+      const temp = Math.round(baseTemp + (Math.random() * 6 - 3));
+      
+      // Weather conditions based on season
+      const conditions = month >= 5 && month <= 8 
+        ? ['Clear', 'Clear', 'Clouds', 'Clouds', 'Clear'] // Summer: mostly clear
+        : month >= 11 || month <= 2
+        ? ['Clouds', 'Clouds', 'Snow', 'Clouds', 'Clear'] // Winter: more clouds/snow
+        : ['Clear', 'Clouds', 'Rain', 'Clouds', 'Clear']; // Spring/Fall: mixed
+      
+      const condition = conditions[Math.floor(Math.random() * conditions.length)];
+      
+      weatherTemp.textContent = `${temp}°`;
+      weatherIcon.textContent = weatherMap[condition] || '🌤️';
+      const descText = weatherDescMap[currentLang]?.[condition] || condition;
+      weatherDesc.textContent = descText;
+      weatherDesc.setAttribute('data-i18n', '');
+      
+      // Try to fetch real weather data (optional - requires API key)
+      try {
+        // Uncomment and add your OpenWeatherMap API key if you have one
+        // const apiKey = 'YOUR_API_KEY_HERE';
+        // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+        // const response = await fetch(url);
+        // if (response.ok) {
+        //   const data = await response.json();
+        //   weatherTemp.textContent = `${Math.round(data.main.temp)}°`;
+        //   const condition = data.weather[0].main;
+        //   weatherIcon.textContent = weatherMap[condition] || '🌤️';
+        //   weatherDesc.textContent = weatherDescMap[currentLang]?.[condition] || condition;
+        // }
+      } catch (error) {
+        // Keep mock data if API fails
+      }
+    }
+    
+    // Gallery lightbox
+    let currentGalleryIndex = 0;
+    const galleryItems = [];
+    
+    function initGallery() {
+      document.querySelectorAll('.gallery-item').forEach((item, index) => {
+        galleryItems.push(item);
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', () => {
+          openLightbox(index);
+        });
+      });
+    }
+
+    function openLightbox(index) {
+      currentGalleryIndex = index;
+      const item = galleryItems[index];
+      const lightbox = document.getElementById('lightbox');
+      const lightboxContent = document.getElementById('lightbox-content');
+      
+      lightboxContent.innerHTML = '';
+      
+      if (item.querySelector('img')) {
+        const img = item.querySelector('img').cloneNode(true);
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = '90vh';
+        img.style.objectFit = 'contain';
+        lightboxContent.appendChild(img);
+      } else if (item.querySelector('video')) {
+        const video = item.querySelector('video').cloneNode(true);
+        video.controls = true;
+        video.style.maxWidth = '100%';
+        video.style.maxHeight = '90vh';
+        video.style.objectFit = 'contain';
+        lightboxContent.appendChild(video);
+      } else if (item.classList.contains('placeholder')) {
+        const placeholder = item.cloneNode(true);
+        placeholder.style.maxWidth = '80%';
+        placeholder.style.maxHeight = '80vh';
+        lightboxContent.appendChild(placeholder);
+      }
+      
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+      const video = lightbox.querySelector('video');
+      if (video) {
+        video.pause();
+      }
+    }
+
+    function navigateLightbox(direction) {
+      if (direction === 'next') {
+        currentGalleryIndex = (currentGalleryIndex + 1) % galleryItems.length;
+      } else {
+        currentGalleryIndex = (currentGalleryIndex - 1 + galleryItems.length) % galleryItems.length;
+      }
+      openLightbox(currentGalleryIndex);
+    }
+
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-prev').addEventListener('click', () => navigateLightbox('prev'));
+    document.getElementById('lightbox-next').addEventListener('click', () => navigateLightbox('next'));
+    
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'lightbox') {
+        closeLightbox();
+      }
+    });
+
+    // Swipe support for lightbox
+    let touchStartX = 0;
+    let touchEndX = 0;
+    document.getElementById('lightbox').addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    document.getElementById('lightbox').addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          navigateLightbox('next');
+        } else {
+          navigateLightbox('prev');
+        }
+      }
+    });
+
+    initGallery();
+    
+    // Attractions screen event listeners
+    const attractionsAction = document.getElementById('attractions-action');
+    if (attractionsAction) {
+      attractionsAction.addEventListener('click', (e) => {
+        e.preventDefault();
+        openAttractions();
+      });
+    }
+    
+    const attractionsBack = document.getElementById('attractions-back');
+    if (attractionsBack) {
+      attractionsBack.addEventListener('click', closeAttractions);
+    }
+
+    // Update weather on load and every 30 minutes
+    updateWeather();
+    setInterval(updateWeather, 30 * 60 * 1000);
+
+    // Element SDK
+    async function onConfigChange(config) {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'system-ui, -apple-system, sans-serif';
+      const baseSize = config.font_size || defaultConfig.font_size;
+      
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const cardColor = config.card_color || defaultConfig.card_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      const highlightColor = config.highlight_color || defaultConfig.highlight_color;
+
+      document.documentElement.style.setProperty('--bg-dark', backgroundColor);
+      document.documentElement.style.setProperty('--glass-bg', cardColor);
+      document.documentElement.style.setProperty('--text-primary', textColor);
+      document.documentElement.style.setProperty('--accent-green', accentColor);
+      document.documentElement.style.setProperty('--accent-green-dark', highlightColor);
+
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.body.style.fontSize = `${baseSize}px`;
+
+      const apartmentName = config.apartment_name || defaultConfig.apartment_name;
+      document.getElementById('app-title').textContent = apartmentName;
+      const heroTitle = document.getElementById('hero-title');
+      if (heroTitle) {
+        heroTitle.textContent = apartmentName.split(' ')[0];
+      }
+      const welcomeSubtitle = document.getElementById('welcome-subtitle');
+      if (welcomeSubtitle) {
+        welcomeSubtitle.textContent = apartmentName;
+      }
+
+      const heroLocation = document.getElementById('hero-location');
+      if (heroLocation) {
+        heroLocation.textContent = config.location_subtitle || defaultConfig.location_subtitle;
+      }
+
+      // Update weather location
+      if (config.location_subtitle) {
+        defaultConfig.location_subtitle = config.location_subtitle;
+      }
+      updateWeatherLocation();
+
+      const hostPhone = config.host_phone || defaultConfig.host_phone;
+      const callAction = document.getElementById('call-action');
+      if (callAction) {
+        callAction.href = `tel:${hostPhone.replace(/\s/g, '')}`;
+      }
+
+      const mapsLink = config.maps_link || defaultConfig.maps_link;
+      const directionsAction = document.getElementById('directions-action');
+      if (directionsAction && mapsLink) {
+        directionsAction.href = mapsLink;
+      }
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.card_color || defaultConfig.card_color,
+            set: (value) => {
+              config.card_color = value;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ card_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              config.accent_color = value;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ accent_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.highlight_color || defaultConfig.highlight_color,
+            set: (value) => {
+              config.highlight_color = value;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ highlight_color: value });
+              }
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            config.font_family = value;
+            if (window.elementSdk) {
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            config.font_size = value;
+            if (window.elementSdk) {
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["apartment_name", config.apartment_name || defaultConfig.apartment_name],
+        ["location_subtitle", config.location_subtitle || defaultConfig.location_subtitle],
+        ["full_address", config.full_address || defaultConfig.full_address],
+        ["checkin_time", config.checkin_time || defaultConfig.checkin_time],
+        ["checkout_time", config.checkout_time || defaultConfig.checkout_time],
+        ["host_phone", config.host_phone || defaultConfig.host_phone],
+        ["host_whatsapp", config.host_whatsapp || defaultConfig.host_whatsapp],
+        ["host_email", config.host_email || defaultConfig.host_email],
+        ["wifi_ssid", config.wifi_ssid || defaultConfig.wifi_ssid],
+        ["wifi_password", config.wifi_password || defaultConfig.wifi_password],
+        ["maps_link", config.maps_link || defaultConfig.maps_link]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ </body>
+</html>
