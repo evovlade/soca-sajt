@@ -184,6 +184,245 @@
       padding: 1rem;
       padding-top: calc(1rem + env(safe-area-inset-top));
       animation: slideDown 0.5s ease-out;
+      position: relative;
+    }
+    
+    /* Header Weather Scene - Cinematic Background */
+    .header-weather-scene {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    
+    .header-weather-scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(10, 22, 18, 0.55), rgba(10, 22, 18, 0.25));
+      z-index: 5;
+    }
+    
+    /* Clear Scene - Sun glow + shimmer */
+    .header-weather-scene.scene-clear::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+      animation: sunGlow 12s ease-in-out infinite;
+      z-index: 1;
+    }
+    
+    .header-weather-scene.scene-clear {
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.08) 30%,
+        rgba(255, 255, 255, 0.12) 50%,
+        rgba(255, 255, 255, 0.08) 70%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      animation: shimmerClear 15s ease-in-out infinite;
+    }
+    
+    @keyframes sunGlow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    
+    @keyframes shimmerClear {
+      0%, 100% { background-position: -200% 0; }
+      50% { background-position: 200% 0; }
+    }
+    
+    /* Clouds Scene - Large drifting clouds (3 layers) */
+    .header-weather-scene.scene-clouds::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 300px 120px at 20% 40%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+                  radial-gradient(ellipse 250px 100px at 70% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+      animation: cloudDrift1 25s ease-in-out infinite;
+      z-index: 1;
+    }
+    
+    .header-weather-scene.scene-clouds {
+      background: radial-gradient(ellipse 400px 150px at 50% 45%, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+      animation: cloudDrift2 30s ease-in-out infinite;
+    }
+    
+    @keyframes cloudDrift1 {
+      0%, 100% { transform: translateX(-50px); opacity: 0.7; }
+      50% { transform: translateX(50px); opacity: 0.9; }
+    }
+    
+    @keyframes cloudDrift2 {
+      0%, 100% { transform: translateX(30px); opacity: 0.6; }
+      50% { transform: translateX(-30px); opacity: 0.8; }
+    }
+    
+    /* Rain Scene - Diagonal rain streaks */
+    .header-weather-scene.scene-rain::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 3px,
+        rgba(255, 255, 255, 0.2) 3px,
+        rgba(255, 255, 255, 0.2) 5px
+      );
+      background-size: 30px 30px;
+      animation: rainFall1 0.7s linear infinite;
+      z-index: 1;
+    }
+    
+    .header-weather-scene.scene-rain {
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 4px,
+        rgba(255, 255, 255, 0.15) 4px,
+        rgba(255, 255, 255, 0.15) 6px
+      );
+      background-size: 40px 40px;
+      animation: rainFall2 0.9s linear infinite;
+    }
+    
+    @keyframes rainFall1 {
+      0% { background-position: 0 0; }
+      100% { background-position: 30px 30px; }
+    }
+    
+    @keyframes rainFall2 {
+      0% { background-position: 15px 15px; }
+      100% { background-position: 45px 45px; }
+    }
+    
+    /* Snow Scene - Floating snowflakes */
+    .header-weather-scene.scene-snow::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle 3px at 15% 0%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+        radial-gradient(circle 2px at 35% 0%, rgba(255, 255, 255, 0.35) 0%, transparent 50%),
+        radial-gradient(circle 3px at 55% 0%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+        radial-gradient(circle 2px at 75% 0%, rgba(255, 255, 255, 0.35) 0%, transparent 50%),
+        radial-gradient(circle 3px at 95% 0%, rgba(255, 255, 255, 0.4) 0%, transparent 50%);
+      background-size: 100% 60px;
+      animation: snowFall1 4s linear infinite;
+      z-index: 1;
+    }
+    
+    .header-weather-scene.scene-snow {
+      background-image: 
+        radial-gradient(circle 2px at 10% 0%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+        radial-gradient(circle 2.5px at 30% 0%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+        radial-gradient(circle 2px at 50% 0%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+        radial-gradient(circle 2.5px at 70% 0%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+        radial-gradient(circle 2px at 90% 0%, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
+      background-size: 100% 80px;
+      animation: snowFall2 5s linear infinite;
+    }
+    
+    @keyframes snowFall1 {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 60px; }
+    }
+    
+    @keyframes snowFall2 {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 80px; }
+    }
+    
+    /* Fog Scene - Hazy layers */
+    .header-weather-scene.scene-fog::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.15) 30%,
+        rgba(255, 255, 255, 0.1) 60%,
+        rgba(255, 255, 255, 0.15) 100%
+      );
+      background-size: 200% 100%;
+      animation: fogDrift1 18s ease-in-out infinite;
+      z-index: 1;
+    }
+    
+    .header-weather-scene.scene-fog {
+      background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.12) 40%,
+        rgba(255, 255, 255, 0.08) 80%,
+        rgba(255, 255, 255, 0.12) 100%
+      );
+      background-size: 250% 100%;
+      animation: fogDrift2 22s ease-in-out infinite;
+    }
+    
+    @keyframes fogDrift1 {
+      0%, 100% { background-position: 0% 0; opacity: 0.5; }
+      50% { background-position: 100% 0; opacity: 0.7; }
+    }
+    
+    @keyframes fogDrift2 {
+      0%, 100% { background-position: 100% 0; opacity: 0.4; }
+      50% { background-position: 0% 0; opacity: 0.6; }
+    }
+    
+    /* Storm Scene - Clouds + rain + lightning */
+    .header-weather-scene.scene-storm::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 350px 140px at 30% 45%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                  radial-gradient(ellipse 300px 120px at 70% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+      animation: stormClouds 20s ease-in-out infinite;
+      z-index: 1;
+    }
+    
+    .header-weather-scene.scene-storm {
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 3px,
+        rgba(255, 255, 255, 0.18) 3px,
+        rgba(255, 255, 255, 0.18) 5px
+      );
+      background-size: 30px 30px;
+      animation: stormRain 0.6s linear infinite;
+    }
+    
+    .header-weather-scene.scene-storm.scene-flash {
+      background: rgba(255, 255, 255, 0.5);
+      animation: none;
+    }
+    
+    .header-weather-scene.scene-storm.scene-flash::before {
+      background: rgba(255, 255, 255, 0.3);
+      animation: none;
+    }
+    
+    @keyframes stormClouds {
+      0%, 100% { transform: translateX(-40px); opacity: 0.6; }
+      50% { transform: translateX(40px); opacity: 0.8; }
+    }
+    
+    @keyframes stormRain {
+      0% { background-position: 0 0; }
+      100% { background-position: 30px 30px; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .header-weather-scene,
+      .header-weather-scene::before {
+        animation: none !important;
+      }
     }
     
     .header-content {
@@ -193,6 +432,8 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 1rem;
+      position: relative;
+      z-index: 2;
     }
     
     .header-title-section {
@@ -215,15 +456,11 @@
       background: rgba(34, 211, 238, 0.15);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
-      animation: weatherPulse 3s ease-in-out infinite;
       flex-shrink: 0;
       min-width: 70px;
     }
     
     @media (prefers-reduced-motion: reduce) {
-      .weather-widget {
-        animation: none;
-      }
       .weather-icon {
         animation: none;
       }
@@ -260,15 +497,6 @@
       white-space: nowrap;
       line-height: 1.2;
       margin-bottom: 0.125rem;
-    }
-    
-    @keyframes weatherPulse {
-      0%, 100% {
-        box-shadow: 0 0 0 rgba(34, 211, 238, 0.3);
-      }
-      50% {
-        box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
-      }
     }
     
     @keyframes weatherFloat {
@@ -891,6 +1119,12 @@
       margin-bottom: 0.5rem;
     }
     
+    .attractions-footer {
+      position: relative;
+      margin-top: auto;
+      z-index: 1;
+    }
+    
     .screen-body a {
       color: var(--accent);
       text-decoration: underline;
@@ -1102,14 +1336,15 @@
      🏔️
     </div>
     <h1 class="welcome-title" id="welcome-title">Welcome</h1>
-    <p class="welcome-subtitle" id="welcome-subtitle">SOČA VALLEY – BOVEC</p>
+    <p class="welcome-subtitle" id="welcome-subtitle">SOČA VALLEY</p>
    </div>
   </div><!-- Main App -->
   <div id="app-container"><!-- Glass Header -->
    <header class="glass-header">
+    <div id="header-weather-scene" class="header-weather-scene" aria-hidden="true"></div>
     <div class="header-content">
      <div class="header-title-section">
-      <h1 class="app-title" id="app-title">DOLINA SOČE <span id="bovec-text">BOVEC</span></h1>
+      <h1 class="app-title" id="app-title">DOLINA SOČE</h1>
       <p class="app-subtitle" id="app-subtitle">Gostov vodič</p>
       <div class="lang-selector">
        <select class="lang-select" id="lang-select">
@@ -1134,7 +1369,7 @@
     <div class="hero-card"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&amp;h=600&amp;fit=crop" alt="Mountain view" class="hero-image">
      <div class="hero-overlay"><span class="hero-badge" id="hero-badge" data-i18n="guest_badge">Gostov vodič</span>
       <h2 class="hero-title" id="hero-title">DOLINA SOČE</h2>
-      <p class="hero-location"><span>📍</span> <span id="hero-location">Bovec, Slovenija</span></p>
+      <p class="hero-location"><span>📍</span> <span id="hero-location">Slovenija</span></p>
      </div>
     </div><!-- Quick Actions -->
     <div class="quick-actions"><a href="tel:+38640123456" class="quick-action-btn" id="call-action"> <span class="quick-action-icon">📞</span> <span class="quick-action-label" data-i18n="call_host">Pokliči gostitelja</span> </a> <a href="#" id="directions-action" target="_blank" rel="noopener noreferrer" class="quick-action-btn"> <span class="quick-action-icon">🗺️</span> <span class="quick-action-label" data-i18n="directions">Navodila</span> </a> <a href="#" id="attractions-action" class="quick-action-btn"> <span class="quick-action-icon">⭐</span> <span class="quick-action-label" data-i18n="attractions">Znamenitosti</span> </a>
@@ -1288,7 +1523,9 @@
          <p class="rule-text" data-i18n="parking_24">24/7 tekom vašega bivanja</p>
         </div>
        </div>
-      </div><a href="https://www.google.com/maps/dir/?api=1&amp;destination=Trg+golobarskih+žrtev+12+5230+Bovec" target="_blank" rel="noopener noreferrer" class="call-btn" style="width: 100%; text-align: center; margin-top: 1rem; display: block;"> <span data-i18n="open_maps">🗺️ Odpri v Google Maps</span> </a>
+      </div>
+      <div id="parking-dynamic" style="margin-top: 1.5rem;"></div>
+      <div id="parking-status" style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: center;"></div>
      </div>
     </div><!-- Recommendations Panel -->
     <div class="accordion-panel" id="recommendations-panel">
@@ -1376,6 +1613,7 @@
      <div class="screen-title" data-i18n="attractions_page_title">Znamenitosti</div>
     </div>
     <div class="screen-body" id="attractions-body"></div>
+    <footer class="app-footer attractions-footer" data-i18n="footer_attribution">Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov</footer>
    </div><!-- Toast -->
   <div class="toast" id="toast"><span class="toast-icon">✓</span> <span class="toast-text" id="toast-text" data-i18n="copied">Kopirano!</span>
   </div><!-- Footer Attribution -->
@@ -1389,8 +1627,8 @@
       highlight_color: "#06b6d4",
       font_family: "system-ui",
       font_size: 16,
-      apartment_name: "DOLINA SOČE BOVEC",
-      location_subtitle: "Bovec, Slovenija",
+      apartment_name: "DOLINA SOČE",
+      location_subtitle: "Slovenija",
       full_address: "Trg golobarskih žrtev 12, 5230 Bovec, Slovenija",
       checkin_time: "15:00",
       checkout_time: "11:00",
@@ -1409,7 +1647,7 @@
         enter: "Vstopi",
         guest_guide: "Gostov vodič",
         call: "Pokliči",
-        call_host: "Pokliči vlasnika",
+        call_host: "Pokliči lastnika",
         navigate: "Navigacija",
         directions: "Navodila",
         attractions: "Znamenitosti",
@@ -1455,6 +1693,14 @@
         weather_loading: "Nalaganje...",
         copied: "Kopirano!",
         coming_soon: "Kmalu",
+        parking_recommended: "Priporočeno (Apartma)",
+        parking_more_options: "Več možnosti parkiranja v bližini",
+        parking_fallback_notice: "Prikazane so na voljo možnosti parkiranja",
+        parking_updated_from_official: "Posodobljeno iz uradnega vira",
+        parking_paid_badge: "Plačljivo",
+        parking_free_badge: "Brezplačno",
+        parking_hours_label: "Čas:",
+        parking_notes_label: "Opombe:",
         info_title: "Info",
         info_location: "Lokacija",
         copy_address: "Kopiraj naslov",
@@ -1471,7 +1717,7 @@
         show_qr: "Prikaži QR",
         qr_coming: "QR prihaja naslednjič",
         info_host: "Gostitelj",
-        call_host: "Pokliči",
+        call_host: "Pokliči lastnika",
         whatsapp: "WhatsApp",
         host_helper: "Veseli smo, da vam lahko pomagamo.",
         info_basics: "Osnove hiše",
@@ -1528,6 +1774,7 @@
         open_maps: "🗺️ Open in Google Maps",
         parking_recommended: "Recommended (Apartment)",
         parking_more_options: "More parking options nearby",
+        parking_fallback_notice: "Showing available parking options",
         parking_paid_badge: "Paid",
         parking_free_badge: "Free",
         parking_hours_label: "Hours:",
@@ -1536,7 +1783,6 @@
         parking_official_info: "Official info",
         parking_loading: "Loading...",
         parking_updated_from_official: "Updated from official source",
-        parking_fallback_notice: "Could not load official data. Showing default options + links to official pages.",
         parking_suggested_areas: "Suggested areas (via Maps search)",
         rec_text1: "🚣 Rafting on Soča: Unforgettable experience on the most beautiful emerald river. 5 min drive, 40-60€.",
         rec_text2: "🪂 Paragliding: Fly over Soča valley with spectacular views. 10 min drive, 100-150€.",
@@ -1636,6 +1882,14 @@
         weather_loading: "Laden...",
         copied: "Kopiert!",
         coming_soon: "Bald",
+        parking_recommended: "Empfohlen (Apartment)",
+        parking_more_options: "Weitere Parkmöglichkeiten in der Nähe",
+        parking_fallback_notice: "Verfügbare Parkmöglichkeiten werden angezeigt",
+        parking_updated_from_official: "Von offizieller Quelle aktualisiert",
+        parking_paid_badge: "Kostenpflichtig",
+        parking_free_badge: "Kostenlos",
+        parking_hours_label: "Zeiten:",
+        parking_notes_label: "Hinweise:",
         info_title: "Info",
         info_location: "Standort",
         copy_address: "Adresse kopieren",
@@ -1714,10 +1968,9 @@
         parking_hours_label: "Orari:",
         parking_notes_label: "Note:",
         parking_open_maps: "🗺️ Apri in Google Maps",
-        parking_official_info: "Info ufficiali",
         parking_loading: "Caricamento...",
         parking_updated_from_official: "Aggiornato da fonte ufficiale",
-        parking_fallback_notice: "Impossibile caricare i dati ufficiali. Mostrate opzioni predefinite + link alle pagine ufficiali.",
+        parking_fallback_notice: "Mostrate opzioni di parcheggio disponibili",
         parking_suggested_areas: "Aree suggerite (tramite ricerca Maps)",
         rec_text1: "🚣 Rafting sulla Soča: Esperienza indimenticabile sul più bel fiume smeraldo. 5 min di auto, 40-60€.",
         rec_text2: "🪂 Parapendio: Vola sopra la valle della Soča con viste spettacolari. 10 min di auto, 100-150€.",
@@ -1858,26 +2111,25 @@
       const appTitle = document.getElementById('app-title');
       if (appTitle) {
         const apartmentName = defaultConfig.apartment_name;
-        if (apartmentName && apartmentName !== 'DOLINA SOČE BOVEC') {
+        if (apartmentName && apartmentName !== 'DOLINA SOČE') {
           appTitle.textContent = apartmentName;
         } else {
           const brandTitle = trans.brand_title || 'DOLINA SOČE';
-          const brandSubtitle = trans.brand_subtitle || 'BOVEC';
-          appTitle.innerHTML = brandTitle + ' <span id="bovec-text">' + brandSubtitle + '</span>';
+          appTitle.textContent = brandTitle;
         }
       }
       
       const heroTitle = document.getElementById('hero-title');
       if (heroTitle) {
         const apartmentName = defaultConfig.apartment_name;
-        if (apartmentName && apartmentName !== 'DOLINA SOČE BOVEC') {
+        if (apartmentName && apartmentName !== 'DOLINA SOČE') {
           heroTitle.textContent = apartmentName.split(' ')[0];
         } else {
           heroTitle.textContent = trans.brand_title || 'DOLINA SOČE';
         }
       }
       
-      // Welcome subtitle stays static - "SOČA VALLEY – BOVEC" - don't update it
+      // Welcome subtitle stays static - "SOČA VALLEY" - don't update it
       
       // Update weather description when language changes (re-render text only if we have cached data)
       const weatherDescEl = document.getElementById('weather-desc');
@@ -1890,11 +2142,13 @@
             if (parsed.weatherCode) {
               const weatherInfo = weatherCodeToIconAndText(parsed.weatherCode, currentLang);
               weatherDescEl.textContent = weatherInfo.text;
+              // Re-apply weather scene with cached code
+              setHeaderWeatherSceneFromWmo(parsed.weatherCode);
             }
           }
         } catch (e) {
           // If no cached code, just update location text
-          updateWeatherLocation();
+      updateWeatherLocation();
         }
       } else {
         updateWeatherLocation();
@@ -1909,9 +2163,12 @@
       // Update parking panel if open
       const parkingPanel = document.getElementById('parking-panel');
       if (parkingPanel && parkingPanel.classList.contains('open')) {
+        const apartmentAddress = defaultConfig.full_address || 'Trg golobarskih žrtev 12, 5230 Bovec, Slovenija';
+        const currentTown = getTownFromAddress(apartmentAddress);
         const container = document.getElementById('parking-dynamic');
         if (container && container.innerHTML) {
-          renderParkingPanel(parkingOptionsCache || parkingFallbackData);
+          const filteredOptions = (parkingOptionsCache || parkingFallbackData).filter(p => p.town === currentTown);
+          renderParkingPanel(filteredOptions, currentTown);
         }
       }
     }
@@ -2097,58 +2354,151 @@
     }
     
     // Parking data model and functions
+    // Function to determine town from address
+    function getTownFromAddress(address) {
+      if (!address) return 'Bovec'; // default
+      const addrLower = address.toLowerCase();
+      if (addrLower.includes('kobarid')) return 'Kobarid';
+      if (addrLower.includes('tolmin')) return 'Tolmin';
+      if (addrLower.includes('bovec')) return 'Bovec';
+      return 'Bovec'; // default
+    }
+    
     const parkingFallbackData = [
+      // Bovec options
       {
-        id: 'apartment',
+        id: 'bovec-apartment',
         title: { sl: 'Parkirno mesto apartmaja', en: 'Apartment parking', de: 'Apartment-Parkplatz', it: 'Parcheggio appartamento' },
         address: 'Trg golobarskih žrtev 12, 5230 Bovec',
         town: 'Bovec',
         type: 'apartment',
         paid: false,
         hours: '24/7',
-        notes: { sl: 'Brezplačno za goste', en: 'Free for guests', de: 'Kostenlos für Gäste', it: 'Gratuito per gli ospiti' },
-        mapsQuery: 'Trg golobarskih žrtev 12, 5230 Bovec',
-        officialSourceLabel: { sl: 'Uradne informacije', en: 'Official info', de: 'Offizielle Infos', it: 'Info ufficiali' },
-        officialSourceUrl: 'https://www.bovec.si'
+        notes: { sl: 'Brezplačno za goste apartmaja', en: 'Free for apartment guests', de: 'Kostenlos für Apartment-Gäste', it: 'Gratuito per gli ospiti dell\'appartamento' },
+        mapsQuery: 'Trg golobarskih žrtev 12, 5230 Bovec, Slovenija'
       },
       {
         id: 'bovec-center',
         title: { sl: 'Parkiranje v centru Bovec', en: 'Bovec center parking', de: 'Parken im Zentrum Bovec', it: 'Parcheggio centro Bovec' },
-        address: 'Bovec center',
+        address: 'Trg golobarskih žrtev, Bovec',
         town: 'Bovec',
-        type: 'center',
-        paid: null,
-        hours: null,
-        notes: { sl: 'Preverite uradne pravila parkiranja', en: 'Check official parking rules', de: 'Offizielle Parkregeln prüfen', it: 'Verificare regole parcheggio ufficiali' },
-        mapsQuery: 'parking Bovec center',
-        officialSourceLabel: { sl: 'Uradne informacije', en: 'Official info', de: 'Offizielle Infos', it: 'Info ufficiali' },
-        officialSourceUrl: 'https://www.bovec.si'
+        type: 'public',
+        paid: true,
+        hours: '24/7',
+        notes: { sl: 'Zvanično parkirno mesto u centru', en: 'Official parking in town center', de: 'Offizieller Parkplatz im Stadtzentrum', it: 'Parcheggio ufficiale nel centro città' },
+        mapsQuery: 'Trg golobarskih žrtev, 5230 Bovec, Slovenija'
+      },
+      {
+        id: 'bovec-sport',
+        title: { sl: 'Športni center Bovec', en: 'Sports center Bovec', de: 'Sportzentrum Bovec', it: 'Centro sportivo Bovec' },
+        address: 'Športni center, Bovec',
+        town: 'Bovec',
+        type: 'public',
+        paid: true,
+        hours: '24/7',
+        notes: { sl: 'Zvanično parkirno mesto ob športnem centru', en: 'Official parking near sports center', de: 'Offizieller Parkplatz am Sportzentrum', it: 'Parcheggio ufficiale vicino al centro sportivo' },
+        mapsQuery: 'Športni center Bovec, 5230 Bovec, Slovenija'
+      },
+      {
+        id: 'bovec-kanin',
+        title: { sl: 'Parkiranje ob Kaninu', en: 'Kanin parking', de: 'Kanin Parken', it: 'Parcheggio Kanin' },
+        address: 'Kanin, Bovec',
+        town: 'Bovec',
+        type: 'public',
+        paid: true,
+        hours: '24/7',
+        notes: { sl: 'Zvanično parkirno mesto ob vzpenjački', en: 'Official parking near cable car', de: 'Offizieller Parkplatz an der Seilbahn', it: 'Parcheggio ufficiale vicino alla funivia' },
+        mapsQuery: 'Kanin cable car parking, 5230 Bovec, Slovenija'
+      },
+      // Kobarid options
+      {
+        id: 'kobarid-apartment',
+        title: { sl: 'Parkirno mesto apartmaja', en: 'Apartment parking', de: 'Apartment-Parkplatz', it: 'Parcheggio appartamento' },
+        address: 'Kobarid',
+        town: 'Kobarid',
+        type: 'apartment',
+        paid: false,
+        hours: '24/7',
+        notes: { sl: 'Brezplačno za goste apartmaja', en: 'Free for apartment guests', de: 'Kostenlos für Apartment-Gäste', it: 'Gratuito per gli ospiti dell\'appartamento' },
+        mapsQuery: 'Kobarid, Slovenija'
       },
       {
         id: 'kobarid-center',
-        title: { sl: 'Parkiranje v Kobaridu', en: 'Kobarid parking', de: 'Parken in Kobarid', it: 'Parcheggio Kobarid' },
-        address: 'Kobarid center',
+        title: { sl: 'Parkiranje v centru Kobarid', en: 'Kobarid center parking', de: 'Parken im Zentrum Kobarid', it: 'Parcheggio centro Kobarid' },
+        address: 'Trg svobode, Kobarid',
         town: 'Kobarid',
-        type: 'center',
-        paid: null,
-        hours: null,
-        notes: { sl: 'Preverite uradne pravila parkiranja', en: 'Check official parking rules', de: 'Offizielle Parkregeln prüfen', it: 'Verificare regole parcheggio ufficiali' },
-        mapsQuery: 'parking Kobarid',
-        officialSourceLabel: { sl: 'Uradne informacije', en: 'Official info', de: 'Offizielle Infos', it: 'Info ufficiali' },
-        officialSourceUrl: 'https://www.kobarid.si'
+        type: 'public',
+        paid: true,
+        hours: '24/7',
+        notes: { sl: 'Zvanično parkirno mesto u centru', en: 'Official parking in town center', de: 'Offizieller Parkplatz im Stadtzentrum', it: 'Parcheggio ufficiale nel centro città' },
+        mapsQuery: 'Trg svobode, Kobarid, Slovenija'
+      },
+      {
+        id: 'kobarid-museum',
+        title: { sl: 'Parkiranje ob muzeju', en: 'Museum parking', de: 'Museum Parken', it: 'Parcheggio museo' },
+        address: 'Kobaridski muzej, Kobarid',
+        town: 'Kobarid',
+        type: 'public',
+        paid: true,
+        hours: '24/7',
+        notes: { sl: 'Zvanično parkirno mesto ob muzeju', en: 'Official parking near museum', de: 'Offizieller Parkplatz am Museum', it: 'Parcheggio ufficiale vicino al museo' },
+        mapsQuery: 'Kobaridski muzej, Kobarid, Slovenija'
+      },
+      {
+        id: 'kobarid-soca',
+        title: { sl: 'Parkiranje ob Soči', en: 'Soča river parking', de: 'Soča Fluss Parken', it: 'Parcheggio fiume Soča' },
+        address: 'Ob Soči, Kobarid',
+        town: 'Kobarid',
+        type: 'public',
+        paid: false,
+        hours: '24/7',
+        notes: { sl: 'Zvanično parkirno mesto ob reki Soči', en: 'Official parking near Soča river', de: 'Offizieller Parkplatz am Soča Fluss', it: 'Parcheggio ufficiale vicino al fiume Soča' },
+        mapsQuery: 'Soča river parking, Kobarid, Slovenija'
+      },
+      // Tolmin options
+      {
+        id: 'tolmin-apartment',
+        title: { sl: 'Parkirno mesto apartmaja', en: 'Apartment parking', de: 'Apartment-Parkplatz', it: 'Parcheggio appartamento' },
+        address: 'Tolmin',
+        town: 'Tolmin',
+        type: 'apartment',
+        paid: false,
+        hours: '24/7',
+        notes: { sl: 'Brezplačno za goste apartmaja', en: 'Free for apartment guests', de: 'Kostenlos für Apartment-Gäste', it: 'Gratuito per gli ospiti dell\'appartamento' },
+        mapsQuery: 'Tolmin, Slovenija'
       },
       {
         id: 'tolmin-center',
-        title: { sl: 'Parkiranje v Tolminu', en: 'Tolmin parking', de: 'Parken in Tolmin', it: 'Parcheggio Tolmin' },
-        address: 'Tolmin center',
+        title: { sl: 'Parkiranje v centru Tolmin', en: 'Tolmin center parking', de: 'Parken im Zentrum Tolmin', it: 'Parcheggio centro Tolmin' },
+        address: 'Trg 1. maja, Tolmin',
         town: 'Tolmin',
-        type: 'center',
-        paid: null,
-        hours: null,
-        notes: { sl: 'Preverite uradne pravila parkiranja', en: 'Check official parking rules', de: 'Offizielle Parkregeln prüfen', it: 'Verificare regole parcheggio ufficiali' },
-        mapsQuery: 'parking Tolmin',
-        officialSourceLabel: { sl: 'Uradne informacije', en: 'Official info', de: 'Offizielle Infos', it: 'Info ufficiali' },
-        officialSourceUrl: 'https://www.tolmin.si'
+        type: 'public',
+        paid: true,
+        hours: '24/7',
+        notes: { sl: 'Zvanično parkirno mesto u centru', en: 'Official parking in town center', de: 'Offizieller Parkplatz im Stadtzentrum', it: 'Parcheggio ufficiale nel centro città' },
+        mapsQuery: 'Trg 1. maja, Tolmin, Slovenija'
+      },
+      {
+        id: 'tolmin-gorge',
+        title: { sl: 'Parkiranje ob Tolminski koriti', en: 'Tolmin Gorge parking', de: 'Tolminer Schlucht Parken', it: 'Parcheggio Gola di Tolmin' },
+        address: 'Tolminska korita, Tolmin',
+        town: 'Tolmin',
+        type: 'public',
+        paid: true,
+        hours: '24/7',
+        notes: { sl: 'Zvanično parkirno mesto ob koritu', en: 'Official parking near gorge', de: 'Offizieller Parkplatz an der Schlucht', it: 'Parcheggio ufficiale vicino alla gola' },
+        mapsQuery: 'Tolminska korita, Tolmin, Slovenija'
+      },
+      {
+        id: 'tolmin-sport',
+        title: { sl: 'Športni park Tolmin', en: 'Sports park Tolmin', de: 'Sportpark Tolmin', it: 'Parco sportivo Tolmin' },
+        address: 'Športni park, Tolmin',
+        town: 'Tolmin',
+        type: 'public',
+        paid: true,
+        hours: '24/7',
+        notes: { sl: 'Zvanično parkirno mesto ob športnem parku', en: 'Official parking near sports park', de: 'Offizieller Parkplatz am Sportpark', it: 'Parcheggio ufficiale vicino al parco sportivo' },
+        mapsQuery: 'Športni park, Tolmin, Slovenija'
       }
     ];
     
@@ -2158,6 +2508,34 @@
         kind: 'json',
         url: 'OFFICIAL_URL_HERE',
         officialLabel: { sl: 'Občina Bovec', en: 'Bovec Municipality', de: 'Gemeinde Bovec', it: 'Comune di Bovec' },
+        parse: function(raw) {
+          try {
+            const data = JSON.parse(raw);
+            return data.parking || [];
+          } catch (e) {
+            return [];
+          }
+        }
+      },
+      {
+        town: 'Kobarid',
+        kind: 'json',
+        url: 'OFFICIAL_URL_HERE',
+        officialLabel: { sl: 'Občina Kobarid', en: 'Kobarid Municipality', de: 'Gemeinde Kobarid', it: 'Comune di Kobarid' },
+        parse: function(raw) {
+          try {
+            const data = JSON.parse(raw);
+            return data.parking || [];
+          } catch (e) {
+            return [];
+          }
+        }
+      },
+      {
+        town: 'Tolmin',
+        kind: 'json',
+        url: 'OFFICIAL_URL_HERE',
+        officialLabel: { sl: 'Občina Tolmin', en: 'Tolmin Municipality', de: 'Gemeinde Tolmin', it: 'Comune di Tolmin' },
         parse: function(raw) {
           try {
             const data = JSON.parse(raw);
@@ -2179,8 +2557,27 @@
       
       if (!container) return;
       
-      // Show fallback immediately
-      renderParkingPanel(parkingFallbackData);
+      // Determine town from apartment address
+      const apartmentAddress = defaultConfig.full_address || 'Trg golobarskih žrtev 12, 5230 Bovec, Slovenija';
+      const currentTown = getTownFromAddress(apartmentAddress);
+      
+      // Filter parking options by town
+      let filteredOptions = parkingFallbackData.filter(p => p.town === currentTown);
+      
+      // Update apartment parking address if needed
+      const apartmentOption = filteredOptions.find(p => p.type === 'apartment');
+      if (apartmentOption) {
+        apartmentOption.address = apartmentAddress.split(',')[0] + (apartmentAddress.includes(currentTown) ? '' : `, ${currentTown}`);
+        apartmentOption.mapsQuery = apartmentAddress;
+      }
+      
+      // Limit to apartment + 3 public options
+      const apartmentParking = filteredOptions.filter(p => p.type === 'apartment');
+      const publicParking = filteredOptions.filter(p => p.type === 'public').slice(0, 3);
+      filteredOptions = [...apartmentParking, ...publicParking];
+      
+      // Show filtered options immediately
+      renderParkingPanel(filteredOptions, currentTown);
       if (status) {
         status.textContent = translations[currentLang].parking_loading;
       }
@@ -2190,9 +2587,9 @@
         const cached = localStorage.getItem(PARKING_CACHE_KEY);
         if (cached) {
           const parsed = JSON.parse(cached);
-          if (Date.now() - parsed.timestamp < PARKING_CACHE_TTL) {
+          if (Date.now() - parsed.timestamp < PARKING_CACHE_TTL && parsed.town === currentTown) {
             parkingOptionsCache = parsed.data;
-            renderParkingPanel(parsed.data);
+            renderParkingPanel(parsed.data, currentTown);
             if (status) {
               status.textContent = translations[currentLang].parking_updated_from_official;
             }
@@ -2204,7 +2601,7 @@
       // Try to fetch from official sources
       let fetched = false;
       for (const source of parkingDataSources) {
-        if (source.url === 'OFFICIAL_URL_HERE') continue;
+        if (source.url === 'OFFICIAL_URL_HERE' || source.town !== currentTown) continue;
         
         try {
           const controller = new AbortController();
@@ -2221,11 +2618,13 @@
             const raw = await response.text();
             const parsed = source.parse(raw);
             if (parsed && parsed.length > 0) {
-              const merged = [...parkingFallbackData.filter(p => p.id === 'apartment'), ...parsed];
+              const apartmentParking = filteredOptions.find(p => p.type === 'apartment');
+              const merged = apartmentParking ? [apartmentParking, ...parsed] : parsed;
               parkingOptionsCache = merged;
-              renderParkingPanel(merged);
+              renderParkingPanel(merged, currentTown);
               localStorage.setItem(PARKING_CACHE_KEY, JSON.stringify({
                 data: merged,
+                town: currentTown,
                 timestamp: Date.now()
               }));
               if (status) {
@@ -2241,15 +2640,15 @@
       }
       
       if (!fetched) {
-        parkingOptionsCache = parkingFallbackData;
-        renderParkingPanel(parkingFallbackData);
+        parkingOptionsCache = filteredOptions;
+        renderParkingPanel(filteredOptions, currentTown);
         if (status) {
-          status.innerHTML = translations[currentLang].parking_fallback_notice + '<br><a href="https://www.bovec.si" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: underline; margin-top: 0.5rem; display: inline-block;">' + translations[currentLang].parking_official_info + '</a>';
+          status.textContent = translations[currentLang].parking_fallback_notice || '';
         }
       }
     }
     
-    function renderParkingPanel(options) {
+    function renderParkingPanel(options, town) {
       const container = document.getElementById('parking-dynamic');
       if (!container) return;
       
@@ -2260,7 +2659,7 @@
       let html = '';
       
       if (recommended.length > 0) {
-        html += '<div style="margin-bottom: 1.5rem;"><h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">' + trans.parking_recommended + '</h4>';
+        html += '<div style="margin-bottom: 1.5rem;"><h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--accent);">⭐ ' + trans.parking_recommended + '</h4>';
         recommended.forEach(opt => {
           html += renderParkingCard(opt, true);
         });
@@ -2282,13 +2681,13 @@
       const trans = translations[currentLang];
       const title = opt.title[currentLang] || opt.title.sl || opt.title.en;
       const notes = opt.notes ? (opt.notes[currentLang] || opt.notes.sl || opt.notes.en) : null;
-      const officialLabel = opt.officialSourceLabel[currentLang] || opt.officialSourceLabel.sl || opt.officialSourceLabel.en;
       
-      const mapsLink = opt.mapsLink || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(opt.mapsQuery || opt.address)}`;
+      // Use directions link instead of search
+      const mapsLink = opt.mapsLink || `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(opt.mapsQuery || opt.address)}`;
       
       let html = '<div class="parking-card' + (isRecommended ? ' recommended' : '') + '">';
       html += '<div class="parking-card-header">';
-      html += '<div><div class="parking-card-title">' + title + '</div>';
+      html += '<div><div class="parking-card-title">' + (isRecommended ? '⭐ ' : '') + title + '</div>';
       html += '<div class="parking-card-address">📍 ' + opt.address + '</div></div>';
       if (opt.paid !== null) {
         html += '<span class="parking-badge ' + (opt.paid ? 'paid' : 'free') + '">' + (opt.paid ? trans.parking_paid_badge : trans.parking_free_badge) + '</span>';
@@ -2304,10 +2703,7 @@
       }
       
       html += '<div class="parking-card-actions">';
-      html += '<a href="' + mapsLink + '" target="_blank" rel="noopener noreferrer" class="call-btn">' + trans.parking_open_maps + '</a>';
-      if (opt.officialSourceUrl) {
-        html += '<a href="' + opt.officialSourceUrl + '" target="_blank" rel="noopener noreferrer" class="call-btn" style="background: rgba(34, 211, 238, 0.2); color: var(--accent); border: 1px solid var(--glass-border);">' + officialLabel + '</a>';
-      }
+      html += '<a href="' + mapsLink + '" target="_blank" rel="noopener noreferrer" class="call-btn" style="width: 100%; text-align: center;">🗺️ ' + trans.parking_open_maps + '</a>';
       html += '</div></div>';
       
       return html;
@@ -2429,9 +2825,9 @@
             navigator.geolocation.getCurrentPosition(resolve, reject, {
               timeout: 5000,
               maximumAge: WEATHER_CACHE_TTL
-            });
-          });
-          
+      });
+    });
+
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
           
@@ -2641,6 +3037,64 @@
       return { icon: '🌤️', text: langMap[0]?.text || 'Clear' };
     }
     
+    // Set header weather scene from WMO code
+    function setHeaderWeatherSceneFromWmo(code) {
+      const sceneEl = document.getElementById('header-weather-scene');
+      if (!sceneEl) return;
+      
+      // Remove all scene classes
+      sceneEl.className = 'header-weather-scene';
+      
+      // Map WMO code to scene class
+      let sceneClass = 'scene-clouds'; // default
+      
+      if (code === 0 || code === 1) {
+        sceneClass = 'scene-clear';
+      } else if (code === 2 || code === 3) {
+        sceneClass = 'scene-clouds';
+      } else if (code === 45 || code === 48) {
+        sceneClass = 'scene-fog';
+      } else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
+        sceneClass = 'scene-rain';
+      } else if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) {
+        sceneClass = 'scene-snow';
+      } else if (code >= 95 && code <= 99) {
+        sceneClass = 'scene-storm';
+      }
+      
+      sceneEl.classList.add(sceneClass);
+      
+      // Handle storm lightning flashes
+      if (sceneClass === 'scene-storm') {
+        function triggerLightning() {
+          sceneEl.classList.add('scene-flash');
+          setTimeout(() => {
+            sceneEl.classList.remove('scene-flash');
+          }, 120 + Math.random() * 60); // 120-180ms
+          
+          // Schedule next flash
+          const nextDelay = 7000 + Math.random() * 9000; // 7-16 seconds
+          setTimeout(triggerLightning, nextDelay);
+        }
+        
+        // Clear any existing timeout
+        if (sceneEl._lightningTimeout) {
+          clearTimeout(sceneEl._lightningTimeout);
+        }
+        
+        // Start lightning sequence
+        const initialDelay = 3000 + Math.random() * 5000; // 3-8 seconds initial
+        sceneEl._lightningTimeout = setTimeout(triggerLightning, initialDelay);
+      } else {
+        // Clear lightning timeout if not storm
+        if (sceneEl._lightningTimeout) {
+          clearTimeout(sceneEl._lightningTimeout);
+          sceneEl._lightningTimeout = null;
+        }
+        sceneEl.classList.remove('scene-flash');
+      }
+    }
+    
     // Update weather location display
     function updateWeatherLocation() {
       const weatherLocation = document.getElementById('weather-location');
@@ -2706,7 +3160,10 @@
           const weatherInfo = weatherCodeToIconAndText(weatherData.code, currentLang);
           weatherIcon.textContent = weatherInfo.icon;
           weatherDesc.textContent = weatherInfo.text;
-          weatherDesc.setAttribute('data-i18n', '');
+      weatherDesc.setAttribute('data-i18n', '');
+      
+          // Set header weather scene
+          setHeaderWeatherSceneFromWmo(weatherData.code);
           
           // Update cache with weather code for language re-rendering
           try {
@@ -2841,6 +3298,26 @@
     if (attractionsBack) {
       attractionsBack.addEventListener('click', closeAttractions);
     }
+    
+    // Swipe gesture for attractions screen (swipe left to right to close)
+    const attractionsScreen = document.getElementById('attractions-screen');
+    if (attractionsScreen) {
+      let attractionsTouchStartX = 0;
+      let attractionsTouchEndX = 0;
+      
+      attractionsScreen.addEventListener('touchstart', (e) => {
+        attractionsTouchStartX = e.changedTouches[0].screenX;
+      });
+      
+      attractionsScreen.addEventListener('touchend', (e) => {
+        attractionsTouchEndX = e.changedTouches[0].screenX;
+        const diff = attractionsTouchStartX - attractionsTouchEndX;
+        // Swipe from left to right (negative diff) to close
+        if (diff < -50 && Math.abs(diff) > 50) {
+          closeAttractions();
+        }
+      });
+    }
 
     // Update weather on load and every 15 minutes
     updateWeather();
@@ -2880,7 +3357,9 @@
 
       const heroLocation = document.getElementById('hero-location');
       if (heroLocation) {
-        heroLocation.textContent = config.location_subtitle || defaultConfig.location_subtitle;
+        const locationText = config.location_subtitle || defaultConfig.location_subtitle;
+        // Remove "Bovec, " if present, keep only country
+        heroLocation.textContent = locationText.replace(/^Bovec,\s*/i, '');
       }
 
       // Weather location is now dynamic, no need to update from config
