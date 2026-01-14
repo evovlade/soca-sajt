@@ -22,10 +22,11 @@
     :root {
       --bg-dark: #0a1612;
       --bg-dark-secondary: #0f1e18;
-      --glass-bg: rgba(16, 32, 24, 0.7);
-      --glass-border: rgba(52, 211, 153, 0.2);
-      --accent-green: #34d399;
-      --accent-green-dark: #059669;
+      --glass-bg: rgba(16, 32, 32, 0.7);
+      --glass-border: rgba(34, 211, 238, 0.22);
+      --accent: #22d3ee;
+      --accent-strong: #06b6d4;
+      --accent-deep: #0891b2;
       --text-primary: #f0fdf4;
       --text-secondary: #d1fae5;
       --shadow: rgba(0, 0, 0, 0.5);
@@ -51,9 +52,9 @@
       height: 100%;
       background: linear-gradient(180deg, 
         rgba(10, 22, 18, 0.95) 0%,
-        rgba(16, 32, 24, 0.9) 30%,
-        rgba(52, 211, 153, 0.15) 50%,
-        rgba(16, 32, 24, 0.9) 70%,
+        rgba(16, 32, 32, 0.9) 30%,
+        rgba(34, 211, 238, 0.15) 50%,
+        rgba(16, 32, 32, 0.9) 70%,
         rgba(10, 22, 18, 0.95) 100%
       );
       z-index: -2;
@@ -69,9 +70,9 @@
       height: 40%;
       background: linear-gradient(180deg, 
         transparent 0%,
-        rgba(52, 211, 153, 0.1) 20%,
-        rgba(52, 211, 153, 0.2) 50%,
-        rgba(52, 211, 153, 0.1) 80%,
+        rgba(34, 211, 238, 0.1) 20%,
+        rgba(34, 211, 238, 0.2) 50%,
+        rgba(34, 211, 238, 0.1) 80%,
         transparent 100%
       );
       animation: riverFlow 20s ease-in-out infinite;
@@ -132,7 +133,7 @@
       font-size: 2rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--accent-green) 0%, #10b981 100%);
+      background: linear-gradient(135deg, var(--accent) 0%, #06b6d4 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -145,7 +146,7 @@
     }
     
     .welcome-btn {
-      background: var(--accent-green);
+      background: var(--accent);
       color: var(--bg-dark);
       padding: 1rem 2.5rem;
       border-radius: 50px;
@@ -154,7 +155,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(52, 211, 153, 0.3);
+      box-shadow: 0 10px 30px rgba(34, 211, 238, 0.3);
     }
     
     .welcome-btn:active {
@@ -211,7 +212,7 @@
       align-items: flex-end;
       gap: 0.125rem;
       padding: 0.375rem 0.625rem;
-      background: rgba(52, 211, 153, 0.15);
+      background: rgba(34, 211, 238, 0.15);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
       animation: weatherPulse 3s ease-in-out infinite;
@@ -231,7 +232,7 @@
     .weather-temp {
       font-size: 1rem;
       font-weight: 700;
-      color: var(--accent-green);
+      color: var(--accent);
       display: flex;
       align-items: center;
       gap: 0.25rem;
@@ -263,10 +264,10 @@
     
     @keyframes weatherPulse {
       0%, 100% {
-        box-shadow: 0 0 0 rgba(52, 211, 153, 0.3);
+        box-shadow: 0 0 0 rgba(34, 211, 238, 0.3);
       }
       50% {
-        box-shadow: 0 0 15px rgba(52, 211, 153, 0.5);
+        box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
       }
     }
     
@@ -291,7 +292,7 @@
     
     .lang-select {
       padding: 0.5rem 0.75rem;
-      background: rgba(52, 211, 153, 0.1);
+      background: rgba(34, 211, 238, 0.1);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
       font-size: 0.875rem;
@@ -309,10 +310,10 @@
     }
 
     .lang-select:focus {
-      background: var(--accent-green);
+      background: var(--accent);
       color: var(--bg-dark);
-      border-color: var(--accent-green);
-      box-shadow: 0 4px 12px rgba(52, 211, 153, 0.3);
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3);
     }
 
     .lang-select option {
@@ -325,7 +326,7 @@
     .main-content {
       max-width: 480px;
       margin: 0 auto;
-      padding-bottom: 100px;
+      padding-bottom: 2rem;
     }
     
     /* Hero Card */
@@ -356,7 +357,7 @@
     .hero-badge {
       display: inline-block;
       padding: 0.375rem 0.875rem;
-      background: var(--accent-green);
+      background: var(--accent);
       color: var(--bg-dark);
       border-radius: 20px;
       font-size: 0.75rem;
@@ -523,7 +524,7 @@
     }
     
     .emergency-item {
-      background: rgba(52, 211, 153, 0.1);
+      background: rgba(34, 211, 238, 0.1);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
       padding: 1rem;
@@ -549,7 +550,7 @@
     }
     
     .call-btn {
-      background: var(--accent-green);
+      background: var(--accent);
       color: var(--bg-dark);
       padding: 0.625rem 1.25rem;
       border-radius: 20px;
@@ -592,7 +593,7 @@
     
     /* Parking Cards */
     .parking-card {
-      background: rgba(52, 211, 153, 0.1);
+      background: rgba(34, 211, 238, 0.1);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
       padding: 1rem;
@@ -600,8 +601,8 @@
     }
     
     .parking-card.recommended {
-      background: rgba(52, 211, 153, 0.15);
-      border-color: var(--accent-green);
+      background: rgba(34, 211, 238, 0.15);
+      border-color: var(--accent);
     }
     
     .parking-card-header {
@@ -632,8 +633,8 @@
     }
     
     .parking-badge.free {
-      background: rgba(52, 211, 153, 0.2);
-      color: var(--accent-green);
+      background: rgba(34, 211, 238, 0.2);
+      color: var(--accent);
     }
     
     .parking-card-address {
@@ -690,7 +691,7 @@
     }
 
     .gallery-item.placeholder {
-      background: linear-gradient(135deg, rgba(52, 211, 153, 0.2) 0%, rgba(16, 32, 24, 0.4) 100%);
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.2) 0%, rgba(16, 32, 32, 0.4) 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -760,7 +761,7 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(52, 211, 153, 0.8);
+      background: rgba(34, 211, 238, 0.8);
       border: none;
       color: var(--bg-dark);
       width: 48px;
@@ -789,49 +790,6 @@
       margin-top: 1rem;
     }
     
-    /* Bottom Navigation */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid var(--glass-border);
-      padding: 0.75rem 1rem;
-      padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.5rem;
-      z-index: 99;
-    }
-    
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      color: var(--text-secondary);
-    }
-    
-    .nav-item.active {
-      color: var(--accent-green);
-      background: rgba(52, 211, 153, 0.1);
-    }
-    
-    .nav-icon {
-      font-size: 1.5rem;
-    }
-    
-    .nav-label {
-      font-size: 0.625rem;
-      font-weight: 600;
-    }
     
     /* Attractions Screen */
     .screen {
@@ -934,22 +892,94 @@
     }
     
     .screen-body a {
-      color: var(--accent-green);
+      color: var(--accent);
       text-decoration: underline;
     }
     
-    /* Footer Credit */
-    .footer-credit {
-      text-align: center;
-      padding: 0.5rem;
-      font-size: 0.75rem;
+    /* Attractions Accordion */
+    .attractions-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .attractions-city-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    
+    .attractions-city-header {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 1.125rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+    
+    .attractions-city-header:active {
+      opacity: 0.7;
+    }
+    
+    .attractions-city-icon {
+      font-size: 0.875rem;
+      transition: transform 0.3s ease;
+      color: var(--accent);
+    }
+    
+    .attractions-city-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+      opacity: 0;
+      padding: 0 1.5rem;
+    }
+    
+    .attractions-city-content.open {
+      max-height: 5000px;
+      opacity: 1;
+      padding: 0 1.5rem 1.5rem;
+    }
+    
+    .attractions-city-content h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-top: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .attractions-city-content h3:first-child {
+      margin-top: 0;
+    }
+    
+    .attractions-city-content p {
+      font-size: 0.9375rem;
+      line-height: 1.6;
       color: var(--text-secondary);
-      opacity: 0.6;
-      position: fixed;
-      bottom: 60px;
-      left: 0;
-      right: 0;
-      z-index: 97;
+      margin-bottom: 1rem;
+    }
+    
+    .attractions-city-content ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .attractions-city-content li {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
     }
     
     
@@ -1046,8 +1076,8 @@
     <div class="welcome-icon">
      🏔️
     </div>
-    <h1 class="welcome-title" id="welcome-title">Dobrodošli</h1>
-    <p class="welcome-subtitle" id="welcome-subtitle">DOLINA SOČE BOVEC</p><button class="welcome-btn" id="enter-btn" type="button">Vstopi</button>
+    <h1 class="welcome-title" id="welcome-title">Welcome</h1>
+    <p class="welcome-subtitle" id="welcome-subtitle">SOČA VALLEY – BOVEC</p>
    </div>
   </div><!-- Main App -->
   <div id="app-container"><!-- Glass Header -->
@@ -1287,7 +1317,7 @@
        <p class="rule-text" style="margin-bottom: 0.75rem;"><strong data-i18n="wifi_password_label">Geslo:</strong> <span id="info-wifi-password">AlpineView2024</span></p>
        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
         <button class="call-btn" id="copy-wifi-info-btn" type="button" style="flex: 1; min-width: 120px;"><span data-i18n="copy_wifi">Kopiraj Wi-Fi</span></button>
-        <button class="call-btn" id="show-qr-btn" type="button" style="flex: 1; min-width: 120px; background: rgba(52, 211, 153, 0.2); color: var(--accent-green); border: 1px solid var(--glass-border);"><span data-i18n="show_qr">Prikaži QR</span></button>
+        <button class="call-btn" id="show-qr-btn" type="button" style="flex: 1; min-width: 120px; background: rgba(34, 211, 238, 0.2); color: var(--accent); border: 1px solid var(--glass-border);"><span data-i18n="show_qr">Prikaži QR</span></button>
        </div>
       </div>
       <!-- Host -->
@@ -1295,7 +1325,7 @@
        <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;" data-i18n="info_host">Gostitelj</h4>
        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
         <a href="tel:+38640123456" id="host-call-link" class="call-btn" style="flex: 1; min-width: 100px; text-align: center; display: inline-block;"><span data-i18n="call_host">Pokliči</span></a>
-        <a href="https://wa.me/38640123456" id="host-whatsapp-link" target="_blank" rel="noopener noreferrer" class="call-btn" style="flex: 1; min-width: 100px; text-align: center; display: inline-block; background: rgba(52, 211, 153, 0.2); color: var(--accent-green); border: 1px solid var(--glass-border);"><span data-i18n="whatsapp">WhatsApp</span></a>
+        <a href="https://wa.me/38640123456" id="host-whatsapp-link" target="_blank" rel="noopener noreferrer" class="call-btn" style="flex: 1; min-width: 100px; text-align: center; display: inline-block; background: rgba(34, 211, 238, 0.2); color: var(--accent); border: 1px solid var(--glass-border);"><span data-i18n="whatsapp">WhatsApp</span></a>
        </div>
        <p class="rule-text" style="font-size: 0.875rem; color: var(--text-secondary);" data-i18n="host_helper">Veseli smo, da vam lahko pomagamo.</p>
       </div>
@@ -1321,19 +1351,7 @@
      <div class="screen-title" data-i18n="attractions_page_title">Znamenitosti</div>
     </div>
     <div class="screen-body" id="attractions-body"></div>
-   </div><!-- Bottom Navigation -->
-   <nav class="bottom-nav">
-    <div class="nav-item active" data-nav="home"><span class="nav-icon">🏠</span> <span class="nav-label" data-i18n="nav_home">Domov</span>
-    </div>
-    <div class="nav-item" data-nav="info"><span class="nav-icon">ℹ️</span> <span class="nav-label" data-i18n="nav_info">Info</span>
-    </div>
-    <div class="nav-item" data-nav="emergency"><span class="nav-icon">🚨</span> <span class="nav-label" data-i18n="nav_emergency">Nujno</span>
-    </div>
-    <div class="nav-item" data-nav="more"><span class="nav-icon">⋯</span> <span class="nav-label" data-i18n="nav_more">Več</span>
-    </div>
-   </nav>
-   <div class="footer-credit">MADE BY V.N.</div>
-  </div><!-- Toast -->
+   </div><!-- Toast -->
   <div class="toast" id="toast"><span class="toast-icon">✓</span> <span class="toast-text" id="toast-text" data-i18n="copied">Kopirano!</span>
   </div>
   <script>
@@ -1341,8 +1359,8 @@
       background_color: "#0a1612",
       card_color: "#10201880",
       text_color: "#f0fdf4",
-      accent_color: "#34d399",
-      highlight_color: "#059669",
+      accent_color: "#22d3ee",
+      highlight_color: "#06b6d4",
       font_family: "system-ui",
       font_size: 16,
       apartment_name: "DOLINA SOČE BOVEC",
@@ -1437,7 +1455,9 @@
         gallery_placeholder: "Slika",
         video_placeholder: "Video",
         attractions_page_title: "Znamenitosti",
-        attractions_content_html: "<h2>Bovec</h2><p>Bovec je srce doline Soče, obkrožen z Julijskimi Alpami. Mesto ponuja nepozabne naravne lepote in zgodovinske znamenitosti.</p><h3>Naravne znamenitosti</h3><p>Soča je najlepša smaragdna reka v Evropi. Ob njej so številne sprehajalne poti, ki vodijo ob reki ali po bližnjih hribih. Velika Korita Soče so spektakularen naravni pojav, kjer reka seka skozi globoke kanjone.</p><p>Slap Boka je najvišji slap v Sloveniji (144 metrov). Do njega vodi lahek sprehod, primeren za vse starosti. Razgled je neverjeten, posebej po deževju, ko je slap najmočnejši.</p><h3>Kulturna dediščina</h3><p>Bovec je bil pomemben med prvo svetovno vojno. V okolici najdete številne spominske poti in muzeje, ki pripovedujejo zgodbo o soški fronti. Kobaridski muzej je eden najboljših vojaških muzejev v regiji.</p><h3>Razgledne točke</h3><p>Vzpon na Rombon ali na bližnje hribe ponuja panoramske razglede na dolino Soče in okoliške gore. Najboljši čas za obisk je zgodaj zjutraj ali pozno popoldne, ko je svetloba najlepša.</p><h3>Praktični nasveti</h3><ul><li>Parkiranje je na voljo v centru mesta, večinoma brezplačno.</li><li>Spoštujte naravo: ne puščajte smeti, ostajajte na označenih poteh.</li><li>Najboljši čas za obisk: spomlad in jesen za sprehode, poletje za kopanje v Soči.</li><li>Vreme v gorah se hitro spreminja, zato prinesite primerno obleko.</li></ul><h2>Kobarid</h2><p>Kobarid je zgodovinsko mesto, znano predvsem po Kobaridskem muzeju in spominski poti, ki prikazuje pomembne dogodke prve svetovne vojne.</p><h3>Kobaridski muzej</h3><p>Muzej prikazuje zgodbo o soški fronti skozi interaktivne razstave in artefakte. To je ena najpomembnejših kulturnih znamenitosti v regiji.</p><h3>Spominska pot</h3><p>Pot vodi po pomembnih lokacijah iz prve svetovne vojne. Ob poti so informativne table, ki razlagajo zgodovinske dogodke. Sprehod je primeren za vse starosti.</p><h3>Naravne lepote</h3><p>Kobarid leži ob Soči, zato so dostopne številne sprehajalne poti ob reki. Okolica ponuja tudi možnosti za lažje gorske sprehode.</p><h3>Mestni center</h3><p>Zgodovinski center Kobarida je prijeten za sprehode. Najdete tradicionalno arhitekturo in lokalne trgovine.</p><h2>Tolmin</h2><p>Tolmin je največje mesto v dolini Soče, z bogato zgodovino in naravnimi znamenitostmi.</p><h3>Tolminske klisure</h3><p>Ena najbolj znanih naravnih znamenitosti v Sloveniji. Klisure ponujajo spektakularen sprehod ob reki Tolminki, ki se spušča skozi globoke kanjone. Obisk je primeren za vse, ki lahko hodijo po stopnicah.</p><h3>Naravni rezervat</h3><p>Okolica Tolmina je bogata z naravnimi rezervati, kjer lahko opazujete lokalno floro in favno. Obstajajo označene poti za različne stopnje težavnosti.</p><h3>Kulturna dediščina</h3><p>Tolmin ima zgodovinski center z zanimivo arhitekturo. Mestni muzej prikazuje lokalno zgodovino in kulturo.</p><h3>Razgledne točke</h3><p>Vzpon na bližnje hribe ponuja lepe razglede na dolino. Najboljši čas za obisk je zgodaj zjutraj ali ob sončnem zahodu.</p><h3>Praktični nasveti</h3><ul><li>Parkiranje je na voljo blizu glavnih znamenitosti.</li><li>Za obisk Tolminskih klisurev prinesite udobne čevlje za hojo.</li><li>Spoštujte naravne rezervate in ostajajte na označenih poteh.</li><li>Vreme se lahko hitro spremeni, zato prinesite dodatno obleko.</li></ul>"
+        attractions_bovec_html: "<p>Bovec je srce doline Soče, obkrožen z Julijskimi Alpami. Mesto ponuja nepozabne naravne lepote in zgodovinske znamenitosti.</p><h3>Naravne znamenitosti</h3><p>Soča je najlepša smaragdna reka v Evropi. Ob njej so številne sprehajalne poti, ki vodijo ob reki ali po bližnjih hribih. Velika Korita Soče so spektakularen naravni pojav, kjer reka seka skozi globoke kanjone.</p><p>Slap Boka je najvišji slap v Sloveniji (144 metrov). Do njega vodi lahek sprehod, primeren za vse starosti. Razgled je neverjeten, posebej po deževju, ko je slap najmočnejši.</p><h3>Kulturna dediščina</h3><p>Bovec je bil pomemben med prvo svetovno vojno. V okolici najdete številne spominske poti in muzeje, ki pripovedujejo zgodbo o soški fronti. Kobaridski muzej je eden najboljših vojaških muzejev v regiji.</p><h3>Razgledne točke</h3><p>Vzpon na Rombon ali na bližnje hribe ponuja panoramske razglede na dolino Soče in okoliške gore. Najboljši čas za obisk je zgodaj zjutraj ali pozno popoldne, ko je svetloba najlepša.</p><h3>Praktični nasveti</h3><ul><li>Parkiranje je na voljo v centru mesta, večinoma brezplačno.</li><li>Spoštujte naravo: ne puščajte smeti, ostajajte na označenih poteh.</li><li>Najboljši čas za obisk: spomlad in jesen za sprehode, poletje za kopanje v Soči.</li><li>Vreme v gorah se hitro spreminja, zato prinesite primerno obleko.</li></ul>",
+        attractions_kobarid_html: "<p>Kobarid je zgodovinsko mesto, znano predvsem po Kobaridskem muzeju in spominski poti, ki prikazuje pomembne dogodke prve svetovne vojne.</p><h3>Kobaridski muzej</h3><p>Muzej prikazuje zgodbo o soški fronti skozi interaktivne razstave in artefakte. To je ena najpomembnejših kulturnih znamenitosti v regiji.</p><h3>Spominska pot</h3><p>Pot vodi po pomembnih lokacijah iz prve svetovne vojne. Ob poti so informativne table, ki razlagajo zgodovinske dogodke. Sprehod je primeren za vse starosti.</p><h3>Naravne lepote</h3><p>Kobarid leži ob Soči, zato so dostopne številne sprehajalne poti ob reki. Okolica ponuja tudi možnosti za lažje gorske sprehode.</p><h3>Mestni center</h3><p>Zgodovinski center Kobarida je prijeten za sprehode. Najdete tradicionalno arhitekturo in lokalne trgovine.</p>",
+        attractions_tolmin_html: "<p>Tolmin je največje mesto v dolini Soče, z bogato zgodovino in naravnimi znamenitostmi.</p><h3>Tolminske klisure</h3><p>Ena najbolj znanih naravnih znamenitosti v Sloveniji. Klisure ponujajo spektakularen sprehod ob reki Tolminki, ki se spušča skozi globoke kanjone. Obisk je primeren za vse, ki lahko hodijo po stopnicah.</p><h3>Naravni rezervat</h3><p>Okolica Tolmina je bogata z naravnimi rezervati, kjer lahko opazujete lokalno floro in favno. Obstajajo označene poti za različne stopnje težavnosti.</p><h3>Kulturna dediščina</h3><p>Tolmin ima zgodovinski center z zanimivo arhitekturo. Mestni muzej prikazuje lokalno zgodovino in kulturo.</p><h3>Razgledne točke</h3><p>Vzpon na bližnje hribe ponuja lepe razglede na dolino. Najboljši čas za obisk je zgodaj zjutraj ali ob sončnem zahodu.</p><h3>Praktični nasveti</h3><ul><li>Parkiranje je na voljo blizu glavnih znamenitosti.</li><li>Za obisk Tolminskih klisurev prinesite udobne čevlje za hojo.</li><li>Spoštujte naravne rezervate in ostajajte na označenih poteh.</li><li>Vreme se lahko hitro spremeni, zato prinesite dodatno obleko.</li></ul>"
       },
       en: {
         welcome: "Welcome",
@@ -1530,7 +1550,9 @@
         gallery_placeholder: "Image",
         video_placeholder: "Video",
         attractions_page_title: "Attractions",
-        attractions_content_html: "<h2>Bovec</h2><p>Bovec is the heart of the Soča Valley, surrounded by the Julian Alps. The town offers unforgettable natural beauty and historical sites.</p><h3>Natural Attractions</h3><p>The Soča River is the most beautiful emerald river in Europe. Along it are numerous walking trails that follow the river or nearby hills. The Great Soča Gorge is a spectacular natural phenomenon where the river cuts through deep canyons.</p><p>Boka Waterfall is the highest waterfall in Slovenia (144 meters). A gentle walk leads to it, suitable for all ages. The view is incredible, especially after rain when the waterfall is at its strongest.</p><h3>Cultural Heritage</h3><p>Bovec was significant during World War I. In the surrounding area, you'll find numerous memorial trails and museums that tell the story of the Isonzo Front. The Kobarid Museum is one of the best military museums in the region.</p><h3>Viewpoints</h3><p>Climbing Rombon or nearby hills offers panoramic views of the Soča Valley and surrounding mountains. The best time to visit is early morning or late afternoon when the light is most beautiful.</p><h3>Practical Tips</h3><ul><li>Parking is available in the town center, mostly free.</li><li>Respect nature: don't leave trash, stay on marked trails.</li><li>Best time to visit: spring and autumn for walks, summer for swimming in the Soča.</li><li>Mountain weather changes quickly, so bring appropriate clothing.</li></ul><h2>Kobarid</h2><p>Kobarid is a historic town, best known for the Kobarid Museum and the Walk of Peace, which displays important events from World War I.</p><h3>Kobarid Museum</h3><p>The museum showcases the story of the Isonzo Front through interactive exhibits and artifacts. This is one of the most important cultural sites in the region.</p><h3>Walk of Peace</h3><p>The trail leads through important locations from World War I. Along the path are informative panels explaining historical events. The walk is suitable for all ages.</p><h3>Natural Beauty</h3><p>Kobarid lies along the Soča, so numerous walking trails along the river are accessible. The surroundings also offer opportunities for easier mountain walks.</p><h3>Town Center</h3><p>The historic center of Kobarid is pleasant for strolling. You'll find traditional architecture and local shops.</p><h2>Tolmin</h2><p>Tolmin is the largest town in the Soča Valley, with rich history and natural attractions.</p><h3>Tolmin Gorges</h3><p>One of the most famous natural attractions in Slovenia. The gorges offer a spectacular walk along the Tolminka River, which descends through deep canyons. The visit is suitable for anyone who can walk on stairs.</p><h3>Nature Reserve</h3><p>The area around Tolmin is rich with nature reserves where you can observe local flora and fauna. There are marked trails for different difficulty levels.</p><h3>Cultural Heritage</h3><p>Tolmin has a historic center with interesting architecture. The town museum displays local history and culture.</p><h3>Viewpoints</h3><p>Climbing nearby hills offers beautiful views of the valley. The best time to visit is early morning or at sunset.</p><h3>Practical Tips</h3><ul><li>Parking is available near main attractions.</li><li>For visiting Tolmin Gorges, bring comfortable walking shoes.</li><li>Respect nature reserves and stay on marked trails.</li><li>Weather can change quickly, so bring extra clothing.</li></ul>"
+        attractions_bovec_html: "<p>Bovec is the heart of the Soča Valley, surrounded by the Julian Alps. The town offers unforgettable natural beauty and historical sites.</p><h3>Natural Attractions</h3><p>The Soča River is the most beautiful emerald river in Europe. Along it are numerous walking trails that follow the river or nearby hills. The Great Soča Gorge is a spectacular natural phenomenon where the river cuts through deep canyons.</p><p>Boka Waterfall is the highest waterfall in Slovenia (144 meters). A gentle walk leads to it, suitable for all ages. The view is incredible, especially after rain when the waterfall is at its strongest.</p><h3>Cultural Heritage</h3><p>Bovec was significant during World War I. In the surrounding area, you'll find numerous memorial trails and museums that tell the story of the Isonzo Front. The Kobarid Museum is one of the best military museums in the region.</p><h3>Viewpoints</h3><p>Climbing Rombon or nearby hills offers panoramic views of the Soča Valley and surrounding mountains. The best time to visit is early morning or late afternoon when the light is most beautiful.</p><h3>Practical Tips</h3><ul><li>Parking is available in the town center, mostly free.</li><li>Respect nature: don't leave trash, stay on marked trails.</li><li>Best time to visit: spring and autumn for walks, summer for swimming in the Soča.</li><li>Mountain weather changes quickly, so bring appropriate clothing.</li></ul>",
+        attractions_kobarid_html: "<p>Kobarid is a historic town, best known for the Kobarid Museum and the Walk of Peace, which displays important events from World War I.</p><h3>Kobarid Museum</h3><p>The museum showcases the story of the Isonzo Front through interactive exhibits and artifacts. This is one of the most important cultural sites in the region.</p><h3>Walk of Peace</h3><p>The trail leads through important locations from World War I. Along the path are informative panels explaining historical events. The walk is suitable for all ages.</p><h3>Natural Beauty</h3><p>Kobarid lies along the Soča, so numerous walking trails along the river are accessible. The surroundings also offer opportunities for easier mountain walks.</p><h3>Town Center</h3><p>The historic center of Kobarid is pleasant for strolling. You'll find traditional architecture and local shops.</p>",
+        attractions_tolmin_html: "<p>Tolmin is the largest town in the Soča Valley, with rich history and natural attractions.</p><h3>Tolmin Gorges</h3><p>One of the most famous natural attractions in Slovenia. The gorges offer a spectacular walk along the Tolminka River, which descends through deep canyons. The visit is suitable for anyone who can walk on stairs.</p><h3>Nature Reserve</h3><p>The area around Tolmin is rich with nature reserves where you can observe local flora and fauna. There are marked trails for different difficulty levels.</p><h3>Cultural Heritage</h3><p>Tolmin has a historic center with interesting architecture. The town museum displays local history and culture.</p><h3>Viewpoints</h3><p>Climbing nearby hills offers beautiful views of the valley. The best time to visit is early morning or at sunset.</p><h3>Practical Tips</h3><ul><li>Parking is available near main attractions.</li><li>For visiting Tolmin Gorges, bring comfortable walking shoes.</li><li>Respect nature reserves and stay on marked trails.</li><li>Weather can change quickly, so bring extra clothing.</li></ul>"
       },
       de: {
         welcome: "Willkommen",
@@ -1612,7 +1634,9 @@
         gallery_placeholder: "Bild",
         video_placeholder: "Video",
         attractions_page_title: "Sehenswürdigkeiten",
-        attractions_content_html: "<h2>Bovec</h2><p>Bovec ist das Herz des Soča-Tals, umgeben von den Julischen Alpen. Die Stadt bietet unvergessliche Naturschönheit und historische Stätten.</p><h3>Naturschönheiten</h3><p>Die Soča ist der schönste Smaragdfluss Europas. Entlang des Flusses gibt es zahlreiche Wanderwege, die dem Fluss oder nahegelegenen Hügeln folgen. Die Große Soča-Schlucht ist ein spektakuläres Naturphänomen, bei dem der Fluss durch tiefe Schluchten schneidet.</p><p>Der Boka-Wasserfall ist der höchste Wasserfall Sloweniens (144 Meter). Ein leichter Spaziergang führt dorthin, geeignet für alle Altersgruppen. Die Aussicht ist unglaublich, besonders nach Regen, wenn der Wasserfall am stärksten ist.</p><h3>Kulturerbe</h3><p>Bovec war während des Ersten Weltkriegs bedeutsam. In der Umgebung finden Sie zahlreiche Gedenkwege und Museen, die die Geschichte der Isonzo-Front erzählen. Das Kobarid-Museum ist eines der besten Militärmuseen der Region.</p><h3>Aussichtspunkte</h3><p>Der Aufstieg auf den Rombon oder nahegelegene Hügel bietet Panoramablicke auf das Soča-Tal und die umliegenden Berge. Die beste Zeit für einen Besuch ist frühmorgens oder spätnachmittags, wenn das Licht am schönsten ist.</p><h3>Praktische Tipps</h3><ul><li>Parkplätze sind im Stadtzentrum verfügbar, meist kostenlos.</li><li>Respektieren Sie die Natur: hinterlassen Sie keinen Müll, bleiben Sie auf markierten Wegen.</li><li>Beste Besuchszeit: Frühling und Herbst für Spaziergänge, Sommer zum Schwimmen in der Soča.</li><li>Das Wetter in den Bergen ändert sich schnell, bringen Sie daher angemessene Kleidung mit.</li></ul><h2>Kobarid</h2><p>Kobarid ist eine historische Stadt, bekannt vor allem für das Kobarid-Museum und den Friedensweg, der wichtige Ereignisse des Ersten Weltkriegs zeigt.</p><h3>Kobarid-Museum</h3><p>Das Museum zeigt die Geschichte der Isonzo-Front durch interaktive Ausstellungen und Artefakte. Dies ist eine der wichtigsten kulturellen Stätten der Region.</p><h3>Friedensweg</h3><p>Der Weg führt durch wichtige Orte des Ersten Weltkriegs. Entlang des Weges befinden sich informative Tafeln, die historische Ereignisse erklären. Der Spaziergang ist für alle Altersgruppen geeignet.</p><h3>Naturschönheit</h3><p>Kobarid liegt an der Soča, daher sind zahlreiche Wanderwege entlang des Flusses zugänglich. Die Umgebung bietet auch Möglichkeiten für leichtere Bergwanderungen.</p><h3>Stadtzentrum</h3><p>Das historische Zentrum von Kobarid ist angenehm zum Spazieren. Sie finden traditionelle Architektur und lokale Geschäfte.</p><h2>Tolmin</h2><p>Tolmin ist die größte Stadt im Soča-Tal mit reicher Geschichte und natürlichen Attraktionen.</p><h3>Tolminer Klammen</h3><p>Eine der berühmtesten natürlichen Attraktionen Sloweniens. Die Klammen bieten einen spektakulären Spaziergang entlang der Tolminka, die durch tiefe Schluchten absteigt. Der Besuch ist für alle geeignet, die Treppen steigen können.</p><h3>Naturschutzgebiet</h3><p>Die Umgebung von Tolmin ist reich an Naturschutzgebieten, in denen Sie lokale Flora und Fauna beobachten können. Es gibt markierte Wege für verschiedene Schwierigkeitsgrade.</p><h3>Kulturerbe</h3><p>Tolmin hat ein historisches Zentrum mit interessanter Architektur. Das Stadtmuseum zeigt lokale Geschichte und Kultur.</p><h3>Aussichtspunkte</h3><p>Der Aufstieg auf nahegelegene Hügel bietet schöne Ausblicke auf das Tal. Die beste Zeit für einen Besuch ist frühmorgens oder bei Sonnenuntergang.</p><h3>Praktische Tipps</h3><ul><li>Parkplätze sind in der Nähe der Hauptattraktionen verfügbar.</li><li>Für den Besuch der Tolminer Klammen bringen Sie bequeme Wanderschuhe mit.</li><li>Respektieren Sie Naturschutzgebiete und bleiben Sie auf markierten Wegen.</li><li>Das Wetter kann sich schnell ändern, bringen Sie daher zusätzliche Kleidung mit.</li></ul>"
+        attractions_bovec_html: "<p>Bovec ist das Herz des Soča-Tals, umgeben von den Julischen Alpen. Die Stadt bietet unvergessliche Naturschönheit und historische Stätten.</p><h3>Naturschönheiten</h3><p>Die Soča ist der schönste Smaragdfluss Europas. Entlang des Flusses gibt es zahlreiche Wanderwege, die dem Fluss oder nahegelegenen Hügeln folgen. Die Große Soča-Schlucht ist ein spektakuläres Naturphänomen, bei dem der Fluss durch tiefe Schluchten schneidet.</p><p>Der Boka-Wasserfall ist der höchste Wasserfall Sloweniens (144 Meter). Ein leichter Spaziergang führt dorthin, geeignet für alle Altersgruppen. Die Aussicht ist unglaublich, besonders nach Regen, wenn der Wasserfall am stärksten ist.</p><h3>Kulturerbe</h3><p>Bovec war während des Ersten Weltkriegs bedeutsam. In der Umgebung finden Sie zahlreiche Gedenkwege und Museen, die die Geschichte der Isonzo-Front erzählen. Das Kobarid-Museum ist eines der besten Militärmuseen der Region.</p><h3>Aussichtspunkte</h3><p>Der Aufstieg auf den Rombon oder nahegelegene Hügel bietet Panoramablicke auf das Soča-Tal und die umliegenden Berge. Die beste Zeit für einen Besuch ist frühmorgens oder spätnachmittags, wenn das Licht am schönsten ist.</p><h3>Praktische Tipps</h3><ul><li>Parkplätze sind im Stadtzentrum verfügbar, meist kostenlos.</li><li>Respektieren Sie die Natur: hinterlassen Sie keinen Müll, bleiben Sie auf markierten Wegen.</li><li>Beste Besuchszeit: Frühling und Herbst für Spaziergänge, Sommer zum Schwimmen in der Soča.</li><li>Das Wetter in den Bergen ändert sich schnell, bringen Sie daher angemessene Kleidung mit.</li></ul>",
+        attractions_kobarid_html: "<p>Kobarid ist eine historische Stadt, bekannt vor allem für das Kobarid-Museum und den Friedensweg, der wichtige Ereignisse des Ersten Weltkriegs zeigt.</p><h3>Kobarid-Museum</h3><p>Das Museum zeigt die Geschichte der Isonzo-Front durch interaktive Ausstellungen und Artefakte. Dies ist eine der wichtigsten kulturellen Stätten der Region.</p><h3>Friedensweg</h3><p>Der Weg führt durch wichtige Orte des Ersten Weltkriegs. Entlang des Weges befinden sich informative Tafeln, die historische Ereignisse erklären. Der Spaziergang ist für alle Altersgruppen geeignet.</p><h3>Naturschönheit</h3><p>Kobarid liegt an der Soča, daher sind zahlreiche Wanderwege entlang des Flusses zugänglich. Die Umgebung bietet auch Möglichkeiten für leichtere Bergwanderungen.</p><h3>Stadtzentrum</h3><p>Das historische Zentrum von Kobarid ist angenehm zum Spazieren. Sie finden traditionelle Architektur und lokale Geschäfte.</p>",
+        attractions_tolmin_html: "<p>Tolmin ist die größte Stadt im Soča-Tal mit reicher Geschichte und natürlichen Attraktionen.</p><h3>Tolminer Klammen</h3><p>Eine der berühmtesten natürlichen Attraktionen Sloweniens. Die Klammen bieten einen spektakulären Spaziergang entlang der Tolminka, die durch tiefe Schluchten absteigt. Der Besuch ist für alle geeignet, die Treppen steigen können.</p><h3>Naturschutzgebiet</h3><p>Die Umgebung von Tolmin ist reich an Naturschutzgebieten, in denen Sie lokale Flora und Fauna beobachten können. Es gibt markierte Wege für verschiedene Schwierigkeitsgrade.</p><h3>Kulturerbe</h3><p>Tolmin hat ein historisches Zentrum mit interessanter Architektur. Das Stadtmuseum zeigt lokale Geschichte und Kultur.</p><h3>Aussichtspunkte</h3><p>Der Aufstieg auf nahegelegene Hügel bietet schöne Ausblicke auf das Tal. Die beste Zeit für einen Besuch ist frühmorgens oder bei Sonnenuntergang.</p><h3>Praktische Tipps</h3><ul><li>Parkplätze sind in der Nähe der Hauptattraktionen verfügbar.</li><li>Für den Besuch der Tolminer Klammen bringen Sie bequeme Wanderschuhe mit.</li><li>Respektieren Sie Naturschutzgebiete und bleiben Sie auf markierten Wegen.</li><li>Das Wetter kann sich schnell ändern, bringen Sie daher zusätzliche Kleidung mit.</li></ul>"
       },
       it: {
         welcome: "Benvenuto",
@@ -1665,9 +1689,7 @@
         parking_loading: "Caricamento...",
         parking_updated_from_official: "Aggiornato da fonte ufficiale",
         parking_fallback_notice: "Impossibile caricare i dati ufficiali. Mostrate opzioni predefinite + link alle pagine ufficiali.",
-        parking_suggested_areas: "Aree suggerite (tramite ricerca Maps)"
-      },
-      en: {
+        parking_suggested_areas: "Aree suggerite (tramite ricerca Maps)",
         rec_text1: "🚣 Rafting sulla Soča: Esperienza indimenticabile sul più bel fiume smeraldo. 5 min di auto, 40-60€.",
         rec_text2: "🪂 Parapendio: Vola sopra la valle della Soča con viste spettacolari. 10 min di auto, 100-150€.",
         rec_text3: "🥾 Cascata Boka: La cascata più alta della Slovenia (144m). Facile passeggiata con vista mozzafiato. Gratuito.",
@@ -1684,7 +1706,6 @@
         info_title: "Info",
         info_location: "Posizione",
         copy_address: "Copia indirizzo",
-        directions: "Verso l'appartamento",
         directions_to_apartment: "Verso l'appartamento",
         address_copied: "Indirizzo copiato!",
         info_checkinout: "Check-in / Check-out",
@@ -1708,7 +1729,9 @@
         gallery_placeholder: "Immagine",
         video_placeholder: "Video",
         attractions_page_title: "Attrazioni",
-        attractions_content_html: "<h2>Bovec</h2><p>Bovec è il cuore della valle dell'Isonzo, circondato dalle Alpi Giulie. La città offre una bellezza naturale indimenticabile e siti storici.</p><h3>Attrazioni Naturali</h3><p>L'Isonzo è il fiume smeraldo più bello d'Europa. Lungo il fiume ci sono numerosi sentieri escursionistici che seguono il fiume o le colline vicine. Le Grandi Gole dell'Isonzo sono un fenomeno naturale spettacolare dove il fiume taglia attraverso canyon profondi.</p><p>La Cascata Boka è la cascata più alta della Slovenia (144 metri). Una passeggiata facile porta ad essa, adatta a tutte le età. La vista è incredibile, specialmente dopo la pioggia quando la cascata è al massimo della sua potenza.</p><h3>Patrimonio Culturale</h3><p>Bovec fu significativo durante la Prima Guerra Mondiale. Nella zona circostante troverete numerosi sentieri commemorativi e musei che raccontano la storia del Fronte dell'Isonzo. Il Museo di Kobarid è uno dei migliori musei militari della regione.</p><h3>Punti Panoramici</h3><p>La salita al Rombon o alle colline vicine offre viste panoramiche sulla valle dell'Isonzo e le montagne circostanti. Il momento migliore per visitare è la mattina presto o il tardo pomeriggio quando la luce è più bella.</p><h3>Consigli Pratici</h3><ul><li>Il parcheggio è disponibile nel centro città, principalmente gratuito.</li><li>Rispettate la natura: non lasciate rifiuti, rimanete sui sentieri segnati.</li><li>Miglior periodo per visitare: primavera e autunno per passeggiate, estate per nuotare nell'Isonzo.</li><li>Il tempo in montagna cambia rapidamente, quindi portate abbigliamento appropriato.</li></ul><h2>Kobarid</h2><p>Kobarid è una città storica, conosciuta soprattutto per il Museo di Kobarid e il Sentiero della Pace, che mostra eventi importanti della Prima Guerra Mondiale.</p><h3>Museo di Kobarid</h3><p>Il museo mostra la storia del Fronte dell'Isonzo attraverso mostre interattive e manufatti. Questo è uno dei siti culturali più importanti della regione.</p><h3>Sentiero della Pace</h3><p>Il sentiero porta attraverso luoghi importanti della Prima Guerra Mondiale. Lungo il percorso ci sono pannelli informativi che spiegano eventi storici. La passeggiata è adatta a tutte le età.</p><h3>Bellezza Naturale</h3><p>Kobarid si trova lungo l'Isonzo, quindi numerosi sentieri escursionistici lungo il fiume sono accessibili. I dintorni offrono anche opportunità per escursioni montane più facili.</p><h3>Centro Città</h3><p>Il centro storico di Kobarid è piacevole per passeggiare. Troverete architettura tradizionale e negozi locali.</p><h2>Tolmin</h2><p>Tolmin è la città più grande della valle dell'Isonzo, con una ricca storia e attrazioni naturali.</p><h3>Gole di Tolmin</h3><p>Una delle attrazioni naturali più famose della Slovenia. Le gole offrono una passeggiata spettacolare lungo il fiume Tolminka, che scende attraverso canyon profondi. La visita è adatta a chiunque possa camminare su scale.</p><h3>Riserva Naturale</h3><p>L'area intorno a Tolmin è ricca di riserve naturali dove è possibile osservare la flora e la fauna locale. Ci sono sentieri segnati per diversi livelli di difficoltà.</p><h3>Patrimonio Culturale</h3><p>Tolmin ha un centro storico con architettura interessante. Il museo cittadino mostra la storia e la cultura locale.</p><h3>Punti Panoramici</h3><p>La salita alle colline vicine offre belle viste sulla valle. Il momento migliore per visitare è la mattina presto o al tramonto.</p><h3>Consigli Pratici</h3><ul><li>Il parcheggio è disponibile vicino alle principali attrazioni.</li><li>Per visitare le Gole di Tolmin, portate scarpe comode da passeggio.</li><li>Rispettate le riserve naturali e rimanete sui sentieri segnati.</li><li>Il tempo può cambiare rapidamente, quindi portate abbigliamento extra.</li></ul>"
+        attractions_bovec_html: "<p>Bovec è il cuore della valle dell'Isonzo, circondato dalle Alpi Giulie. La città offre una bellezza naturale indimenticabile e siti storici.</p><h3>Attrazioni Naturali</h3><p>L'Isonzo è il fiume smeraldo più bello d'Europa. Lungo il fiume ci sono numerosi sentieri escursionistici che seguono il fiume o le colline vicine. Le Grandi Gole dell'Isonzo sono un fenomeno naturale spettacolare dove il fiume taglia attraverso canyon profondi.</p><p>La Cascata Boka è la cascata più alta della Slovenia (144 metri). Una passeggiata facile porta ad essa, adatta a tutte le età. La vista è incredibile, specialmente dopo la pioggia quando la cascata è al massimo della sua potenza.</p><h3>Patrimonio Culturale</h3><p>Bovec fu significativo durante la Prima Guerra Mondiale. Nella zona circostante troverete numerosi sentieri commemorativi e musei che raccontano la storia del Fronte dell'Isonzo. Il Museo di Kobarid è uno dei migliori musei militari della regione.</p><h3>Punti Panoramici</h3><p>La salita al Rombon o alle colline vicine offre viste panoramiche sulla valle dell'Isonzo e le montagne circostanti. Il momento migliore per visitare è la mattina presto o il tardo pomeriggio quando la luce è più bella.</p><h3>Consigli Pratici</h3><ul><li>Il parcheggio è disponibile nel centro città, principalmente gratuito.</li><li>Rispettate la natura: non lasciate rifiuti, rimanete sui sentieri segnati.</li><li>Miglior periodo per visitare: primavera e autunno per passeggiate, estate per nuotare nell'Isonzo.</li><li>Il tempo in montagna cambia rapidamente, quindi portate abbigliamento appropriato.</li></ul>",
+        attractions_kobarid_html: "<p>Kobarid è una città storica, conosciuta soprattutto per il Museo di Kobarid e il Sentiero della Pace, che mostra eventi importanti della Prima Guerra Mondiale.</p><h3>Museo di Kobarid</h3><p>Il museo mostra la storia del Fronte dell'Isonzo attraverso mostre interattive e manufatti. Questo è uno dei siti culturali più importanti della regione.</p><h3>Sentiero della Pace</h3><p>Il sentiero porta attraverso luoghi importanti della Prima Guerra Mondiale. Lungo il percorso ci sono pannelli informativi che spiegano eventi storici. La passeggiata è adatta a tutte le età.</p><h3>Bellezza Naturale</h3><p>Kobarid si trova lungo l'Isonzo, quindi numerosi sentieri escursionistici lungo il fiume sono accessibili. I dintorni offrono anche opportunità per escursioni montane più facili.</p><h3>Centro Città</h3><p>Il centro storico di Kobarid è piacevole per passeggiare. Troverete architettura tradizionale e negozi locali.</p>",
+        attractions_tolmin_html: "<p>Tolmin è la città più grande della valle dell'Isonzo, con una ricca storia e attrazioni naturali.</p><h3>Gole di Tolmin</h3><p>Una delle attrazioni naturali più famose della Slovenia. Le gole offrono una passeggiata spettacolare lungo il fiume Tolminka, che scende attraverso canyon profondi. La visita è adatta a chiunque possa camminare su scale.</p><h3>Riserva Naturale</h3><p>L'area intorno a Tolmin è ricca di riserve naturali dove è possibile osservare la flora e la fauna locale. Ci sono sentieri segnati per diversi livelli di difficoltà.</p><h3>Patrimonio Culturale</h3><p>Tolmin ha un centro storico con architettura interessante. Il museo cittadino mostra la storia e la cultura locale.</p><h3>Punti Panoramici</h3><p>La salita alle colline vicine offre belle viste sulla valle. Il momento migliore per visitare è la mattina presto o al tramonto.</p><h3>Consigli Pratici</h3><ul><li>Il parcheggio è disponibile vicino alle principali attrazioni.</li><li>Per visitare le Gole di Tolmin, portate scarpe comode da passeggio.</li><li>Rispettate le riserve naturali e rimanete sui sentieri segnati.</li><li>Il tempo può cambiare rapidamente, quindi portate abbigliamento extra.</li></ul>"
       }
     };
 
@@ -1723,11 +1746,10 @@
       currentLang = savedLang;
     }
 
-    // Welcome overlay logic - 5 seconds minimum
+    // Welcome overlay logic - auto-hide after 5 seconds
     function initWelcomeScreen() {
       const welcomeOverlay = document.getElementById('welcome-overlay');
       const appContainer = document.getElementById('app-container');
-      const enterBtn = document.getElementById('enter-btn');
       
       if (!welcomeOverlay || !appContainer) {
         setTimeout(initWelcomeScreen, 100);
@@ -1754,7 +1776,7 @@
 
       // Don't auto-hide if already shown in this session
       if (!sessionStorage.getItem('welcomeShown')) {
-        // Auto-hide after 5 seconds minimum
+        // Auto-hide after exactly 5 seconds
         setTimeout(() => {
           hideWelcome();
           sessionStorage.setItem('welcomeShown', 'true');
@@ -1762,13 +1784,6 @@
       } else {
         if (welcomeOverlay) welcomeOverlay.style.display = 'none';
         if (appContainer) appContainer.classList.add('show');
-      }
-
-      if (enterBtn) {
-        enterBtn.addEventListener('click', () => {
-          hideWelcome();
-          sessionStorage.setItem('welcomeShown', 'true');
-        });
       }
     }
     
@@ -1791,10 +1806,7 @@
         }
       });
       
-      const welcomeTitle = document.getElementById('welcome-title');
-      if (welcomeTitle) welcomeTitle.textContent = trans.welcome;
-      const enterBtn = document.getElementById('enter-btn');
-      if (enterBtn) enterBtn.textContent = trans.enter;
+      // Welcome text stays static in English - don't update it
       const appSubtitle = document.getElementById('app-subtitle');
       if (appSubtitle) appSubtitle.textContent = trans.guest_guide;
       const heroBadge = document.getElementById('hero-badge');
@@ -1835,17 +1847,7 @@
         }
       }
       
-      const welcomeSubtitle = document.getElementById('welcome-subtitle');
-      if (welcomeSubtitle) {
-        const apartmentName = defaultConfig.apartment_name;
-        if (apartmentName && apartmentName !== 'DOLINA SOČE BOVEC') {
-          welcomeSubtitle.textContent = apartmentName;
-        } else {
-          const brandTitle = trans.brand_title || 'DOLINA SOČE';
-          const brandSubtitle = trans.brand_subtitle || 'BOVEC';
-          welcomeSubtitle.textContent = brandTitle + ' ' + brandSubtitle;
-        }
-      }
+      // Welcome subtitle stays static - "SOČA VALLEY – BOVEC" - don't update it
       
       // Update weather description and location when language changes
       updateWeather();
@@ -1969,15 +1971,6 @@
       }
     }
 
-    const wifiAction = document.getElementById('wifi-action');
-    if (wifiAction) {
-      wifiAction.addEventListener('click', () => {
-        const ssid = defaultConfig.wifi_ssid;
-        const password = defaultConfig.wifi_password;
-        const text = `SSID: ${ssid}\nPassword: ${password}`;
-        copyToClipboard(text, translations[currentLang].wifi_copied);
-      });
-    }
 
     // Info panel copy functions
     const copyAddressBtn = document.getElementById('copy-address-btn');
@@ -2204,7 +2197,7 @@
         parkingOptionsCache = parkingFallbackData;
         renderParkingPanel(parkingFallbackData);
         if (status) {
-          status.innerHTML = translations[currentLang].parking_fallback_notice + '<br><a href="https://www.bovec.si" target="_blank" rel="noopener noreferrer" style="color: var(--accent-green); text-decoration: underline; margin-top: 0.5rem; display: inline-block;">' + translations[currentLang].parking_official_info + '</a>';
+          status.innerHTML = translations[currentLang].parking_fallback_notice + '<br><a href="https://www.bovec.si" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: underline; margin-top: 0.5rem; display: inline-block;">' + translations[currentLang].parking_official_info + '</a>';
         }
       }
     }
@@ -2266,7 +2259,7 @@
       html += '<div class="parking-card-actions">';
       html += '<a href="' + mapsLink + '" target="_blank" rel="noopener noreferrer" class="call-btn">' + trans.parking_open_maps + '</a>';
       if (opt.officialSourceUrl) {
-        html += '<a href="' + opt.officialSourceUrl + '" target="_blank" rel="noopener noreferrer" class="call-btn" style="background: rgba(52, 211, 153, 0.2); color: var(--accent-green); border: 1px solid var(--glass-border);">' + officialLabel + '</a>';
+        html += '<a href="' + opt.officialSourceUrl + '" target="_blank" rel="noopener noreferrer" class="call-btn" style="background: rgba(34, 211, 238, 0.2); color: var(--accent); border: 1px solid var(--glass-border);">' + officialLabel + '</a>';
       }
       html += '</div></div>';
       
@@ -2302,9 +2295,51 @@
     
     function renderAttractionsContent() {
       const body = document.getElementById('attractions-body');
-      if (body && translations[currentLang] && translations[currentLang].attractions_content_html) {
-        body.innerHTML = translations[currentLang].attractions_content_html;
-      }
+      if (!body || !translations[currentLang]) return;
+      
+      const trans = translations[currentLang];
+      const cities = [
+        { id: 'bovec', name: 'Bovec', content: trans.attractions_bovec_html },
+        { id: 'kobarid', name: 'Kobarid', content: trans.attractions_kobarid_html },
+        { id: 'tolmin', name: 'Tolmin', content: trans.attractions_tolmin_html }
+      ];
+      
+      let html = '<div class="attractions-accordion">';
+      cities.forEach((city, index) => {
+        html += `
+          <div class="attractions-city-item">
+            <button class="attractions-city-header" data-city="${city.id}" type="button">
+              <span>${city.name}</span>
+              <span class="attractions-city-icon">▼</span>
+            </button>
+            <div class="attractions-city-content" id="attractions-${city.id}">
+              ${city.content || ''}
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      
+      body.innerHTML = html;
+      
+      // Add click handlers for accordion
+      body.querySelectorAll('.attractions-city-header').forEach(header => {
+        header.addEventListener('click', () => {
+          const cityId = header.getAttribute('data-city');
+          const content = document.getElementById(`attractions-${cityId}`);
+          const isOpen = content.classList.contains('open');
+          
+          // Close all
+          body.querySelectorAll('.attractions-city-content').forEach(c => c.classList.remove('open'));
+          body.querySelectorAll('.attractions-city-icon').forEach(icon => icon.textContent = '▼');
+          
+          // Open clicked if it wasn't open
+          if (!isOpen) {
+            content.classList.add('open');
+            header.querySelector('.attractions-city-icon').textContent = '▲';
+          }
+        });
+      });
     }
     
     function openAttractions() {
@@ -2314,33 +2349,8 @@
     
     function closeAttractions() {
       hideAttractionsScreen();
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-      const homeNav = document.querySelector('.nav-item[data-nav="home"]');
-      if (homeNav) homeNav.classList.add('active');
       scrollToTopReliable();
     }
-
-    // Bottom nav
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-        
-        const section = item.getAttribute('data-nav');
-        if (section === 'home') {
-          closeAllPanels();
-          activePanel = null;
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else if (section === 'info') {
-          showToast(translations[currentLang].coming_soon);
-        } else if (section === 'emergency') {
-          closeAllPanels();
-          openPanel('emergency');
-        } else if (section === 'more') {
-          openPanel('recommendations');
-        }
-      });
-    });
 
     // Weather Widget
     function updateWeatherLocation() {
@@ -2607,8 +2617,8 @@
       document.documentElement.style.setProperty('--bg-dark', backgroundColor);
       document.documentElement.style.setProperty('--glass-bg', cardColor);
       document.documentElement.style.setProperty('--text-primary', textColor);
-      document.documentElement.style.setProperty('--accent-green', accentColor);
-      document.documentElement.style.setProperty('--accent-green-dark', highlightColor);
+      document.documentElement.style.setProperty('--accent', accentColor);
+      document.documentElement.style.setProperty('--accent-strong', highlightColor);
 
       document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
       document.body.style.fontSize = `${baseSize}px`;
