@@ -1811,9 +1811,9 @@
       if (appSubtitle) appSubtitle.textContent = trans.guest_guide;
       const heroBadge = document.getElementById('hero-badge');
       if (heroBadge) heroBadge.textContent = trans.guest_badge;
-      const weatherDesc = document.getElementById('weather-desc');
-      if (weatherDesc && (weatherDesc.textContent === 'Loading...' || weatherDesc.textContent === 'Nalaganje...' || weatherDesc.textContent === 'Laden...' || weatherDesc.textContent === 'Caricamento...')) {
-        weatherDesc.textContent = trans.weather_loading;
+      const weatherDescEl2 = document.getElementById('weather-desc');
+      if (weatherDescEl2 && (weatherDescEl2.textContent === 'Loading...' || weatherDescEl2.textContent === 'Nalaganje...' || weatherDescEl2.textContent === 'Laden...' || weatherDescEl2.textContent === 'Caricamento...')) {
+        weatherDescEl2.textContent = trans.weather_loading;
       }
       
       const langSelect = document.getElementById('lang-select');
@@ -1849,9 +1849,26 @@
       
       // Welcome subtitle stays static - "SOČA VALLEY – BOVEC" - don't update it
       
-      // Update weather description and location when language changes
-      updateWeather();
-      updateWeatherLocation();
+      // Update weather description when language changes (re-render text only if we have cached data)
+      const weatherDescEl = document.getElementById('weather-desc');
+      if (weatherDescEl && weatherDescEl.textContent && weatherDescEl.textContent !== (translations[currentLang]?.weather_loading || 'Loading...')) {
+        // Try to get cached weather code and re-render description
+        try {
+          const cached = localStorage.getItem(WEATHER_CACHE_KEY);
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (parsed.weatherCode) {
+              const weatherInfo = weatherCodeToIconAndText(parsed.weatherCode, currentLang);
+              weatherDescEl.textContent = weatherInfo.text;
+            }
+          }
+        } catch (e) {
+          // If no cached code, just update location text
+          updateWeatherLocation();
+        }
+      } else {
+        updateWeatherLocation();
+      }
       
       // Update attractions content if screen is open
       const attractionsScreen = document.getElementById('attractions-screen');
@@ -2352,140 +2369,337 @@
       scrollToTopReliable();
     }
 
-    // Weather Widget
+    // Weather Widget - Real Weather Implementation
+    const WEATHER_CACHE_KEY = 'weatherLocationCache';
+    const WEATHER_CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
+    const WEATHER_REFRESH_INTERVAL = 15 * 60 * 1000; // 15 minutes
+    
+    // Default coordinates (Bovec, Slovenia)
+    const DEFAULT_COORDS = { lat: 46.3378, lon: 13.5528, city: 'Bovec' };
+    
+    // Get effective coordinates (from cache or geolocation or default)
+    async function getEffectiveCoords() {
+      // Check cache first
+      try {
+        const cached = localStorage.getItem(WEATHER_CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.timestamp < WEATHER_CACHE_TTL) {
+            return { lat: parsed.lat, lon: parsed.lon, city: parsed.city };
+          }
+        }
+      } catch (e) {
+        // Cache invalid, continue
+      }
+      
+      // Try geolocation
+      if (navigator.geolocation) {
+        try {
+          const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              timeout: 5000,
+              maximumAge: WEATHER_CACHE_TTL
+            });
+          });
+          
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          
+          // Try to get city name via reverse geocoding
+          const city = await fetchReverseGeocode(lat, lon);
+          
+          // Cache the result
+          localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({
+            lat,
+            lon,
+            city: city || 'Near you',
+            timestamp: Date.now()
+          }));
+          
+          return { lat, lon, city: city || 'Near you' };
+        } catch (error) {
+          // Geolocation failed or denied, use default
+        }
+      }
+      
+      // Fallback to default coordinates
+      return DEFAULT_COORDS;
+    }
+    
+    // Fetch weather from Open-Meteo
+    async function fetchOpenMeteoWeather(lat, lon) {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error('Weather API failed');
+        
+        const data = await response.json();
+        if (data.current) {
+          return {
+            temp: Math.round(data.current.temperature_2m),
+            code: data.current.weather_code
+          };
+        }
+      } catch (error) {
+        console.error('Weather fetch error:', error);
+      }
+      return null;
+    }
+    
+    // Fetch reverse geocoding (city name) using Open-Meteo geocoding
+    async function fetchReverseGeocode(lat, lon) {
+      try {
+        const url = `https://geocoding-api.open-meteo.com/v1/search?latitude=${lat}&longitude=${lon}&count=1&language=${currentLang}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error('Geocoding failed');
+        
+        const data = await response.json();
+        if (data.results && data.results.length > 0) {
+          return data.results[0].name || data.results[0].admin1 || null;
+        }
+      } catch (error) {
+        // Silently fail - we'll use fallback text
+      }
+      return null;
+    }
+    
+    // Map WMO weather code to icon and localized text
+    function weatherCodeToIconAndText(code, lang) {
+      // WMO Weather interpretation codes (WW)
+      // 0: Clear sky, 1-3: Mainly clear/partly cloudy/overcast
+      // 45-48: Fog, 51-67: Drizzle/Rain, 71-77: Snow, 80-99: Rain/Snow showers/Thunderstorm
+      
+      const codeMap = {
+        sl: {
+          0: { icon: '☀️', text: 'Jasno' },
+          1: { icon: '☀️', text: 'Pretežno jasno' },
+          2: { icon: '⛅', text: 'Delno oblačno' },
+          3: { icon: '☁️', text: 'Oblačno' },
+          45: { icon: '🌫️', text: 'Megla' },
+          48: { icon: '🌫️', text: 'Megla' },
+          51: { icon: '🌦️', text: 'Rosilo' },
+          53: { icon: '🌦️', text: 'Rosilo' },
+          55: { icon: '🌦️', text: 'Rosilo' },
+          56: { icon: '🌦️', text: 'Zmrzalno rosilo' },
+          57: { icon: '🌦️', text: 'Zmrzalno rosilo' },
+          61: { icon: '🌧️', text: 'Dež' },
+          63: { icon: '🌧️', text: 'Dež' },
+          65: { icon: '🌧️', text: 'Močan dež' },
+          66: { icon: '🌧️', text: 'Zmrzalni dež' },
+          67: { icon: '🌧️', text: 'Zmrzalni dež' },
+          71: { icon: '❄️', text: 'Sneg' },
+          73: { icon: '❄️', text: 'Sneg' },
+          75: { icon: '❄️', text: 'Močan sneg' },
+          77: { icon: '❄️', text: 'Snežne zrnice' },
+          80: { icon: '🌧️', text: 'Deževni nalivi' },
+          81: { icon: '🌧️', text: 'Deževni nalivi' },
+          82: { icon: '🌧️', text: 'Močni deževni nalivi' },
+          85: { icon: '❄️', text: 'Snežni nalivi' },
+          86: { icon: '❄️', text: 'Močni snežni nalivi' },
+          95: { icon: '⛈️', text: 'Nevihta' },
+          96: { icon: '⛈️', text: 'Nevihta s točo' },
+          99: { icon: '⛈️', text: 'Nevihta s točo' }
+        },
+        en: {
+          0: { icon: '☀️', text: 'Clear' },
+          1: { icon: '☀️', text: 'Mainly clear' },
+          2: { icon: '⛅', text: 'Partly cloudy' },
+          3: { icon: '☁️', text: 'Overcast' },
+          45: { icon: '🌫️', text: 'Fog' },
+          48: { icon: '🌫️', text: 'Fog' },
+          51: { icon: '🌦️', text: 'Drizzle' },
+          53: { icon: '🌦️', text: 'Drizzle' },
+          55: { icon: '🌦️', text: 'Drizzle' },
+          56: { icon: '🌦️', text: 'Freezing drizzle' },
+          57: { icon: '🌦️', text: 'Freezing drizzle' },
+          61: { icon: '🌧️', text: 'Rain' },
+          63: { icon: '🌧️', text: 'Rain' },
+          65: { icon: '🌧️', text: 'Heavy rain' },
+          66: { icon: '🌧️', text: 'Freezing rain' },
+          67: { icon: '🌧️', text: 'Freezing rain' },
+          71: { icon: '❄️', text: 'Snow' },
+          73: { icon: '❄️', text: 'Snow' },
+          75: { icon: '❄️', text: 'Heavy snow' },
+          77: { icon: '❄️', text: 'Snow grains' },
+          80: { icon: '🌧️', text: 'Rain showers' },
+          81: { icon: '🌧️', text: 'Rain showers' },
+          82: { icon: '🌧️', text: 'Heavy rain showers' },
+          85: { icon: '❄️', text: 'Snow showers' },
+          86: { icon: '❄️', text: 'Heavy snow showers' },
+          95: { icon: '⛈️', text: 'Thunderstorm' },
+          96: { icon: '⛈️', text: 'Thunderstorm with hail' },
+          99: { icon: '⛈️', text: 'Thunderstorm with hail' }
+        },
+        de: {
+          0: { icon: '☀️', text: 'Klar' },
+          1: { icon: '☀️', text: 'Überwiegend klar' },
+          2: { icon: '⛅', text: 'Teilweise bewölkt' },
+          3: { icon: '☁️', text: 'Bedeckt' },
+          45: { icon: '🌫️', text: 'Nebel' },
+          48: { icon: '🌫️', text: 'Nebel' },
+          51: { icon: '🌦️', text: 'Niesel' },
+          53: { icon: '🌦️', text: 'Niesel' },
+          55: { icon: '🌦️', text: 'Niesel' },
+          56: { icon: '🌦️', text: 'Gefrierender Niesel' },
+          57: { icon: '🌦️', text: 'Gefrierender Niesel' },
+          61: { icon: '🌧️', text: 'Regen' },
+          63: { icon: '🌧️', text: 'Regen' },
+          65: { icon: '🌧️', text: 'Starker Regen' },
+          66: { icon: '🌧️', text: 'Gefrierender Regen' },
+          67: { icon: '🌧️', text: 'Gefrierender Regen' },
+          71: { icon: '❄️', text: 'Schnee' },
+          73: { icon: '❄️', text: 'Schnee' },
+          75: { icon: '❄️', text: 'Starker Schnee' },
+          77: { icon: '❄️', text: 'Schneegriesel' },
+          80: { icon: '🌧️', text: 'Regenschauer' },
+          81: { icon: '🌧️', text: 'Regenschauer' },
+          82: { icon: '🌧️', text: 'Starke Regenschauer' },
+          85: { icon: '❄️', text: 'Schneeschauer' },
+          86: { icon: '❄️', text: 'Starke Schneeschauer' },
+          95: { icon: '⛈️', text: 'Gewitter' },
+          96: { icon: '⛈️', text: 'Gewitter mit Hagel' },
+          99: { icon: '⛈️', text: 'Gewitter mit Hagel' }
+        },
+        it: {
+          0: { icon: '☀️', text: 'Sereno' },
+          1: { icon: '☀️', text: 'Prevalentemente sereno' },
+          2: { icon: '⛅', text: 'Parzialmente nuvoloso' },
+          3: { icon: '☁️', text: 'Nuvoloso' },
+          45: { icon: '🌫️', text: 'Nebbia' },
+          48: { icon: '🌫️', text: 'Nebbia' },
+          51: { icon: '🌦️', text: 'Pioggerella' },
+          53: { icon: '🌦️', text: 'Pioggerella' },
+          55: { icon: '🌦️', text: 'Pioggerella' },
+          56: { icon: '🌦️', text: 'Pioggerella gelata' },
+          57: { icon: '🌦️', text: 'Pioggerella gelata' },
+          61: { icon: '🌧️', text: 'Pioggia' },
+          63: { icon: '🌧️', text: 'Pioggia' },
+          65: { icon: '🌧️', text: 'Pioggia forte' },
+          66: { icon: '🌧️', text: 'Pioggia gelata' },
+          67: { icon: '🌧️', text: 'Pioggia gelata' },
+          71: { icon: '❄️', text: 'Neve' },
+          73: { icon: '❄️', text: 'Neve' },
+          75: { icon: '❄️', text: 'Neve forte' },
+          77: { icon: '❄️', text: 'Granelli di neve' },
+          80: { icon: '🌧️', text: 'Rovesci di pioggia' },
+          81: { icon: '🌧️', text: 'Rovesci di pioggia' },
+          82: { icon: '🌧️', text: 'Rovesci di pioggia forti' },
+          85: { icon: '❄️', text: 'Rovesci di neve' },
+          86: { icon: '❄️', text: 'Rovesci di neve forti' },
+          95: { icon: '⛈️', text: 'Temporale' },
+          96: { icon: '⛈️', text: 'Temporale con grandine' },
+          99: { icon: '⛈️', text: 'Temporale con grandine' }
+        }
+      };
+      
+      // Find closest match (exact or range)
+      const langMap = codeMap[lang] || codeMap.en;
+      if (langMap[code]) {
+        return langMap[code];
+      }
+      
+      // Fallback ranges
+      if (code >= 1 && code <= 3) return langMap[2] || { icon: '⛅', text: 'Cloudy' };
+      if (code >= 51 && code <= 67) return langMap[61] || { icon: '🌧️', text: 'Rain' };
+      if (code >= 71 && code <= 77) return langMap[71] || { icon: '❄️', text: 'Snow' };
+      if (code >= 80 && code <= 86) return langMap[80] || { icon: '🌧️', text: 'Showers' };
+      if (code >= 95 && code <= 99) return langMap[95] || { icon: '⛈️', text: 'Thunderstorm' };
+      
+      // Default
+      return { icon: '🌤️', text: langMap[0]?.text || 'Clear' };
+    }
+    
+    // Update weather location display
     function updateWeatherLocation() {
       const weatherLocation = document.getElementById('weather-location');
-      if (weatherLocation) {
-        const locationSubtitle = defaultConfig.location_subtitle || 'Bovec, Slovenija';
-        const locationMap = {
-          sl: { 'Bovec, Slovenija': 'Bovec', 'Bovec': 'Bovec' },
-          en: { 'Bovec, Slovenija': 'Bovec, SI', 'Bovec': 'Bovec, SI' },
-          de: { 'Bovec, Slovenija': 'Bovec, SI', 'Bovec': 'Bovec, SI' },
-          it: { 'Bovec, Slovenija': 'Bovec, SI', 'Bovec': 'Bovec, SI' }
-        };
-        const locationText = locationMap[currentLang]?.[locationSubtitle] || locationSubtitle.split(',')[0] || 'Bovec';
-        weatherLocation.textContent = locationText;
+      if (!weatherLocation) return;
+      
+      // Get cached location or use default
+      try {
+        const cached = localStorage.getItem(WEATHER_CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed.city) {
+            weatherLocation.textContent = parsed.city;
+            return;
+          }
+        }
+      } catch (e) {
+        // Continue to fallback
       }
+      
+      // Fallback location text based on language
+      const fallbackText = {
+        sl: 'Blizu vas',
+        en: 'Near you',
+        de: 'In Ihrer Nähe',
+        it: 'Vicino a te'
+      };
+      
+      weatherLocation.textContent = fallbackText[currentLang] || fallbackText.en;
     }
-
+    
+    // Main weather update function
     async function updateWeather() {
       const weatherTemp = document.getElementById('weather-temp');
       const weatherIcon = document.getElementById('weather-icon');
       const weatherDesc = document.getElementById('weather-desc');
+      const weatherLocation = document.getElementById('weather-location');
       
-      // Update location
-      updateWeatherLocation();
+      if (!weatherTemp || !weatherIcon || !weatherDesc) return;
       
-      // Bovec, Slovenia coordinates: 46.3378, 13.5528
-      const lat = 46.3378;
-      const lon = 13.5528;
+      // Show loading state
+      weatherDesc.textContent = translations[currentLang]?.weather_loading || 'Loading...';
+      weatherTemp.textContent = '--°';
       
-      // Weather descriptions in different languages
-      const weatherDescMap = {
-        sl: {
-          'Clear': 'Jasno',
-          'Clouds': 'Oblačno',
-          'Rain': 'Dež',
-          'Drizzle': 'Rosilo',
-          'Thunderstorm': 'Nevihta',
-          'Snow': 'Sneg',
-          'Mist': 'Megla',
-          'Fog': 'Megla'
-        },
-        en: {
-          'Clear': 'Clear',
-          'Clouds': 'Cloudy',
-          'Rain': 'Rain',
-          'Drizzle': 'Drizzle',
-          'Thunderstorm': 'Storm',
-          'Snow': 'Snow',
-          'Mist': 'Mist',
-          'Fog': 'Fog'
-        },
-        de: {
-          'Clear': 'Klar',
-          'Clouds': 'Bewölkt',
-          'Rain': 'Regen',
-          'Drizzle': 'Niesel',
-          'Thunderstorm': 'Gewitter',
-          'Snow': 'Schnee',
-          'Mist': 'Nebel',
-          'Fog': 'Nebel'
-        },
-        it: {
-          'Clear': 'Sereno',
-          'Clouds': 'Nuvoloso',
-          'Rain': 'Pioggia',
-          'Drizzle': 'Pioggerella',
-          'Thunderstorm': 'Temporale',
-          'Snow': 'Neve',
-          'Mist': 'Nebbia',
-          'Fog': 'Nebbia'
-        }
-      };
-      
-      // Map weather condition to emoji
-      const weatherMap = {
-        'Clear': '☀️',
-        'Clouds': '⛅',
-        'Rain': '🌧️',
-        'Drizzle': '🌦️',
-        'Thunderstorm': '⛈️',
-        'Snow': '❄️',
-        'Mist': '🌫️',
-        'Fog': '🌫️'
-      };
-      
-      // Generate realistic mock weather based on time of day and season
-      const now = new Date();
-      const hour = now.getHours();
-      const month = now.getMonth();
-      
-      // Seasonal temperature adjustment (Bovec is in mountains)
-      let baseTemp = 12;
-      if (month >= 5 && month <= 8) baseTemp = 20; // Summer
-      else if (month >= 2 && month <= 4) baseTemp = 15; // Spring
-      else if (month >= 9 && month <= 11) baseTemp = 10; // Fall
-      else baseTemp = 5; // Winter
-      
-      // Time of day adjustment
-      if (hour >= 6 && hour < 12) baseTemp += 2; // Morning
-      else if (hour >= 12 && hour < 18) baseTemp += 5; // Afternoon
-      else if (hour >= 18 && hour < 22) baseTemp += 1; // Evening
-      else baseTemp -= 2; // Night
-      
-      const temp = Math.round(baseTemp + (Math.random() * 6 - 3));
-      
-      // Weather conditions based on season
-      const conditions = month >= 5 && month <= 8 
-        ? ['Clear', 'Clear', 'Clouds', 'Clouds', 'Clear'] // Summer: mostly clear
-        : month >= 11 || month <= 2
-        ? ['Clouds', 'Clouds', 'Snow', 'Clouds', 'Clear'] // Winter: more clouds/snow
-        : ['Clear', 'Clouds', 'Rain', 'Clouds', 'Clear']; // Spring/Fall: mixed
-      
-      const condition = conditions[Math.floor(Math.random() * conditions.length)];
-      
-      weatherTemp.textContent = `${temp}°`;
-      weatherIcon.textContent = weatherMap[condition] || '🌤️';
-      const descText = weatherDescMap[currentLang]?.[condition] || condition;
-      weatherDesc.textContent = descText;
-      weatherDesc.setAttribute('data-i18n', '');
-      
-      // Try to fetch real weather data (optional - requires API key)
       try {
-        // Uncomment and add your OpenWeatherMap API key if you have one
-        // const apiKey = 'YOUR_API_KEY_HERE';
-        // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
-        // const response = await fetch(url);
-        // if (response.ok) {
-        //   const data = await response.json();
-        //   weatherTemp.textContent = `${Math.round(data.main.temp)}°`;
-        //   const condition = data.weather[0].main;
-        //   weatherIcon.textContent = weatherMap[condition] || '🌤️';
-        //   weatherDesc.textContent = weatherDescMap[currentLang]?.[condition] || condition;
-        // }
+        // Get coordinates (from cache, geolocation, or default)
+        const coords = await getEffectiveCoords();
+        
+        // Update location display
+        if (weatherLocation && coords.city) {
+          weatherLocation.textContent = coords.city;
+        } else {
+          updateWeatherLocation();
+        }
+        
+        // Fetch real weather
+        const weatherData = await fetchOpenMeteoWeather(coords.lat, coords.lon);
+        
+        if (weatherData) {
+          // Update temperature
+          weatherTemp.textContent = `${weatherData.temp}°`;
+          
+          // Map weather code to icon and text
+          const weatherInfo = weatherCodeToIconAndText(weatherData.code, currentLang);
+          weatherIcon.textContent = weatherInfo.icon;
+          weatherDesc.textContent = weatherInfo.text;
+          weatherDesc.setAttribute('data-i18n', '');
+          
+          // Update cache with weather code for language re-rendering
+          try {
+            const cached = localStorage.getItem(WEATHER_CACHE_KEY);
+            if (cached) {
+              const parsed = JSON.parse(cached);
+              parsed.weatherCode = weatherData.code;
+              localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify(parsed));
+            }
+          } catch (e) {
+            // Ignore cache update errors
+          }
+        } else {
+          // Fallback if API fails
+          weatherTemp.textContent = '--°';
+          weatherIcon.textContent = '🌤️';
+          weatherDesc.textContent = translations[currentLang]?.weather_loading || 'Loading...';
+        }
       } catch (error) {
-        // Keep mock data if API fails
+        console.error('Weather update error:', error);
+        weatherTemp.textContent = '--°';
+        weatherIcon.textContent = '🌤️';
+        weatherDesc.textContent = translations[currentLang]?.weather_loading || 'Loading...';
       }
     }
     
@@ -2598,9 +2812,9 @@
       attractionsBack.addEventListener('click', closeAttractions);
     }
 
-    // Update weather on load and every 30 minutes
+    // Update weather on load and every 15 minutes
     updateWeather();
-    setInterval(updateWeather, 30 * 60 * 1000);
+    setInterval(updateWeather, WEATHER_REFRESH_INTERVAL);
 
     // Element SDK
     async function onConfigChange(config) {
@@ -2639,11 +2853,7 @@
         heroLocation.textContent = config.location_subtitle || defaultConfig.location_subtitle;
       }
 
-      // Update weather location
-      if (config.location_subtitle) {
-        defaultConfig.location_subtitle = config.location_subtitle;
-      }
-      updateWeatherLocation();
+      // Weather location is now dynamic, no need to update from config
 
       const hostPhone = config.host_phone || defaultConfig.host_phone;
       const callAction = document.getElementById('call-action');
