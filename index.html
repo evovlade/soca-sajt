@@ -1066,6 +1066,228 @@
       transform: scale(0.9);
     }
     
+    #trip-ideas-back {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      line-height: 1;
+      transition: transform 0.2s ease;
+    }
+    
+    #trip-ideas-back:active {
+      transform: scale(0.9);
+    }
+    
+    #quick-help-back {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      line-height: 1;
+      transition: transform 0.2s ease;
+    }
+    
+    #quick-help-back:active {
+      transform: scale(0.9);
+    }
+    
+    .quick-help-section {
+      margin-bottom: 2rem;
+    }
+    
+    .quick-help-section-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .quick-help-button {
+      width: 100%;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .quick-help-button:hover {
+      background: rgba(34, 211, 238, 0.1);
+      border-color: var(--accent);
+    }
+    
+    .quick-help-button:active {
+      transform: scale(0.98);
+    }
+    
+    .quick-help-button-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+    
+    .quick-help-button-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    
+    .quick-help-app-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    
+    .quick-help-app-button {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .quick-help-app-button:hover {
+      background: rgba(34, 211, 238, 0.1);
+      border-color: var(--accent);
+    }
+    
+    .quick-help-app-button:active {
+      transform: scale(0.98);
+    }
+    
+    .quick-help-info-note {
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+    
+    .quick-help-origin-selector {
+      margin-bottom: 1.5rem;
+    }
+    
+    .quick-help-origin-label {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+    
+    .quick-help-origin-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .quick-help-origin-card {
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .quick-help-origin-card:hover {
+      background: rgba(34, 211, 238, 0.15);
+      border-color: var(--accent);
+    }
+    
+    .quick-help-origin-card.selected {
+      background: rgba(34, 211, 238, 0.2);
+      border-color: var(--accent);
+    }
+    
+    .quick-help-origin-card-title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+    }
+    
+    .place-selector {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .place-card {
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .place-card:hover {
+      background: rgba(34, 211, 238, 0.15);
+      border-color: var(--accent);
+    }
+    
+    .place-card.selected {
+      background: rgba(34, 211, 238, 0.2);
+      border-color: var(--accent);
+    }
+    
+    .place-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .trip-section {
+      margin-bottom: 2rem;
+    }
+    
+    .trip-section-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent);
+    }
+    
+    .trip-section-content {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+    
+    .change-place-btn {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    
     .screen-title {
       font-size: 1.25rem;
       font-weight: 700;
@@ -1278,6 +1500,249 @@
     }
     
     /* Animations */
+    /* Feedback Button */
+    .feedback-button {
+      position: fixed;
+      bottom: calc(3.5rem + env(safe-area-inset-bottom));
+      right: 1rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 0.875rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 9998;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    
+    .feedback-button:hover {
+      background: rgba(34, 211, 238, 0.2);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(34, 211, 238, 0.3);
+    }
+    
+    .feedback-button:active {
+      transform: translateY(0);
+    }
+    
+    .feedback-icon {
+      font-size: 1.375rem;
+    }
+    
+    .feedback-label {
+      white-space: nowrap;
+    }
+    
+    @media (max-width: 640px) {
+      .feedback-button {
+        bottom: calc(3rem + env(safe-area-inset-bottom));
+        right: 0.75rem;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.8125rem;
+      }
+      .feedback-label {
+        display: inline;
+      }
+      .feedback-icon {
+        font-size: 1.25rem;
+      }
+    }
+    
+    /* Feedback Modal */
+    .feedback-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    
+    .feedback-modal.show {
+      display: flex;
+    }
+    
+    .feedback-modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    
+    .feedback-modal-content {
+      position: relative;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    
+    .feedback-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .feedback-modal-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .feedback-modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      padding-right: 3rem;
+    }
+    
+    .feedback-modal-subtitle {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+    
+    .feedback-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    
+    .feedback-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .feedback-label {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .feedback-textarea {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 0.875rem;
+      color: var(--text-primary);
+      font-size: 0.9375rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 80px;
+      transition: all 0.2s ease;
+    }
+    
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .feedback-radio-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+    }
+    
+    .feedback-radio-label input[type="radio"] {
+      width: 1.125rem;
+      height: 1.125rem;
+      cursor: pointer;
+    }
+    
+    .feedback-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    
+    .feedback-btn {
+      flex: 1;
+      padding: 0.875rem 1.5rem;
+      border-radius: 12px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+    
+    .feedback-btn-primary {
+      background: var(--accent);
+      color: var(--bg-dark);
+      border-color: var(--accent);
+    }
+    
+    .feedback-btn-primary:hover {
+      background: var(--accent-strong);
+      transform: translateY(-1px);
+    }
+    
+    .feedback-btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border-color: var(--glass-border);
+    }
+    
+    .feedback-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .feedback-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      padding: 0.875rem;
+      color: #fca5a5;
+      font-size: 0.875rem;
+    }
+    
+    .feedback-success {
+      background: rgba(34, 211, 153, 0.1);
+      border: 1px solid rgba(34, 211, 153, 0.3);
+      border-radius: 12px;
+      padding: 0.875rem;
+      color: #6ee7b7;
+      font-size: 0.875rem;
+      text-align: center;
+    }
+    
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -1301,8 +1766,8 @@
     
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
+        50% { transform: translateY(-10px); }
+    }     
     
     @keyframes slideDown {
       from {
@@ -1396,12 +1861,19 @@
       <h3 class="menu-title" data-i18n="parking">Parkiranje</h3>
       <p class="menu-subtitle" data-i18n="parking_sub">Informacije</p>
      </div>
-     <div class="menu-card" data-section="recommendations">
+     <div class="menu-card" id="trip-ideas-card">
       <div class="menu-icon">
-       ⭐
+       🗺️
       </div>
-      <h3 class="menu-title" data-i18n="recommendations">Priporočila</h3>
-      <p class="menu-subtitle" data-i18n="recommendations_sub">Okolica</p>
+      <h3 class="menu-title" data-i18n="trip_ideas">Ideje za izlete</h3>
+      <p class="menu-subtitle" data-i18n="trip_ideas_sub">Izleti</p>
+     </div>
+     <div class="menu-card" id="quick-help-card">
+      <div class="menu-icon">
+       ⚡
+      </div>
+      <h3 class="menu-title" data-i18n="quick_help">Hitra pomoč</h3>
+      <p class="menu-subtitle" data-i18n="quick_help_sub">Pomoč</p>
      </div>
     </div><!-- Emergency Panel -->
     <div class="accordion-panel" id="emergency-panel">
@@ -1614,8 +2086,66 @@
     </div>
     <div class="screen-body" id="attractions-body"></div>
     <footer class="app-footer attractions-footer" data-i18n="footer_attribution">Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov</footer>
-   </div><!-- Toast -->
+   </div><!-- Trip Ideas Screen -->
+   <div id="trip-ideas-screen" class="screen">
+    <div class="screen-header">
+     <button id="trip-ideas-back" type="button">←</button>
+     <div class="screen-title" data-i18n="trip_ideas">Ideje za izlete</div>
+    </div>
+    <div class="screen-body" id="trip-ideas-body"></div>
+    <footer class="app-footer attractions-footer" data-i18n="footer_attribution">Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov</footer>
+  </div><!-- Quick Help Screen -->
+  <div id="quick-help-screen" class="screen">
+   <div class="screen-header">
+    <button id="quick-help-back" type="button">←</button>
+    <div class="screen-title" data-i18n="quick_help">Hitra pomoč</div>
+   </div>
+   <div class="screen-body" id="quick-help-body"></div>
+   <footer class="app-footer attractions-footer" data-i18n="footer_attribution">Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov</footer>
+  </div><!-- Toast -->
   <div class="toast" id="toast"><span class="toast-icon">✓</span> <span class="toast-text" id="toast-text" data-i18n="copied">Kopirano!</span>
+  </div><!-- Floating Feedback Button -->
+  <button id="feedback-button" class="feedback-button" type="button" aria-label="Send feedback">
+   <span class="feedback-icon">💬</span>
+   <span class="feedback-label" data-i18n="feedback_button">Predlagaj izboljšave</span>
+  </button><!-- Feedback Modal -->
+  <div id="feedback-modal" class="feedback-modal">
+   <div class="feedback-modal-overlay"></div>
+   <div class="feedback-modal-content">
+    <button id="feedback-modal-close" class="feedback-modal-close" type="button" aria-label="Close">×</button>
+    <h2 class="feedback-modal-title" data-i18n="feedback_title">Pomagajte izboljšati ta vodič</h2>
+    <p class="feedback-modal-subtitle" data-i18n="feedback_subtitle">Kaj bi dodali ali izboljšali?</p>
+    <form id="feedback-form" class="feedback-form">
+     <div class="feedback-field">
+      <label for="feedback-add" class="feedback-label" data-i18n="feedback_add_label">Kaj naj dodamo?</label>
+      <textarea id="feedback-add" name="add" class="feedback-textarea" required data-i18n-placeholder="feedback_add_placeholder"></textarea>
+     </div>
+     <div class="feedback-field">
+      <label for="feedback-confusing" class="feedback-label" data-i18n="feedback_confusing_label">Kaj je bilo nejasno ali manjkalo?</label>
+      <textarea id="feedback-confusing" name="confusing" class="feedback-textarea" data-i18n-placeholder="feedback_confusing_placeholder"></textarea>
+     </div>
+     <div class="feedback-field">
+      <label for="feedback-idea" class="feedback-label" data-i18n="feedback_idea_label">Vaša ideja / predlog</label>
+      <textarea id="feedback-idea" name="idea" class="feedback-textarea" data-i18n-placeholder="feedback_idea_placeholder"></textarea>
+     </div>
+     <div class="feedback-field">
+      <label class="feedback-radio-label">
+       <input type="radio" name="role" value="guest" checked>
+       <span data-i18n="feedback_role_guest">Sem gost</span>
+      </label>
+      <label class="feedback-radio-label">
+       <input type="radio" name="role" value="host">
+       <span data-i18n="feedback_role_host">Sem gostitelj / lastnik</span>
+      </label>
+     </div>
+     <div id="feedback-error" class="feedback-error" style="display: none;"></div>
+     <div id="feedback-success" class="feedback-success" style="display: none;" data-i18n="feedback_success">Hvala! Vaš predlog je shranjen (demo).</div>
+     <div class="feedback-actions">
+      <button type="button" id="feedback-cancel" class="feedback-btn feedback-btn-secondary" data-i18n="feedback_cancel">Prekliči</button>
+      <button type="submit" class="feedback-btn feedback-btn-primary" data-i18n="feedback_submit">Pošlji</button>
+     </div>
+    </form>
+   </div>
   </div><!-- Footer Attribution -->
   <footer class="app-footer" id="app-footer" data-i18n="footer_attribution">Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov</footer>
   <script>
@@ -1730,7 +2260,116 @@
         attractions_bovec_html: "<p>Bovec je srce doline Soče, obkrožen z Julijskimi Alpami. Mesto ponuja nepozabne naravne lepote in zgodovinske znamenitosti.</p><h3>Naravne znamenitosti</h3><p>Soča je najlepša smaragdna reka v Evropi. Ob njej so številne sprehajalne poti, ki vodijo ob reki ali po bližnjih hribih. Velika Korita Soče so spektakularen naravni pojav, kjer reka seka skozi globoke kanjone.</p><p>Slap Boka je najvišji slap v Sloveniji (144 metrov). Do njega vodi lahek sprehod, primeren za vse starosti. Razgled je neverjeten, posebej po deževju, ko je slap najmočnejši.</p><h3>Kulturna dediščina</h3><p>Bovec je bil pomemben med prvo svetovno vojno. V okolici najdete številne spominske poti in muzeje, ki pripovedujejo zgodbo o soški fronti. Kobaridski muzej je eden najboljših vojaških muzejev v regiji.</p><h3>Razgledne točke</h3><p>Vzpon na Rombon ali na bližnje hribe ponuja panoramske razglede na dolino Soče in okoliške gore. Najboljši čas za obisk je zgodaj zjutraj ali pozno popoldne, ko je svetloba najlepša.</p><h3>Praktični nasveti</h3><ul><li>Parkiranje je na voljo v centru mesta, večinoma brezplačno.</li><li>Spoštujte naravo: ne puščajte smeti, ostajajte na označenih poteh.</li><li>Najboljši čas za obisk: spomlad in jesen za sprehode, poletje za kopanje v Soči.</li><li>Vreme v gorah se hitro spreminja, zato prinesite primerno obleko.</li></ul>",
         attractions_kobarid_html: "<p>Kobarid je zgodovinsko mesto, znano predvsem po Kobaridskem muzeju in spominski poti, ki prikazuje pomembne dogodke prve svetovne vojne.</p><h3>Kobaridski muzej</h3><p>Muzej prikazuje zgodbo o soški fronti skozi interaktivne razstave in artefakte. To je ena najpomembnejših kulturnih znamenitosti v regiji.</p><h3>Spominska pot</h3><p>Pot vodi po pomembnih lokacijah iz prve svetovne vojne. Ob poti so informativne table, ki razlagajo zgodovinske dogodke. Sprehod je primeren za vse starosti.</p><h3>Naravne lepote</h3><p>Kobarid leži ob Soči, zato so dostopne številne sprehajalne poti ob reki. Okolica ponuja tudi možnosti za lažje gorske sprehode.</p><h3>Mestni center</h3><p>Zgodovinski center Kobarida je prijeten za sprehode. Najdete tradicionalno arhitekturo in lokalne trgovine.</p>",
         attractions_tolmin_html: "<p>Tolmin je največje mesto v dolini Soče, z bogato zgodovino in naravnimi znamenitostmi.</p><h3>Tolminske klisure</h3><p>Ena najbolj znanih naravnih znamenitosti v Sloveniji. Klisure ponujajo spektakularen sprehod ob reki Tolminki, ki se spušča skozi globoke kanjone. Obisk je primeren za vse, ki lahko hodijo po stopnicah.</p><h3>Naravni rezervat</h3><p>Okolica Tolmina je bogata z naravnimi rezervati, kjer lahko opazujete lokalno floro in favno. Obstajajo označene poti za različne stopnje težavnosti.</p><h3>Kulturna dediščina</h3><p>Tolmin ima zgodovinski center z zanimivo arhitekturo. Mestni muzej prikazuje lokalno zgodovino in kulturo.</p><h3>Razgledne točke</h3><p>Vzpon na bližnje hribe ponuja lepe razglede na dolino. Najboljši čas za obisk je zgodaj zjutraj ali ob sončnem zahodu.</p><h3>Praktični nasveti</h3><ul><li>Parkiranje je na voljo blizu glavnih znamenitosti.</li><li>Za obisk Tolminskih klisurev prinesite udobne čevlje za hojo.</li><li>Spoštujte naravne rezervate in ostajajte na označenih poteh.</li><li>Vreme se lahko hitro spremeni, zato prinesite dodatno obleko.</li></ul>",
-        footer_attribution: "Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov"
+        footer_attribution: "Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov",
+        trip_ideas: "Ideje za izlete",
+        trip_ideas_sub: "Izleti",
+        trip_ideas_intro: "Izberite mesto in odkrijte ideje za obisk, prilagojene vašemu času in interesom.",
+        trip_ideas_change_place: "Spremeni mesto",
+        trip_ideas_overview: "Pregled",
+        trip_ideas_short: "Če imate 1–2 uri",
+        trip_ideas_half: "Pol dneva",
+        trip_ideas_full: "Cel dan",
+        trip_ideas_kids: "Z otroki",
+        trip_ideas_rain: "Slabo vreme",
+        trip_ideas_tips: "Praktični nasveti",
+        quick_help: "Hitra pomoč",
+        quick_help_sub: "Pomoč",
+        quick_help_transport: "🚌 Prevoz",
+        quick_help_essentials: "🛒 Dnevne potrebščine",
+        quick_help_bus_timetable: "Preveri vozni red avtobusa (Nomago)",
+        quick_help_bus_timetable_desc: "Poišči točne odhode in povezave.",
+        quick_help_download_app: "Prenesi Nomago aplikacijo",
+        quick_help_download_ios: "iOS",
+        quick_help_download_android: "Android",
+        quick_help_common_routes: "Pogoste poti (Navigacija)",
+        quick_help_route_tolmin: "Bovec → Tolmin",
+        quick_help_route_most: "Bovec → Most na Soči",
+        quick_help_route_nova_gorica: "Bovec → Nova Gorica",
+        quick_help_route_ljubljana: "Bovec → Ljubljana",
+        quick_help_bus_info: "Iz Bovca avtobusi običajno vozijo proti Tolminu in naprej proti Novi Gorici ali Mostu na Soči. Obstaja tudi vsaj ena dnevna povezava z Ljubljano.",
+        quick_help_supermarket: "Supermarket",
+        quick_help_atm: "Bankomat",
+        quick_help_gas: "Bencinska črpalka",
+        quick_help_parking: "Parkiranje",
+        quick_help_toilet: "Javni WC",
+        quick_help_where_are_you: "Kje ste zdaj?",
+        quick_help_route_to_bovec: "V Bovec",
+        quick_help_route_to_tolmin: "V Tolmin",
+        quick_help_route_to_kobarid: "V Kobarid",
+        quick_help_route_to_most: "V Most na Soči (vlak)",
+        quick_help_route_to_nova_gorica: "V Novo Gorico",
+        quick_help_route_to_ljubljana: "V Ljubljano",
+        feedback_button: "Predlagaj izboljšave",
+        feedback_title: "Pomagajte izboljšati ta vodič",
+        feedback_subtitle: "Kaj bi dodali ali izboljšali?",
+        feedback_add_label: "Kaj naj dodamo?",
+        feedback_add_placeholder: "Napišite, kaj bi radi dodali...",
+        feedback_confusing_label: "Kaj je bilo nejasno ali manjkalo?",
+        feedback_confusing_placeholder: "Napišite, kaj je bilo nejasno...",
+        feedback_idea_label: "Vaša ideja / predlog",
+        feedback_idea_placeholder: "Napišite svojo idejo...",
+        feedback_role_guest: "Sem gost",
+        feedback_role_host: "Sem gostitelj / lastnik",
+        feedback_submit: "Pošlji",
+        feedback_cancel: "Prekliči",
+        feedback_success: "Hvala! Vaš predlog je shranjen (demo).",
+        feedback_error: "Prosimo, napišite vsaj en predlog.",
+        trip_ideas_tolmin_title: "Tolmin",
+        trip_ideas_tolmin_overview: "Tolmin je največje mesto v dolini Soče, odlična izhodiščna točka za raziskovanje naravnih znamenitosti. Mesto ponuja mirne sprehode ob rekah, dostop do Tolminskih klisurev in lepe razgledne točke. Idealno za obiskovalce, ki iščejo kombinacijo narave in kulturne dediščine.",
+        trip_ideas_tolmin_short: "Začnite s sprehodom po mestnem centru, nato se odpravite do reke Tolminke za kratek sprehod ob vodi. Obisk razgledne točke nad mestom ponuja lepe poglede na dolino. Vse skupaj traja približno 1–2 uri in je primerno za vse starosti.",
+        trip_ideas_tolmin_half: "Zgodaj zjutraj ali pozno popoldne obiščite Tolminske klisure, ko je svetloba najlepša. Sprehod skozi klisure traja približno 1,5 ure. Po obisku se odpravite na kratek gozdni sprehod ali počivajte ob reki. Vrnitev v mesto za kratek obisk centra ali muzeja.",
+        trip_ideas_tolmin_full: "Začnite z obiskom Tolminskih klisurev zgodaj zjutraj, ko je manj obiskovalcev. Po obisku se odpravite na razgledno točko za panoramske poglede. Popoldne raziskujte okoliške gozdne poti ali počivajte ob reki. Ob sončnem zahodu se vrnite k reki za mirno zaključek dneva.",
+        trip_ideas_tolmin_kids: "Izbirajte ravne poti ob reki, ki so varne za otroke. Izogibajte se spolzkim kamnom ob reki. Prinesite prigrizke in vodo. Tolminske klisure so primerne za otroke, ki lahko hodijo po stopnicah, vendar pazite na varnost. Planirajte pogoste premore.",
+        trip_ideas_tolmin_rain: "Ob deževju obiščite mestni muzej ali zgodovinski center. Kratki sprehodi pod nadstreški so možni. Če se vreme izboljša, lahko naredite kratek varen sprehod ob reki, vendar pazite na spolzke kamne.",
+        trip_ideas_tolmin_tips: "Prinesite udobne čevlje za hojo, posebej za klisure. Vreme v gorah se hitro spreminja – prinesite dodatno obleko. Preverite vodostaj reke pred obiskom, če je bilo deževno vreme. Spoštujte naravo in ostajajte na označenih poteh. Parkiranje je na voljo blizu glavnih znamenitosti.",
+        trip_ideas_kobarid_title: "Kobarid",
+        trip_ideas_kobarid_overview: "Kobarid je zgodovinsko mesto, znano po svoji pomembni vlogi med prvo svetovno vojno. Kombinira zgodovinsko dediščino z naravnimi lepotami. Mesto ponuja dostop do muzejev, spominskih poti in lepih sprehajalnih poti ob Soči.",
+        trip_ideas_kobarid_short: "Sprehodite se po zgodovinskem centru mesta, nato se odpravite na kratek označen sprehod ob Soči. Razgledna točka ob reki ponuja lepe poglede. Obisk traja približno 1–2 uri in je primeren za vse.",
+        trip_ideas_kobarid_half: "Začnite z obiskom Kobaridskega muzeja ali spominske poti za zgodovinski kontekst. Nato se odpravite na lahek sprehod ob Soči za počitek in uživanje v naravi. Kombinacija zgodovine in narave naredi ta obisk posebej zanimiv.",
+        trip_ideas_kobarid_full: "Zgodaj zjutraj raziskujte zgodovinske znamenitosti – muzej in spominske poti. Popoldne se odpravite na daljši sprehod ob Soči ali raziskujte okoliške doline za razgledne točke. Dan zaključite z mirnim sprehodom ob reki ob sončnem zahodu.",
+        trip_ideas_kobarid_kids: "Muzej in spominske poti so primerni za otroke, vendar razložite zgodovinski kontekst na otroški način. Igrajte igro iskanja znamenitosti ob poti. Ravne poti ob Soči so varne za otroke. Planirajte pogoste premore in prinesite prigrizke.",
+        trip_ideas_kobarid_rain: "Muzej in zgodovinski center so odlična možnost ob deževju. Kratki sprehodi pod nadstreški so možni. Če se vreme izboljša, lahko naredite kratek varen sprehod ob reki, vendar pazite na blatne poti.",
+        trip_ideas_kobarid_tips: "Začnite zgodaj, da se izognete gužvi v muzeju. Prinesite udobne čevlje, posebej za blatne poti po deževju. Preverite odpiralne čase muzeja pred obiskom. Spoštujte zgodovinske spomenike in ostajajte na označenih poteh.",
+        trip_ideas_srpenica_title: "Srpenica",
+        trip_ideas_srpenica_overview: "Srpenica je majhno slikovito mesto ob Soči, odlična postaja za kratek obisk. Ponuja lepe poglede na reko, mirne sprehode ob vodi in možnost fotografiranja. Idealno za tiste, ki iščejo kratek, sproščujoč obisk.",
+        trip_ideas_srpenica_short: "Kratek sprehod ob reki Soči za fotografiranje in uživanje v naravi. Razgledna točka ponuja lepe poglede na dolino. Obisk traja približno 1–2 uri in je primeren za vse starosti.",
+        trip_ideas_srpenica_half: "Začnite s sprehodom ob reki, nato se odpravite na razgledno točko za panoramske poglede. Po obisku raziskujte okoliške lažje sprehajalne poti. Dan zaključite z mirnim počivanjem ob reki.",
+        trip_ideas_srpenica_full: "Začnite zgodaj zjutraj s sprehodom ob Soči, ko je svetloba najlepša za fotografiranje. Raziskujte okoliške poti in razgledne točke. Popoldne počivajte ob reki ali raziskujte bližnje slikovite vasi. Dan zaključite ob sončnem zahodu.",
+        trip_ideas_srpenica_kids: "Ravne poti ob reki so varne za otroke. Pazite na varnost ob vodi – otroci morajo biti vedno pod nadzorom. Prinesite prigrizke in vodo. Izbirajte kratke, lažje sprehode, ki so primerni za otroke.",
+        trip_ideas_srpenica_rain: "Ob deževju so možni kratki sprehodi pod nadstreški ali v avtu. Slikovita vožnja po okolici je možna. Če se vreme izboljša, lahko naredite kratek varen sprehod ob reki.",
+        trip_ideas_srpenica_tips: "Parkiranje je na voljo ob glavnih znamenitostih – uporabite označene parkirne prostore. Pazite na spolzke kamne ob reki, posebej po deževju. Spoštujte zasebno lastnino in ostajajte na javnih poteh. Prinesite fotoaparat za lepe poglede.",
+        trip_ideas_zaga_title: "Žaga",
+        trip_ideas_zaga_overview: "Žaga je območje ob vhodu v dolino, ki ponuja kratke slikovite postaje. Idealno za tiste, ki potujejo skozi ali iščejo hitre obiske razglednih točk. Območje ponuja dostop do lepih pogledov in lažjih sprehajalnih poti.",
+        trip_ideas_zaga_short: "Kratek obisk razgledne točke za panoramske poglede na dolino. Lahka gozdna pot za kratek sprehod. Obisk traja približno 1–2 uri in je primeren za vse.",
+        trip_ideas_zaga_half: "Začnite z razgledno točko, nato se odpravite na lažjo gozdno pot. Raziskujte okoliške slikovite vasi ali počivajte ob lepih pogledih. Kombinacija razgledov in lahkih sprehodov naredi ta obisk prijeten.",
+        trip_ideas_zaga_full: "Zgodaj zjutraj raziskujte razgledne točke za najboljše fotografije. Popoldne raziskujte okoliške vasi in lažje gorske poti. Dan zaključite z mirnim sprehodom in uživanjem v panoramskih pogledih.",
+        trip_ideas_zaga_kids: "Izbirajte ravne, varne poti, primerne za otroke. Izogibajte se strmim robovom in nevarnim območjem. Prinesite prigrizke in vodo. Planirajte kratke sprehode s pogostimi premori.",
+        trip_ideas_zaga_rain: "Ob deževju so možne kratke postaje na razglednih točkah z avtom. Slikovita vožnja po okolici je možna. Če se vreme izboljša, lahko naredite kratek varen sprehod.",
+        trip_ideas_zaga_tips: "Pazite na promet na cestah – uporabite označene prehode. Parkiranje je na voljo ob glavnih točkah. Vreme se lahko hitro spremeni – prinesite dodatno obleko. Spoštujte zasebno lastnino in ostajajte na javnih poteh.",
+        trip_ideas_bovec_title: "Bovec",
+        trip_ideas_bovec_overview: "Bovec je aktivno središče doline Soče, obkroženo z Julijskimi Alpami. Mesto ponuja dostop do številnih naravnih znamenitosti, sprehajalnih poti ob Soči in razglednih točk. Idealno za tiste, ki iščejo kombinacijo aktivnosti in narave.",
+        trip_ideas_bovec_short: "Sprehodite se po mestnem centru, nato se odpravite do reke Soče za kratek sprehod ob vodi. Razgledna točka ponuja lepe poglede na dolino. Obisk traja približno 1–2 uri.",
+        trip_ideas_bovec_half: "Začnite z lahkimi naravnimi sprehodi ob Soči ali v okolici. Raziskujte označene poti, ki so primerne za vse starosti. Po obisku počivajte ob reki ali raziskujte mestni center. Kombinacija narave in mesta naredi ta obisk zanimiv.",
+        trip_ideas_bovec_full: "Zgodaj zjutraj raziskujte naravne znamenitosti – sprehodi ob Soči in razgledne točke. Popoldne raziskujte okoliške hribe za panoramske poglede. Dan zaključite z mirnim sprehodom ob reki ob sončnem zahodu.",
+        trip_ideas_bovec_kids: "Ravne poti ob Soči so varne za otroke. Izbirajte lažje sprehode, primerne za otroke. Prinesite prigrizke, vodo in dodatno obleko. Planirajte prilagodljiv tempo s pogostimi premori.",
+        trip_ideas_bovec_rain: "Ob deževju raziskujte mestni center ali počivajte v notranjih prostorih. Kratki sprehodi pod nadstreški so možni. Če se vreme izboljša, lahko naredite kratek varen sprehod ob reki.",
+        trip_ideas_bovec_tips: "Prinesite dovolj vode, posebej za daljše sprehode. Začnite zgodaj, da se izognete gužvi. Vreme v gorah se hitro spreminja – prinesite primerno obleko. Spoštujte naravo in ostajajte na označenih poteh.",
+        trip_ideas_cezsoča_title: "Čezsoča",
+        trip_ideas_cezsoča_overview: "Čezsoča je območje ob Soči z dostopom do številnih peščenih in prodnatih bregov. Idealno za tiste, ki iščejo mirne sprehode ob reki, fotografiranje in uživanje v naravi. Območje ponuja lepe možnosti za počitek ob vodi.",
+        trip_ideas_cezsoča_short: "Sprehod ob reki Soči po širokih prodnatih bregovih. Fotografiranje in uživanje v naravi. Obisk traja približno 1–2 uri in je primeren za vse.",
+        trip_ideas_cezsoča_half: "Začnite s sprehodom ob reki, nato raziskujte okoliške poti za različne poglede. Po obisku počivajte ob širokih prodnatih bregovih. Kombinacija sprehodov in počitka naredi ta obisk prijeten.",
+        trip_ideas_cezsoča_full: "Zgodaj zjutraj raziskujte različne dele reke in okoliške poti. Popoldne počivajte ob širokih prodnatih bregovih ali raziskujte daljše sprehode. Dan zaključite ob sončnem zahodu z mirnim sprehodom ob reki.",
+        trip_ideas_cezsoča_kids: "Široki prodnati bregovi so varnejši za otroke kot ozki poti. Pazite na varnost ob vodi – otroci morajo biti vedno pod nadzorom. Izbirajte široke, ravne območja za igro. Prinesite prigrizke in vodo.",
+        trip_ideas_cezsoča_rain: "Ob deževju so možni kratki sprehodi, vendar pazite na spolzke kamne. Če je vreme preveč slabo, razmislite o alternativnih aktivnostih. Če se vreme izboljša, lahko naredite kratek varen sprehod.",
+        trip_ideas_cezsoča_tips: "Spoštujte zasebno lastnino – ostajajte na javnih poteh. Če pripeljete psa, ga imejte na povodcu. Ne puščajte smeti – odnosite vse s seboj. Pazite na vodostaj reke, posebej po deževju.",
+        trip_ideas_vodenca_title: "Vodenca",
+        trip_ideas_vodenca_overview: "Vodenca je območje ob sotočju rek, ki ponuja lepe naravne znamenitosti. Idealno za tiste, ki iščejo mirne sprehode in uživanje v naravnih pojavih. Območje ponuja dostop do lepih pogledov in lažjih sprehajalnih poti.",
+        trip_ideas_vodenca_short: "Kratek sprehod ob sotočju rek za fotografiranje in uživanje v naravi. Razgledna točka ponuja lepe poglede. Obisk traja približno 1–2 uri.",
+        trip_ideas_vodenca_half: "Začnite s sprehodom ob sotočju, nato raziskujte okoliške poti. Po obisku počivajte ob lepih pogledih. Kombinacija naravnih znamenitosti in mirnih sprehodov naredi ta obisk prijeten.",
+        trip_ideas_vodenca_full: "Zgodaj zjutraj raziskujte sotočje in okoliške poti. Popoldne raziskujte daljše sprehode ali počivajte ob lepih pogledih. Dan zaključite z mirnim sprehodom ob sončnem zahodu.",
+        trip_ideas_vodenca_kids: "Ravne poti ob sotočju so varne za otroke. Pazite na varnost ob vodi. Prinesite prigrizke in vodo. Izbirajte kratke, lažje sprehode, primerne za otroke.",
+        trip_ideas_vodenca_rain: "Ob deževju so možni kratki sprehodi, vendar pazite na spolzke kamne. Če je vreme preveč slabo, razmislite o alternativnih aktivnostih. Če se vreme izboljša, lahko naredite kratek varen sprehod.",
+        trip_ideas_vodenca_tips: "Pazite na vodostaj rek, posebej po deževju. Spoštujte naravo in ostajajte na označenih poteh. Prinesite udobne čevlje za hojo. Parkiranje je na voljo ob glavnih točkah."
       },
       en: {
         welcome: "Welcome",
@@ -1826,7 +2465,116 @@
         attractions_bovec_html: "<p>Bovec is the heart of the Soča Valley, surrounded by the Julian Alps. The town offers unforgettable natural beauty and historical sites.</p><h3>Natural Attractions</h3><p>The Soča River is the most beautiful emerald river in Europe. Along it are numerous walking trails that follow the river or nearby hills. The Great Soča Gorge is a spectacular natural phenomenon where the river cuts through deep canyons.</p><p>Boka Waterfall is the highest waterfall in Slovenia (144 meters). A gentle walk leads to it, suitable for all ages. The view is incredible, especially after rain when the waterfall is at its strongest.</p><h3>Cultural Heritage</h3><p>Bovec was significant during World War I. In the surrounding area, you'll find numerous memorial trails and museums that tell the story of the Isonzo Front. The Kobarid Museum is one of the best military museums in the region.</p><h3>Viewpoints</h3><p>Climbing Rombon or nearby hills offers panoramic views of the Soča Valley and surrounding mountains. The best time to visit is early morning or late afternoon when the light is most beautiful.</p><h3>Practical Tips</h3><ul><li>Parking is available in the town center, mostly free.</li><li>Respect nature: don't leave trash, stay on marked trails.</li><li>Best time to visit: spring and autumn for walks, summer for swimming in the Soča.</li><li>Mountain weather changes quickly, so bring appropriate clothing.</li></ul>",
         attractions_kobarid_html: "<p>Kobarid is a historic town, best known for the Kobarid Museum and the Walk of Peace, which displays important events from World War I.</p><h3>Kobarid Museum</h3><p>The museum showcases the story of the Isonzo Front through interactive exhibits and artifacts. This is one of the most important cultural sites in the region.</p><h3>Walk of Peace</h3><p>The trail leads through important locations from World War I. Along the path are informative panels explaining historical events. The walk is suitable for all ages.</p><h3>Natural Beauty</h3><p>Kobarid lies along the Soča, so numerous walking trails along the river are accessible. The surroundings also offer opportunities for easier mountain walks.</p><h3>Town Center</h3><p>The historic center of Kobarid is pleasant for strolling. You'll find traditional architecture and local shops.</p>",
         attractions_tolmin_html: "<p>Tolmin is the largest town in the Soča Valley, with rich history and natural attractions.</p><h3>Tolmin Gorges</h3><p>One of the most famous natural attractions in Slovenia. The gorges offer a spectacular walk along the Tolminka River, which descends through deep canyons. The visit is suitable for anyone who can walk on stairs.</p><h3>Nature Reserve</h3><p>The area around Tolmin is rich with nature reserves where you can observe local flora and fauna. There are marked trails for different difficulty levels.</p><h3>Cultural Heritage</h3><p>Tolmin has a historic center with interesting architecture. The town museum displays local history and culture.</p><h3>Viewpoints</h3><p>Climbing nearby hills offers beautiful views of the valley. The best time to visit is early morning or at sunset.</p><h3>Practical Tips</h3><ul><li>Parking is available near main attractions.</li><li>For visiting Tolmin Gorges, bring comfortable walking shoes.</li><li>Respect nature reserves and stay on marked trails.</li><li>Weather can change quickly, so bring extra clothing.</li></ul>",
-        footer_attribution: "Made with ❤️ by V.N. · Demo version · A gift to the local community for a better tourist experience"
+        footer_attribution: "Made with ❤️ by V.N. · Demo version · A gift to the local community for a better tourist experience",
+        trip_ideas: "Trip Ideas",
+        trip_ideas_sub: "Trips",
+        trip_ideas_intro: "Select a place and discover ideas for visiting, tailored to your time and interests.",
+        trip_ideas_change_place: "Change place",
+        trip_ideas_overview: "Overview",
+        trip_ideas_short: "If you have 1–2 hours",
+        trip_ideas_half: "Half day",
+        trip_ideas_full: "Full day",
+        trip_ideas_kids: "With kids",
+        trip_ideas_rain: "Bad weather",
+        trip_ideas_tips: "Practical tips",
+        quick_help: "Quick Help",
+        quick_help_sub: "Help",
+        quick_help_transport: "🚌 Transport",
+        quick_help_essentials: "🛒 Daily essentials",
+        quick_help_bus_timetable: "Check bus timetable (Nomago)",
+        quick_help_bus_timetable_desc: "Find exact departures and connections.",
+        quick_help_download_app: "Download Nomago app",
+        quick_help_download_ios: "iOS",
+        quick_help_download_android: "Android",
+        quick_help_common_routes: "Common routes (Navigation)",
+        quick_help_route_tolmin: "Bovec → Tolmin",
+        quick_help_route_most: "Bovec → Most na Soči",
+        quick_help_route_nova_gorica: "Bovec → Nova Gorica",
+        quick_help_route_ljubljana: "Bovec → Ljubljana",
+        quick_help_bus_info: "From Bovec, buses usually go towards Tolmin and then further towards Nova Gorica or Most na Soči. There is also at least one daily connection to Ljubljana.",
+        quick_help_supermarket: "Supermarket",
+        quick_help_atm: "ATM",
+        quick_help_gas: "Gas station",
+        quick_help_parking: "Parking",
+        quick_help_toilet: "Public toilet",
+        quick_help_where_are_you: "Where are you now?",
+        quick_help_route_to_bovec: "To Bovec",
+        quick_help_route_to_tolmin: "To Tolmin",
+        quick_help_route_to_kobarid: "To Kobarid",
+        quick_help_route_to_most: "To Most na Soči (train)",
+        quick_help_route_to_nova_gorica: "To Nova Gorica",
+        quick_help_route_to_ljubljana: "To Ljubljana",
+        feedback_button: "Send feedback",
+        feedback_title: "Help us improve this guide",
+        feedback_subtitle: "What should we add or improve?",
+        feedback_add_label: "What should be added?",
+        feedback_add_placeholder: "Write what you'd like to add...",
+        feedback_confusing_label: "What was confusing or missing?",
+        feedback_confusing_placeholder: "Write what was confusing...",
+        feedback_idea_label: "Your idea / suggestion",
+        feedback_idea_placeholder: "Write your idea...",
+        feedback_role_guest: "I am a guest",
+        feedback_role_host: "I am a host/owner",
+        feedback_submit: "Send",
+        feedback_cancel: "Cancel",
+        feedback_success: "Thanks! Your feedback was saved (demo).",
+        feedback_error: "Please write at least one suggestion.",
+        trip_ideas_tolmin_title: "Tolmin",
+        trip_ideas_tolmin_overview: "Tolmin is the largest town in the Soča Valley, an excellent base for exploring natural attractions. The town offers calm walks along rivers, access to Tolmin Gorges, and beautiful viewpoints. Ideal for visitors seeking a combination of nature and cultural heritage.",
+        trip_ideas_tolmin_short: "Start with a walk through the town center, then head to the Tolminka River for a short walk along the water. Visiting a viewpoint above town offers beautiful valley views. Everything together takes about 1–2 hours and is suitable for all ages.",
+        trip_ideas_tolmin_half: "Visit Tolmin Gorges early morning or late afternoon when the light is most beautiful. Walking through the gorges takes about 1.5 hours. After the visit, take a short forest walk or rest by the river. Return to town for a brief visit to the center or museum.",
+        trip_ideas_tolmin_full: "Start with a visit to Tolmin Gorges early morning when there are fewer visitors. After the visit, head to a viewpoint for panoramic views. Afternoon explore surrounding forest trails or rest by the river. At sunset, return to the river for a peaceful end to the day.",
+        trip_ideas_tolmin_kids: "Choose flat paths along the river that are safe for children. Avoid slippery stones by the river. Bring snacks and water. Tolmin Gorges are suitable for children who can walk on stairs, but watch for safety. Plan frequent breaks.",
+        trip_ideas_tolmin_rain: "In rainy weather, visit the town museum or historic center. Short walks under cover are possible. If weather improves, you can take a short safe walk along the river, but watch for slippery stones.",
+        trip_ideas_tolmin_tips: "Bring comfortable walking shoes, especially for the gorges. Mountain weather changes quickly – bring extra clothing. Check river water levels before visiting if there has been rainy weather. Respect nature and stay on marked trails. Parking is available near main attractions.",
+        trip_ideas_kobarid_title: "Kobarid",
+        trip_ideas_kobarid_overview: "Kobarid is a historic town, known for its important role during World War I. It combines historical heritage with natural beauty. The town offers access to museums, memorial trails, and beautiful walking paths along the Soča.",
+        trip_ideas_kobarid_short: "Stroll through the historic town center, then take a short marked trail along the Soča. A viewpoint by the river offers beautiful views. The visit takes about 1–2 hours and is suitable for everyone.",
+        trip_ideas_kobarid_half: "Start with a visit to Kobarid Museum or the memorial trail for historical context. Then take an easy walk along the Soča for rest and nature enjoyment. The combination of history and nature makes this visit particularly interesting.",
+        trip_ideas_kobarid_full: "Early morning explore historical sites – museum and memorial trails. Afternoon take a longer walk along the Soča or explore surrounding valleys for viewpoints. End the day with a peaceful walk by the river at sunset.",
+        trip_ideas_kobarid_kids: "Museum and memorial trails are suitable for children, but explain historical context in a child-friendly way. Play a game of finding landmarks along the trail. Flat paths along the Soča are safe for children. Plan frequent breaks and bring snacks.",
+        trip_ideas_kobarid_rain: "Museum and historic center are excellent options in rainy weather. Short walks under cover are possible. If weather improves, you can take a short safe walk along the river, but watch for muddy trails.",
+        trip_ideas_kobarid_tips: "Start early to avoid crowds at the museum. Bring comfortable shoes, especially for muddy trails after rain. Check museum opening hours before visiting. Respect historical monuments and stay on marked trails.",
+        trip_ideas_srpenica_title: "Srpenica",
+        trip_ideas_srpenica_overview: "Srpenica is a small picturesque town along the Soča, perfect for a short visit. It offers beautiful river views, peaceful walks along the water, and photography opportunities. Ideal for those seeking a short, relaxing visit.",
+        trip_ideas_srpenica_short: "A short walk along the Soča River for photography and nature enjoyment. A viewpoint offers beautiful valley views. The visit takes about 1–2 hours and is suitable for all ages.",
+        trip_ideas_srpenica_half: "Start with a walk along the river, then head to a viewpoint for panoramic views. After the visit, explore surrounding easier walking trails. End the day with peaceful rest by the river.",
+        trip_ideas_srpenica_full: "Start early morning with a walk along the Soča when light is best for photography. Explore surrounding trails and viewpoints. Afternoon rest by the river or explore nearby picturesque villages. End the day at sunset.",
+        trip_ideas_srpenica_kids: "Flat paths along the river are safe for children. Watch for water safety – children must always be supervised. Bring snacks and water. Choose short, easier walks suitable for children.",
+        trip_ideas_srpenica_rain: "In rainy weather, short walks under cover or by car are possible. A scenic drive through the area is possible. If weather improves, you can take a short safe walk along the river.",
+        trip_ideas_srpenica_tips: "Parking is available at main attractions – use marked parking areas. Watch for slippery stones by the river, especially after rain. Respect private property and stay on public paths. Bring a camera for beautiful views.",
+        trip_ideas_zaga_title: "Žaga",
+        trip_ideas_zaga_overview: "Žaga is an area at the valley entrance, offering short scenic stops. Ideal for those traveling through or seeking quick visits to viewpoints. The area offers access to beautiful views and easier walking trails.",
+        trip_ideas_zaga_short: "A quick visit to a viewpoint for panoramic valley views. An easy forest trail for a short walk. The visit takes about 1–2 hours and is suitable for everyone.",
+        trip_ideas_zaga_half: "Start with the viewpoint, then take an easier forest trail. Explore surrounding picturesque villages or rest with beautiful views. The combination of views and easy walks makes this visit pleasant.",
+        trip_ideas_zaga_full: "Early morning explore viewpoints for best photos. Afternoon explore surrounding villages and easier mountain trails. End the day with a peaceful walk and enjoying panoramic views.",
+        trip_ideas_zaga_kids: "Choose flat, safe trails suitable for children. Avoid steep edges and dangerous areas. Bring snacks and water. Plan short walks with frequent breaks.",
+        trip_ideas_zaga_rain: "In rainy weather, short stops at viewpoints by car are possible. A scenic drive through the area is possible. If weather improves, you can take a short safe walk.",
+        trip_ideas_zaga_tips: "Watch for traffic on roads – use marked crossings. Parking is available at main points. Weather can change quickly – bring extra clothing. Respect private property and stay on public paths.",
+        trip_ideas_bovec_title: "Bovec",
+        trip_ideas_bovec_overview: "Bovec is the active center of the Soča Valley, surrounded by the Julian Alps. The town offers access to numerous natural attractions, walking trails along the Soča, and viewpoints. Ideal for those seeking a combination of activity and nature.",
+        trip_ideas_bovec_short: "Stroll through the town center, then head to the Soča River for a short walk along the water. A viewpoint offers beautiful valley views. The visit takes about 1–2 hours.",
+        trip_ideas_bovec_half: "Start with easy nature walks along the Soča or in the surroundings. Explore marked trails suitable for all ages. After the visit, rest by the river or explore the town center. The combination of nature and town makes this visit interesting.",
+        trip_ideas_bovec_full: "Early morning explore natural attractions – walks along the Soča and viewpoints. Afternoon explore surrounding hills for panoramic views. End the day with a peaceful walk by the river at sunset.",
+        trip_ideas_bovec_kids: "Flat paths along the Soča are safe for children. Choose easier walks suitable for children. Bring snacks, water, and extra clothing. Plan a flexible pace with frequent breaks.",
+        trip_ideas_bovec_rain: "In rainy weather, explore the town center or rest indoors. Short walks under cover are possible. If weather improves, you can take a short safe walk along the river.",
+        trip_ideas_bovec_tips: "Bring plenty of water, especially for longer walks. Start early to avoid crowds. Mountain weather changes quickly – bring appropriate clothing. Respect nature and stay on marked trails.",
+        trip_ideas_cezsoča_title: "Čezsoča",
+        trip_ideas_cezsoča_overview: "Čezsoča is an area along the Soča with access to numerous sandy and gravel banks. Ideal for those seeking peaceful walks along the river, photography, and nature enjoyment. The area offers beautiful opportunities for rest by the water.",
+        trip_ideas_cezsoča_short: "A walk along the Soča River on wide gravel banks. Photography and nature enjoyment. The visit takes about 1–2 hours and is suitable for everyone.",
+        trip_ideas_cezsoča_half: "Start with a walk along the river, then explore surrounding trails for different views. After the visit, rest on wide gravel banks. The combination of walks and rest makes this visit pleasant.",
+        trip_ideas_cezsoča_full: "Early morning explore different parts of the river and surrounding trails. Afternoon rest on wide gravel banks or explore longer walks. End the day at sunset with a peaceful walk along the river.",
+        trip_ideas_cezsoča_kids: "Wide gravel banks are safer for children than narrow paths. Watch for water safety – children must always be supervised. Choose wide, flat areas for play. Bring snacks and water.",
+        trip_ideas_cezsoča_rain: "In rainy weather, short walks are possible, but watch for slippery stones. If weather is too bad, consider alternative activities. If weather improves, you can take a short safe walk.",
+        trip_ideas_cezsoča_tips: "Respect private property – stay on public paths. If bringing a dog, keep it on a leash. Don't leave trash – take everything with you. Watch for river water levels, especially after rain.",
+        trip_ideas_vodenca_title: "Vodenca",
+        trip_ideas_vodenca_overview: "Vodenca is an area at the confluence of rivers, offering beautiful natural attractions. Ideal for those seeking peaceful walks and enjoying natural phenomena. The area offers access to beautiful views and easier walking trails.",
+        trip_ideas_vodenca_short: "A short walk at the river confluence for photography and nature enjoyment. A viewpoint offers beautiful views. The visit takes about 1–2 hours.",
+        trip_ideas_vodenca_half: "Start with a walk at the confluence, then explore surrounding trails. After the visit, rest with beautiful views. The combination of natural attractions and peaceful walks makes this visit pleasant.",
+        trip_ideas_vodenca_full: "Early morning explore the confluence and surrounding trails. Afternoon explore longer walks or rest with beautiful views. End the day with a peaceful walk at sunset.",
+        trip_ideas_vodenca_kids: "Flat paths at the confluence are safe for children. Watch for water safety. Bring snacks and water. Choose short, easier walks suitable for children.",
+        trip_ideas_vodenca_rain: "In rainy weather, short walks are possible, but watch for slippery stones. If weather is too bad, consider alternative activities. If weather improves, you can take a short safe walk.",
+        trip_ideas_vodenca_tips: "Watch for river water levels, especially after rain. Respect nature and stay on marked trails. Bring comfortable walking shoes. Parking is available at main points."
       },
       de: {
         welcome: "Willkommen",
@@ -1919,7 +2667,116 @@
         attractions_bovec_html: "<p>Bovec ist das Herz des Soča-Tals, umgeben von den Julischen Alpen. Die Stadt bietet unvergessliche Naturschönheit und historische Stätten.</p><h3>Naturschönheiten</h3><p>Die Soča ist der schönste Smaragdfluss Europas. Entlang des Flusses gibt es zahlreiche Wanderwege, die dem Fluss oder nahegelegenen Hügeln folgen. Die Große Soča-Schlucht ist ein spektakuläres Naturphänomen, bei dem der Fluss durch tiefe Schluchten schneidet.</p><p>Der Boka-Wasserfall ist der höchste Wasserfall Sloweniens (144 Meter). Ein leichter Spaziergang führt dorthin, geeignet für alle Altersgruppen. Die Aussicht ist unglaublich, besonders nach Regen, wenn der Wasserfall am stärksten ist.</p><h3>Kulturerbe</h3><p>Bovec war während des Ersten Weltkriegs bedeutsam. In der Umgebung finden Sie zahlreiche Gedenkwege und Museen, die die Geschichte der Isonzo-Front erzählen. Das Kobarid-Museum ist eines der besten Militärmuseen der Region.</p><h3>Aussichtspunkte</h3><p>Der Aufstieg auf den Rombon oder nahegelegene Hügel bietet Panoramablicke auf das Soča-Tal und die umliegenden Berge. Die beste Zeit für einen Besuch ist frühmorgens oder spätnachmittags, wenn das Licht am schönsten ist.</p><h3>Praktische Tipps</h3><ul><li>Parkplätze sind im Stadtzentrum verfügbar, meist kostenlos.</li><li>Respektieren Sie die Natur: hinterlassen Sie keinen Müll, bleiben Sie auf markierten Wegen.</li><li>Beste Besuchszeit: Frühling und Herbst für Spaziergänge, Sommer zum Schwimmen in der Soča.</li><li>Das Wetter in den Bergen ändert sich schnell, bringen Sie daher angemessene Kleidung mit.</li></ul>",
         attractions_kobarid_html: "<p>Kobarid ist eine historische Stadt, bekannt vor allem für das Kobarid-Museum und den Friedensweg, der wichtige Ereignisse des Ersten Weltkriegs zeigt.</p><h3>Kobarid-Museum</h3><p>Das Museum zeigt die Geschichte der Isonzo-Front durch interaktive Ausstellungen und Artefakte. Dies ist eine der wichtigsten kulturellen Stätten der Region.</p><h3>Friedensweg</h3><p>Der Weg führt durch wichtige Orte des Ersten Weltkriegs. Entlang des Weges befinden sich informative Tafeln, die historische Ereignisse erklären. Der Spaziergang ist für alle Altersgruppen geeignet.</p><h3>Naturschönheit</h3><p>Kobarid liegt an der Soča, daher sind zahlreiche Wanderwege entlang des Flusses zugänglich. Die Umgebung bietet auch Möglichkeiten für leichtere Bergwanderungen.</p><h3>Stadtzentrum</h3><p>Das historische Zentrum von Kobarid ist angenehm zum Spazieren. Sie finden traditionelle Architektur und lokale Geschäfte.</p>",
         attractions_tolmin_html: "<p>Tolmin ist die größte Stadt im Soča-Tal mit reicher Geschichte und natürlichen Attraktionen.</p><h3>Tolminer Klammen</h3><p>Eine der berühmtesten natürlichen Attraktionen Sloweniens. Die Klammen bieten einen spektakulären Spaziergang entlang der Tolminka, die durch tiefe Schluchten absteigt. Der Besuch ist für alle geeignet, die Treppen steigen können.</p><h3>Naturschutzgebiet</h3><p>Die Umgebung von Tolmin ist reich an Naturschutzgebieten, in denen Sie lokale Flora und Fauna beobachten können. Es gibt markierte Wege für verschiedene Schwierigkeitsgrade.</p><h3>Kulturerbe</h3><p>Tolmin hat ein historisches Zentrum mit interessanter Architektur. Das Stadtmuseum zeigt lokale Geschichte und Kultur.</p><h3>Aussichtspunkte</h3><p>Der Aufstieg auf nahegelegene Hügel bietet schöne Ausblicke auf das Tal. Die beste Zeit für einen Besuch ist frühmorgens oder bei Sonnenuntergang.</p><h3>Praktische Tipps</h3><ul><li>Parkplätze sind in der Nähe der Hauptattraktionen verfügbar.</li><li>Für den Besuch der Tolminer Klammen bringen Sie bequeme Wanderschuhe mit.</li><li>Respektieren Sie Naturschutzgebiete und bleiben Sie auf markierten Wegen.</li><li>Das Wetter kann sich schnell ändern, bringen Sie daher zusätzliche Kleidung mit.</li></ul>",
-        footer_attribution: "Mit ❤️ erstellt von V.N. · Demo-Version · Ein Geschenk an die lokale Gemeinschaft für ein besseres Touristenerlebnis"
+        footer_attribution: "Mit ❤️ erstellt von V.N. · Demo-Version · Ein Geschenk an die lokale Gemeinschaft für ein besseres Touristenerlebnis",
+        trip_ideas: "Reiseideen",
+        trip_ideas_sub: "Ausflüge",
+        trip_ideas_intro: "Wählen Sie einen Ort und entdecken Sie Ideen für einen Besuch, angepasst an Ihre Zeit und Interessen.",
+        trip_ideas_change_place: "Ort ändern",
+        trip_ideas_overview: "Übersicht",
+        trip_ideas_short: "Wenn Sie 1–2 Stunden haben",
+        trip_ideas_half: "Halber Tag",
+        trip_ideas_full: "Ganzer Tag",
+        trip_ideas_kids: "Mit Kindern",
+        trip_ideas_rain: "Schlechtes Wetter",
+        trip_ideas_tips: "Praktische Tipps",
+        quick_help: "Schnelle Hilfe",
+        quick_help_sub: "Hilfe",
+        quick_help_transport: "🚌 Transport",
+        quick_help_essentials: "🛒 Tägliche Bedürfnisse",
+        quick_help_bus_timetable: "Busfahrplan prüfen (Nomago)",
+        quick_help_bus_timetable_desc: "Finden Sie genaue Abfahrtszeiten und Verbindungen.",
+        quick_help_download_app: "Nomago App herunterladen",
+        quick_help_download_ios: "iOS",
+        quick_help_download_android: "Android",
+        quick_help_common_routes: "Häufige Routen (Navigation)",
+        quick_help_route_tolmin: "Bovec → Tolmin",
+        quick_help_route_most: "Bovec → Most na Soči",
+        quick_help_route_nova_gorica: "Bovec → Nova Gorica",
+        quick_help_route_ljubljana: "Bovec → Ljubljana",
+        quick_help_bus_info: "Von Bovec fahren Busse normalerweise in Richtung Tolmin und dann weiter in Richtung Nova Gorica oder Most na Soči. Es gibt auch mindestens eine tägliche Verbindung nach Ljubljana.",
+        quick_help_supermarket: "Supermarkt",
+        quick_help_atm: "Geldautomat",
+        quick_help_gas: "Tankstelle",
+        quick_help_parking: "Parkplatz",
+        quick_help_toilet: "Öffentliche Toilette",
+        quick_help_where_are_you: "Wo sind Sie jetzt?",
+        quick_help_route_to_bovec: "Nach Bovec",
+        quick_help_route_to_tolmin: "Nach Tolmin",
+        quick_help_route_to_kobarid: "Nach Kobarid",
+        quick_help_route_to_most: "Nach Most na Soči (Zug)",
+        quick_help_route_to_nova_gorica: "Nach Nova Gorica",
+        quick_help_route_to_ljubljana: "Nach Ljubljana",
+        feedback_button: "Feedback senden",
+        feedback_title: "Helfen Sie uns, diesen Führer zu verbessern",
+        feedback_subtitle: "Was sollten wir hinzufügen oder verbessern?",
+        feedback_add_label: "Was sollte hinzugefügt werden?",
+        feedback_add_placeholder: "Schreiben Sie, was Sie hinzufügen möchten...",
+        feedback_confusing_label: "Was war verwirrend oder fehlte?",
+        feedback_confusing_placeholder: "Schreiben Sie, was verwirrend war...",
+        feedback_idea_label: "Ihre Idee / Vorschlag",
+        feedback_idea_placeholder: "Schreiben Sie Ihre Idee...",
+        feedback_role_guest: "Ich bin Gast",
+        feedback_role_host: "Ich bin Gastgeber / Eigentümer",
+        feedback_submit: "Senden",
+        feedback_cancel: "Abbrechen",
+        feedback_success: "Danke! Ihr Feedback wurde gespeichert (Demo).",
+        feedback_error: "Bitte schreiben Sie mindestens einen Vorschlag.",
+        trip_ideas_tolmin_title: "Tolmin",
+        trip_ideas_tolmin_overview: "Tolmin ist die größte Stadt im Soča-Tal, ein ausgezeichneter Ausgangspunkt für die Erkundung natürlicher Attraktionen. Die Stadt bietet ruhige Spaziergänge entlang der Flüsse, Zugang zu den Tolminer Klammen und schöne Aussichtspunkte. Ideal für Besucher, die eine Kombination aus Natur und kulturellem Erbe suchen.",
+        trip_ideas_tolmin_short: "Beginnen Sie mit einem Spaziergang durch das Stadtzentrum, dann gehen Sie zur Tolminka für einen kurzen Spaziergang am Wasser. Ein Besuch eines Aussichtspunkts über der Stadt bietet schöne Talsichten. Alles zusammen dauert etwa 1–2 Stunden und ist für alle Altersgruppen geeignet.",
+        trip_ideas_tolmin_half: "Besuchen Sie die Tolminer Klammen frühmorgens oder spätnachmittags, wenn das Licht am schönsten ist. Der Spaziergang durch die Klammen dauert etwa 1,5 Stunden. Nach dem Besuch machen Sie einen kurzen Waldspaziergang oder ruhen Sie sich am Fluss aus. Kehren Sie in die Stadt zurück für einen kurzen Besuch des Zentrums oder des Museums.",
+        trip_ideas_tolmin_full: "Beginnen Sie frühmorgens mit einem Besuch der Tolminer Klammen, wenn weniger Besucher da sind. Nach dem Besuch gehen Sie zu einem Aussichtspunkt für Panoramablicke. Nachmittags erkunden Sie umliegende Waldwege oder ruhen Sie sich am Fluss aus. Bei Sonnenuntergang kehren Sie zum Fluss zurück für einen friedlichen Tagesausklang.",
+        trip_ideas_tolmin_kids: "Wählen Sie flache Wege entlang des Flusses, die für Kinder sicher sind. Vermeiden Sie rutschige Steine am Fluss. Bringen Sie Snacks und Wasser mit. Die Tolminer Klammen sind für Kinder geeignet, die Treppen steigen können, aber achten Sie auf Sicherheit. Planen Sie häufige Pausen.",
+        trip_ideas_tolmin_rain: "Bei Regenwetter besuchen Sie das Stadtmuseum oder das historische Zentrum. Kurze Spaziergänge unter Dach sind möglich. Wenn sich das Wetter verbessert, können Sie einen kurzen sicheren Spaziergang entlang des Flusses machen, aber achten Sie auf rutschige Steine.",
+        trip_ideas_tolmin_tips: "Bringen Sie bequeme Wanderschuhe mit, besonders für die Klammen. Das Bergwetter ändert sich schnell – bringen Sie zusätzliche Kleidung mit. Überprüfen Sie den Flusswasserstand vor dem Besuch, wenn es regnerisches Wetter gab. Respektieren Sie die Natur und bleiben Sie auf markierten Wegen. Parkplätze sind in der Nähe der Hauptattraktionen verfügbar.",
+        trip_ideas_kobarid_title: "Kobarid",
+        trip_ideas_kobarid_overview: "Kobarid ist eine historische Stadt, bekannt für ihre wichtige Rolle im Ersten Weltkrieg. Es verbindet historisches Erbe mit natürlicher Schönheit. Die Stadt bietet Zugang zu Museen, Gedenkwegen und schönen Spazierwegen entlang der Soča.",
+        trip_ideas_kobarid_short: "Spazieren Sie durch das historische Stadtzentrum, dann nehmen Sie einen kurzen markierten Weg entlang der Soča. Ein Aussichtspunkt am Fluss bietet schöne Ausblicke. Der Besuch dauert etwa 1–2 Stunden und ist für alle geeignet.",
+        trip_ideas_kobarid_half: "Beginnen Sie mit einem Besuch des Kobarid-Museums oder des Gedenkwegs für historischen Kontext. Dann machen Sie einen leichten Spaziergang entlang der Soča zur Erholung und Naturgenuss. Die Kombination aus Geschichte und Natur macht diesen Besuch besonders interessant.",
+        trip_ideas_kobarid_full: "Frühmorgens erkunden Sie historische Stätten – Museum und Gedenkwege. Nachmittags machen Sie einen längeren Spaziergang entlang der Soča oder erkunden umliegende Täler für Aussichtspunkte. Beenden Sie den Tag mit einem friedlichen Spaziergang am Fluss bei Sonnenuntergang.",
+        trip_ideas_kobarid_kids: "Museum und Gedenkwege sind für Kinder geeignet, aber erklären Sie den historischen Kontext kindgerecht. Spielen Sie ein Spiel, um Sehenswürdigkeiten entlang des Weges zu finden. Flache Wege entlang der Soča sind für Kinder sicher. Planen Sie häufige Pausen und bringen Sie Snacks mit.",
+        trip_ideas_kobarid_rain: "Museum und historisches Zentrum sind ausgezeichnete Optionen bei Regenwetter. Kurze Spaziergänge unter Dach sind möglich. Wenn sich das Wetter verbessert, können Sie einen kurzen sicheren Spaziergang entlang des Flusses machen, aber achten Sie auf schlammige Wege.",
+        trip_ideas_kobarid_tips: "Beginnen Sie früh, um Menschenmengen im Museum zu vermeiden. Bringen Sie bequeme Schuhe mit, besonders für schlammige Wege nach Regen. Überprüfen Sie die Öffnungszeiten des Museums vor dem Besuch. Respektieren Sie historische Denkmäler und bleiben Sie auf markierten Wegen.",
+        trip_ideas_srpenica_title: "Srpenica",
+        trip_ideas_srpenica_overview: "Srpenica ist eine kleine malerische Stadt entlang der Soča, perfekt für einen kurzen Besuch. Sie bietet schöne Flussblicke, ruhige Spaziergänge am Wasser und Fotografiemöglichkeiten. Ideal für diejenigen, die einen kurzen, entspannenden Besuch suchen.",
+        trip_ideas_srpenica_short: "Ein kurzer Spaziergang entlang der Soča zum Fotografieren und Naturgenuss. Ein Aussichtspunkt bietet schöne Talsichten. Der Besuch dauert etwa 1–2 Stunden und ist für alle Altersgruppen geeignet.",
+        trip_ideas_srpenica_half: "Beginnen Sie mit einem Spaziergang entlang des Flusses, dann gehen Sie zu einem Aussichtspunkt für Panoramablicke. Nach dem Besuch erkunden Sie umliegende leichtere Spazierwege. Beenden Sie den Tag mit friedlicher Ruhe am Fluss.",
+        trip_ideas_srpenica_full: "Beginnen Sie frühmorgens mit einem Spaziergang entlang der Soča, wenn das Licht am besten für Fotografie ist. Erkunden Sie umliegende Wege und Aussichtspunkte. Nachmittags ruhen Sie sich am Fluss aus oder erkunden nahegelegene malerische Dörfer. Beenden Sie den Tag bei Sonnenuntergang.",
+        trip_ideas_srpenica_kids: "Flache Wege entlang des Flusses sind für Kinder sicher. Achten Sie auf Wassersicherheit – Kinder müssen immer beaufsichtigt werden. Bringen Sie Snacks und Wasser mit. Wählen Sie kurze, leichtere Spaziergänge, die für Kinder geeignet sind.",
+        trip_ideas_srpenica_rain: "Bei Regenwetter sind kurze Spaziergänge unter Dach oder mit dem Auto möglich. Eine malerische Fahrt durch die Gegend ist möglich. Wenn sich das Wetter verbessert, können Sie einen kurzen sicheren Spaziergang entlang des Flusses machen.",
+        trip_ideas_srpenica_tips: "Parkplätze sind an den Hauptattraktionen verfügbar – nutzen Sie markierte Parkbereiche. Achten Sie auf rutschige Steine am Fluss, besonders nach Regen. Respektieren Sie Privateigentum und bleiben Sie auf öffentlichen Wegen. Bringen Sie eine Kamera für schöne Ausblicke mit.",
+        trip_ideas_zaga_title: "Žaga",
+        trip_ideas_zaga_overview: "Žaga ist ein Gebiet am Taleingang, das kurze malerische Stopps bietet. Ideal für diejenigen, die durchreisen oder schnelle Besuche von Aussichtspunkten suchen. Das Gebiet bietet Zugang zu schönen Ausblicken und leichteren Spazierwegen.",
+        trip_ideas_zaga_short: "Ein schneller Besuch eines Aussichtspunkts für Panoramablicke auf das Tal. Ein leichter Waldweg für einen kurzen Spaziergang. Der Besuch dauert etwa 1–2 Stunden und ist für alle geeignet.",
+        trip_ideas_zaga_half: "Beginnen Sie mit dem Aussichtspunkt, dann nehmen Sie einen leichteren Waldweg. Erkunden Sie umliegende malerische Dörfer oder ruhen Sie sich mit schönen Ausblicken aus. Die Kombination aus Ausblicken und leichten Spaziergängen macht diesen Besuch angenehm.",
+        trip_ideas_zaga_full: "Frühmorgens erkunden Sie Aussichtspunkte für beste Fotos. Nachmittags erkunden Sie umliegende Dörfer und leichtere Bergwege. Beenden Sie den Tag mit einem friedlichen Spaziergang und genießen Sie Panoramablicke.",
+        trip_ideas_zaga_kids: "Wählen Sie flache, sichere Wege, die für Kinder geeignet sind. Vermeiden Sie steile Kanten und gefährliche Bereiche. Bringen Sie Snacks und Wasser mit. Planen Sie kurze Spaziergänge mit häufigen Pausen.",
+        trip_ideas_zaga_rain: "Bei Regenwetter sind kurze Stopps an Aussichtspunkten mit dem Auto möglich. Eine malerische Fahrt durch die Gegend ist möglich. Wenn sich das Wetter verbessert, können Sie einen kurzen sicheren Spaziergang machen.",
+        trip_ideas_zaga_tips: "Achten Sie auf Verkehr auf den Straßen – nutzen Sie markierte Überwege. Parkplätze sind an den Hauptpunkten verfügbar. Das Wetter kann sich schnell ändern – bringen Sie zusätzliche Kleidung mit. Respektieren Sie Privateigentum und bleiben Sie auf öffentlichen Wegen.",
+        trip_ideas_bovec_title: "Bovec",
+        trip_ideas_bovec_overview: "Bovec ist das aktive Zentrum des Soča-Tals, umgeben von den Julischen Alpen. Die Stadt bietet Zugang zu zahlreichen natürlichen Attraktionen, Spazierwegen entlang der Soča und Aussichtspunkten. Ideal für diejenigen, die eine Kombination aus Aktivität und Natur suchen.",
+        trip_ideas_bovec_short: "Spazieren Sie durch das Stadtzentrum, dann gehen Sie zur Soča für einen kurzen Spaziergang am Wasser. Ein Aussichtspunkt bietet schöne Talsichten. Der Besuch dauert etwa 1–2 Stunden.",
+        trip_ideas_bovec_half: "Beginnen Sie mit leichten Naturspaziergängen entlang der Soča oder in der Umgebung. Erkunden Sie markierte Wege, die für alle Altersgruppen geeignet sind. Nach dem Besuch ruhen Sie sich am Fluss aus oder erkunden das Stadtzentrum. Die Kombination aus Natur und Stadt macht diesen Besuch interessant.",
+        trip_ideas_bovec_full: "Frühmorgens erkunden Sie natürliche Attraktionen – Spaziergänge entlang der Soča und Aussichtspunkte. Nachmittags erkunden Sie umliegende Hügel für Panoramablicke. Beenden Sie den Tag mit einem friedlichen Spaziergang am Fluss bei Sonnenuntergang.",
+        trip_ideas_bovec_kids: "Flache Wege entlang der Soča sind für Kinder sicher. Wählen Sie leichtere Spaziergänge, die für Kinder geeignet sind. Bringen Sie Snacks, Wasser und zusätzliche Kleidung mit. Planen Sie ein flexibles Tempo mit häufigen Pausen.",
+        trip_ideas_bovec_rain: "Bei Regenwetter erkunden Sie das Stadtzentrum oder ruhen Sie sich drinnen aus. Kurze Spaziergänge unter Dach sind möglich. Wenn sich das Wetter verbessert, können Sie einen kurzen sicheren Spaziergang entlang des Flusses machen.",
+        trip_ideas_bovec_tips: "Bringen Sie viel Wasser mit, besonders für längere Spaziergänge. Beginnen Sie früh, um Menschenmengen zu vermeiden. Das Bergwetter ändert sich schnell – bringen Sie angemessene Kleidung mit. Respektieren Sie die Natur und bleiben Sie auf markierten Wegen.",
+        trip_ideas_cezsoča_title: "Čezsoča",
+        trip_ideas_cezsoča_overview: "Čezsoča ist ein Gebiet entlang der Soča mit Zugang zu zahlreichen sandigen und kiesigen Ufern. Ideal für diejenigen, die ruhige Spaziergänge entlang des Flusses, Fotografie und Naturgenuss suchen. Das Gebiet bietet schöne Möglichkeiten zur Erholung am Wasser.",
+        trip_ideas_cezsoča_short: "Ein Spaziergang entlang der Soča auf breiten Kiesufern. Fotografie und Naturgenuss. Der Besuch dauert etwa 1–2 Stunden und ist für alle geeignet.",
+        trip_ideas_cezsoča_half: "Beginnen Sie mit einem Spaziergang entlang des Flusses, dann erkunden Sie umliegende Wege für verschiedene Ausblicke. Nach dem Besuch ruhen Sie sich auf breiten Kiesufern aus. Die Kombination aus Spaziergängen und Ruhe macht diesen Besuch angenehm.",
+        trip_ideas_cezsoča_full: "Frühmorgens erkunden Sie verschiedene Teile des Flusses und umliegende Wege. Nachmittags ruhen Sie sich auf breiten Kiesufern aus oder erkunden längere Spaziergänge. Beenden Sie den Tag bei Sonnenuntergang mit einem friedlichen Spaziergang entlang des Flusses.",
+        trip_ideas_cezsoča_kids: "Breite Kiesufer sind sicherer für Kinder als schmale Wege. Achten Sie auf Wassersicherheit – Kinder müssen immer beaufsichtigt werden. Wählen Sie breite, flache Bereiche zum Spielen. Bringen Sie Snacks und Wasser mit.",
+        trip_ideas_cezsoča_rain: "Bei Regenwetter sind kurze Spaziergänge möglich, aber achten Sie auf rutschige Steine. Wenn das Wetter zu schlecht ist, erwägen Sie alternative Aktivitäten. Wenn sich das Wetter verbessert, können Sie einen kurzen sicheren Spaziergang machen.",
+        trip_ideas_cezsoča_tips: "Respektieren Sie Privateigentum – bleiben Sie auf öffentlichen Wegen. Wenn Sie einen Hund mitbringen, halten Sie ihn an der Leine. Lassen Sie keinen Müll zurück – nehmen Sie alles mit. Achten Sie auf Flusswasserstände, besonders nach Regen.",
+        trip_ideas_vodenca_title: "Vodenca",
+        trip_ideas_vodenca_overview: "Vodenca ist ein Gebiet an der Flussmündung, das schöne natürliche Attraktionen bietet. Ideal für diejenigen, die ruhige Spaziergänge und das Genießen natürlicher Phänomene suchen. Das Gebiet bietet Zugang zu schönen Ausblicken und leichteren Spazierwegen.",
+        trip_ideas_vodenca_short: "Ein kurzer Spaziergang an der Flussmündung zum Fotografieren und Naturgenuss. Ein Aussichtspunkt bietet schöne Ausblicke. Der Besuch dauert etwa 1–2 Stunden.",
+        trip_ideas_vodenca_half: "Beginnen Sie mit einem Spaziergang an der Flussmündung, dann erkunden Sie umliegende Wege. Nach dem Besuch ruhen Sie sich mit schönen Ausblicken aus. Die Kombination aus natürlichen Attraktionen und friedlichen Spaziergängen macht diesen Besuch angenehm.",
+        trip_ideas_vodenca_full: "Frühmorgens erkunden Sie die Flussmündung und umliegende Wege. Nachmittags erkunden Sie längere Spaziergänge oder ruhen Sie sich mit schönen Ausblicken aus. Beenden Sie den Tag mit einem friedlichen Spaziergang bei Sonnenuntergang.",
+        trip_ideas_vodenca_kids: "Flache Wege an der Flussmündung sind für Kinder sicher. Achten Sie auf Wassersicherheit. Bringen Sie Snacks und Wasser mit. Wählen Sie kurze, leichtere Spaziergänge, die für Kinder geeignet sind.",
+        trip_ideas_vodenca_rain: "Bei Regenwetter sind kurze Spaziergänge möglich, aber achten Sie auf rutschige Steine. Wenn das Wetter zu schlecht ist, erwägen Sie alternative Aktivitäten. Wenn sich das Wetter verbessert, können Sie einen kurzen sicheren Spaziergang machen.",
+        trip_ideas_vodenca_tips: "Achten Sie auf Flusswasserstände, besonders nach Regen. Respektieren Sie die Natur und bleiben Sie auf markierten Wegen. Bringen Sie bequeme Wanderschuhe mit. Parkplätze sind an den Hauptpunkten verfügbar."
       },
       it: {
         welcome: "Benvenuto",
@@ -2014,7 +2871,116 @@
         attractions_bovec_html: "<p>Bovec è il cuore della valle dell'Isonzo, circondato dalle Alpi Giulie. La città offre una bellezza naturale indimenticabile e siti storici.</p><h3>Attrazioni Naturali</h3><p>L'Isonzo è il fiume smeraldo più bello d'Europa. Lungo il fiume ci sono numerosi sentieri escursionistici che seguono il fiume o le colline vicine. Le Grandi Gole dell'Isonzo sono un fenomeno naturale spettacolare dove il fiume taglia attraverso canyon profondi.</p><p>La Cascata Boka è la cascata più alta della Slovenia (144 metri). Una passeggiata facile porta ad essa, adatta a tutte le età. La vista è incredibile, specialmente dopo la pioggia quando la cascata è al massimo della sua potenza.</p><h3>Patrimonio Culturale</h3><p>Bovec fu significativo durante la Prima Guerra Mondiale. Nella zona circostante troverete numerosi sentieri commemorativi e musei che raccontano la storia del Fronte dell'Isonzo. Il Museo di Kobarid è uno dei migliori musei militari della regione.</p><h3>Punti Panoramici</h3><p>La salita al Rombon o alle colline vicine offre viste panoramiche sulla valle dell'Isonzo e le montagne circostanti. Il momento migliore per visitare è la mattina presto o il tardo pomeriggio quando la luce è più bella.</p><h3>Consigli Pratici</h3><ul><li>Il parcheggio è disponibile nel centro città, principalmente gratuito.</li><li>Rispettate la natura: non lasciate rifiuti, rimanete sui sentieri segnati.</li><li>Miglior periodo per visitare: primavera e autunno per passeggiate, estate per nuotare nell'Isonzo.</li><li>Il tempo in montagna cambia rapidamente, quindi portate abbigliamento appropriato.</li></ul>",
         attractions_kobarid_html: "<p>Kobarid è una città storica, conosciuta soprattutto per il Museo di Kobarid e il Sentiero della Pace, che mostra eventi importanti della Prima Guerra Mondiale.</p><h3>Museo di Kobarid</h3><p>Il museo mostra la storia del Fronte dell'Isonzo attraverso mostre interattive e manufatti. Questo è uno dei siti culturali più importanti della regione.</p><h3>Sentiero della Pace</h3><p>Il sentiero porta attraverso luoghi importanti della Prima Guerra Mondiale. Lungo il percorso ci sono pannelli informativi che spiegano eventi storici. La passeggiata è adatta a tutte le età.</p><h3>Bellezza Naturale</h3><p>Kobarid si trova lungo l'Isonzo, quindi numerosi sentieri escursionistici lungo il fiume sono accessibili. I dintorni offrono anche opportunità per escursioni montane più facili.</p><h3>Centro Città</h3><p>Il centro storico di Kobarid è piacevole per passeggiare. Troverete architettura tradizionale e negozi locali.</p>",
         attractions_tolmin_html: "<p>Tolmin è la città più grande della valle dell'Isonzo, con una ricca storia e attrazioni naturali.</p><h3>Gole di Tolmin</h3><p>Una delle attrazioni naturali più famose della Slovenia. Le gole offrono una passeggiata spettacolare lungo il fiume Tolminka, che scende attraverso canyon profondi. La visita è adatta a chiunque possa camminare su scale.</p><h3>Riserva Naturale</h3><p>L'area intorno a Tolmin è ricca di riserve naturali dove è possibile osservare la flora e la fauna locale. Ci sono sentieri segnati per diversi livelli di difficoltà.</p><h3>Patrimonio Culturale</h3><p>Tolmin ha un centro storico con architettura interessante. Il museo cittadino mostra la storia e la cultura locale.</p><h3>Punti Panoramici</h3><p>La salita alle colline vicine offre belle viste sulla valle. Il momento migliore per visitare è la mattina presto o al tramonto.</p><h3>Consigli Pratici</h3><ul><li>Il parcheggio è disponibile vicino alle principali attrazioni.</li><li>Per visitare le Gole di Tolmin, portate scarpe comode da passeggio.</li><li>Rispettate le riserve naturali e rimanete sui sentieri segnati.</li><li>Il tempo può cambiare rapidamente, quindi portate abbigliamento extra.</li></ul>",
-        footer_attribution: "Creato con ❤️ da V.N. · Versione demo · Un regalo alla comunità locale per una migliore esperienza turistica"
+        footer_attribution: "Creato con ❤️ da V.N. · Versione demo · Un regalo alla comunità locale per una migliore esperienza turistica",
+        trip_ideas: "Idee per gite",
+        trip_ideas_sub: "Gite",
+        trip_ideas_intro: "Seleziona un luogo e scopri idee per visitarlo, adatte al tuo tempo e ai tuoi interessi.",
+        trip_ideas_change_place: "Cambia luogo",
+        trip_ideas_overview: "Panoramica",
+        trip_ideas_short: "Se hai 1–2 ore",
+        trip_ideas_half: "Mezza giornata",
+        trip_ideas_full: "Giornata intera",
+        trip_ideas_kids: "Con bambini",
+        trip_ideas_rain: "Maltempo",
+        trip_ideas_tips: "Consigli pratici",
+        quick_help: "Aiuto rapido",
+        quick_help_sub: "Aiuto",
+        quick_help_transport: "🚌 Trasporti",
+        quick_help_essentials: "🛒 Necessità quotidiane",
+        quick_help_bus_timetable: "Controlla orario autobus (Nomago)",
+        quick_help_bus_timetable_desc: "Trova partenze esatte e collegamenti.",
+        quick_help_download_app: "Scarica app Nomago",
+        quick_help_download_ios: "iOS",
+        quick_help_download_android: "Android",
+        quick_help_common_routes: "Percorsi comuni (Navigazione)",
+        quick_help_route_tolmin: "Bovec → Tolmin",
+        quick_help_route_most: "Bovec → Most na Soči",
+        quick_help_route_nova_gorica: "Bovec → Nova Gorica",
+        quick_help_route_ljubljana: "Bovec → Ljubljana",
+        quick_help_bus_info: "Da Bovec, gli autobus di solito vanno verso Tolmin e poi verso Nova Gorica o Most na Soči. C'è anche almeno una connessione giornaliera a Ljubljana.",
+        quick_help_supermarket: "Supermercato",
+        quick_help_atm: "Bancomat",
+        quick_help_gas: "Stazione di servizio",
+        quick_help_parking: "Parcheggio",
+        quick_help_toilet: "Bagno pubblico",
+        quick_help_where_are_you: "Dove sei ora?",
+        quick_help_route_to_bovec: "Verso Bovec",
+        quick_help_route_to_tolmin: "Verso Tolmin",
+        quick_help_route_to_kobarid: "Verso Kobarid",
+        quick_help_route_to_most: "Verso Most na Soči (treno)",
+        quick_help_route_to_nova_gorica: "Verso Nova Gorica",
+        quick_help_route_to_ljubljana: "Verso Ljubljana",
+        feedback_button: "Invia feedback",
+        feedback_title: "Aiutaci a migliorare questa guida",
+        feedback_subtitle: "Cosa dovremmo aggiungere o migliorare?",
+        feedback_add_label: "Cosa dovrebbe essere aggiunto?",
+        feedback_add_placeholder: "Scrivi cosa vorresti aggiungere...",
+        feedback_confusing_label: "Cosa era confuso o mancante?",
+        feedback_confusing_placeholder: "Scrivi cosa era confuso...",
+        feedback_idea_label: "La tua idea / suggerimento",
+        feedback_idea_placeholder: "Scrivi la tua idea...",
+        feedback_role_guest: "Sono un ospite",
+        feedback_role_host: "Sono un host / proprietario",
+        feedback_submit: "Invia",
+        feedback_cancel: "Annulla",
+        feedback_success: "Grazie! Il tuo feedback è stato salvato (demo).",
+        feedback_error: "Per favore, scrivi almeno un suggerimento.",
+        trip_ideas_tolmin_title: "Tolmin",
+        trip_ideas_tolmin_overview: "Tolmin è la città più grande della valle dell'Isonzo, un'ottima base per esplorare le attrazioni naturali. La città offre passeggiate tranquille lungo i fiumi, accesso alle Gole di Tolmin e bei punti panoramici. Ideale per i visitatori che cercano una combinazione di natura e patrimonio culturale.",
+        trip_ideas_tolmin_short: "Inizia con una passeggiata nel centro città, poi dirigiti verso il fiume Tolminka per una breve passeggiata lungo l'acqua. Visitare un punto panoramico sopra la città offre belle viste sulla valle. Tutto insieme richiede circa 1–2 ore ed è adatto a tutte le età.",
+        trip_ideas_tolmin_half: "Visita le Gole di Tolmin al mattino presto o nel tardo pomeriggio quando la luce è più bella. Camminare attraverso le gole richiede circa 1,5 ore. Dopo la visita, fai una breve passeggiata nel bosco o riposati lungo il fiume. Torna in città per una breve visita al centro o al museo.",
+        trip_ideas_tolmin_full: "Inizia al mattino presto con una visita alle Gole di Tolmin quando ci sono meno visitatori. Dopo la visita, dirigiti a un punto panoramico per viste panoramiche. Nel pomeriggio esplora i sentieri forestali circostanti o riposati lungo il fiume. Al tramonto, torna al fiume per una fine serena della giornata.",
+        trip_ideas_tolmin_kids: "Scegli sentieri pianeggianti lungo il fiume che sono sicuri per i bambini. Evita le pietre scivolose lungo il fiume. Porta snack e acqua. Le Gole di Tolmin sono adatte ai bambini che possono camminare sulle scale, ma fai attenzione alla sicurezza. Pianifica pause frequenti.",
+        trip_ideas_tolmin_rain: "Con tempo piovoso, visita il museo cittadino o il centro storico. Brevi passeggiate al coperto sono possibili. Se il tempo migliora, puoi fare una breve passeggiata sicura lungo il fiume, ma fai attenzione alle pietre scivolose.",
+        trip_ideas_tolmin_tips: "Porta scarpe comode da passeggio, specialmente per le gole. Il tempo di montagna cambia rapidamente – porta abbigliamento extra. Controlla i livelli dell'acqua del fiume prima di visitare se c'è stato tempo piovoso. Rispetta la natura e rimani sui sentieri segnati. Il parcheggio è disponibile vicino alle principali attrazioni.",
+        trip_ideas_kobarid_title: "Kobarid",
+        trip_ideas_kobarid_overview: "Kobarid è una città storica, conosciuta per il suo importante ruolo durante la Prima Guerra Mondiale. Combina patrimonio storico con bellezza naturale. La città offre accesso a musei, sentieri commemorativi e bei percorsi pedonali lungo l'Isonzo.",
+        trip_ideas_kobarid_short: "Passeggia nel centro storico della città, poi prendi un breve sentiero segnato lungo l'Isonzo. Un punto panoramico lungo il fiume offre belle viste. La visita richiede circa 1–2 ore ed è adatta a tutti.",
+        trip_ideas_kobarid_half: "Inizia con una visita al Museo di Kobarid o al sentiero commemorativo per il contesto storico. Poi fai una facile passeggiata lungo l'Isonzo per riposo e godimento della natura. La combinazione di storia e natura rende questa visita particolarmente interessante.",
+        trip_ideas_kobarid_full: "Al mattino presto esplora i siti storici – museo e sentieri commemorativi. Nel pomeriggio fai una passeggiata più lunga lungo l'Isonzo o esplora le valli circostanti per punti panoramici. Termina la giornata con una passeggiata tranquilla lungo il fiume al tramonto.",
+        trip_ideas_kobarid_kids: "Il museo e i sentieri commemorativi sono adatti ai bambini, ma spiega il contesto storico in modo adatto ai bambini. Gioca a un gioco per trovare punti di riferimento lungo il sentiero. I sentieri pianeggianti lungo l'Isonzo sono sicuri per i bambini. Pianifica pause frequenti e porta snack.",
+        trip_ideas_kobarid_rain: "Il museo e il centro storico sono ottime opzioni con tempo piovoso. Brevi passeggiate al coperto sono possibili. Se il tempo migliora, puoi fare una breve passeggiata sicura lungo il fiume, ma fai attenzione ai sentieri fangosi.",
+        trip_ideas_kobarid_tips: "Inizia presto per evitare la folla al museo. Porta scarpe comode, specialmente per i sentieri fangosi dopo la pioggia. Controlla gli orari di apertura del museo prima di visitare. Rispetta i monumenti storici e rimani sui sentieri segnati.",
+        trip_ideas_srpenica_title: "Srpenica",
+        trip_ideas_srpenica_overview: "Srpenica è una piccola città pittoresca lungo l'Isonzo, perfetta per una breve visita. Offre belle viste sul fiume, passeggiate tranquille lungo l'acqua e opportunità fotografiche. Ideale per coloro che cercano una visita breve e rilassante.",
+        trip_ideas_srpenica_short: "Una breve passeggiata lungo l'Isonzo per fotografia e godimento della natura. Un punto panoramico offre belle viste sulla valle. La visita richiede circa 1–2 ore ed è adatta a tutte le età.",
+        trip_ideas_srpenica_half: "Inizia con una passeggiata lungo il fiume, poi dirigiti a un punto panoramico per viste panoramiche. Dopo la visita, esplora i sentieri pedonali circostanti più facili. Termina la giornata con riposo tranquillo lungo il fiume.",
+        trip_ideas_srpenica_full: "Inizia al mattino presto con una passeggiata lungo l'Isonzo quando la luce è migliore per la fotografia. Esplora i sentieri e i punti panoramici circostanti. Nel pomeriggio riposati lungo il fiume o esplora i villaggi pittoreschi vicini. Termina la giornata al tramonto.",
+        trip_ideas_srpenica_kids: "I sentieri pianeggianti lungo il fiume sono sicuri per i bambini. Fai attenzione alla sicurezza dell'acqua – i bambini devono essere sempre supervisionati. Porta snack e acqua. Scegli brevi passeggiate più facili adatte ai bambini.",
+        trip_ideas_srpenica_rain: "Con tempo piovoso, brevi passeggiate al coperto o in auto sono possibili. Un giro panoramico nella zona è possibile. Se il tempo migliora, puoi fare una breve passeggiata sicura lungo il fiume.",
+        trip_ideas_srpenica_tips: "Il parcheggio è disponibile nelle principali attrazioni – usa le aree di parcheggio segnate. Fai attenzione alle pietre scivolose lungo il fiume, specialmente dopo la pioggia. Rispetta la proprietà privata e rimani sui sentieri pubblici. Porta una fotocamera per belle viste.",
+        trip_ideas_zaga_title: "Žaga",
+        trip_ideas_zaga_overview: "Žaga è un'area all'ingresso della valle, che offre brevi soste panoramiche. Ideale per coloro che viaggiano attraverso o cercano visite rapide ai punti panoramici. L'area offre accesso a belle viste e sentieri pedonali più facili.",
+        trip_ideas_zaga_short: "Una rapida visita a un punto panoramico per viste panoramiche sulla valle. Un facile sentiero forestale per una breve passeggiata. La visita richiede circa 1–2 ore ed è adatta a tutti.",
+        trip_ideas_zaga_half: "Inizia con il punto panoramico, poi prendi un sentiero forestale più facile. Esplora i villaggi pittoreschi circostanti o riposati con belle viste. La combinazione di viste e passeggiate facili rende questa visita piacevole.",
+        trip_ideas_zaga_full: "Al mattino presto esplora i punti panoramici per le migliori foto. Nel pomeriggio esplora i villaggi circostanti e i sentieri montani più facili. Termina la giornata con una passeggiata tranquilla e goditi le viste panoramiche.",
+        trip_ideas_zaga_kids: "Scegli sentieri pianeggianti e sicuri adatti ai bambini. Evita i bordi ripidi e le aree pericolose. Porta snack e acqua. Pianifica brevi passeggiate con pause frequenti.",
+        trip_ideas_zaga_rain: "Con tempo piovoso, brevi soste ai punti panoramici in auto sono possibili. Un giro panoramico nella zona è possibile. Se il tempo migliora, puoi fare una breve passeggiata sicura.",
+        trip_ideas_zaga_tips: "Fai attenzione al traffico sulle strade – usa i passaggi pedonali segnati. Il parcheggio è disponibile nei punti principali. Il tempo può cambiare rapidamente – porta abbigliamento extra. Rispetta la proprietà privata e rimani sui sentieri pubblici.",
+        trip_ideas_bovec_title: "Bovec",
+        trip_ideas_bovec_overview: "Bovec è il centro attivo della valle dell'Isonzo, circondato dalle Alpi Giulie. La città offre accesso a numerose attrazioni naturali, sentieri pedonali lungo l'Isonzo e punti panoramici. Ideale per coloro che cercano una combinazione di attività e natura.",
+        trip_ideas_bovec_short: "Passeggia nel centro città, poi dirigiti verso l'Isonzo per una breve passeggiata lungo l'acqua. Un punto panoramico offre belle viste sulla valle. La visita richiede circa 1–2 ore.",
+        trip_ideas_bovec_half: "Inizia con facili passeggiate nella natura lungo l'Isonzo o nei dintorni. Esplora sentieri segnati adatti a tutte le età. Dopo la visita, riposati lungo il fiume o esplora il centro città. La combinazione di natura e città rende questa visita interessante.",
+        trip_ideas_bovec_full: "Al mattino presto esplora le attrazioni naturali – passeggiate lungo l'Isonzo e punti panoramici. Nel pomeriggio esplora le colline circostanti per viste panoramiche. Termina la giornata con una passeggiata tranquilla lungo il fiume al tramonto.",
+        trip_ideas_bovec_kids: "I sentieri pianeggianti lungo l'Isonzo sono sicuri per i bambini. Scegli passeggiate più facili adatte ai bambini. Porta snack, acqua e abbigliamento extra. Pianifica un ritmo flessibile con pause frequenti.",
+        trip_ideas_bovec_rain: "Con tempo piovoso, esplora il centro città o riposati al chiuso. Brevi passeggiate al coperto sono possibili. Se il tempo migliora, puoi fare una breve passeggiata sicura lungo il fiume.",
+        trip_ideas_bovec_tips: "Porta molta acqua, specialmente per passeggiate più lunghe. Inizia presto per evitare la folla. Il tempo di montagna cambia rapidamente – porta abbigliamento appropriato. Rispetta la natura e rimani sui sentieri segnati.",
+        trip_ideas_cezsoča_title: "Čezsoča",
+        trip_ideas_cezsoča_overview: "Čezsoča è un'area lungo l'Isonzo con accesso a numerose rive sabbiose e ghiaiose. Ideale per coloro che cercano passeggiate tranquille lungo il fiume, fotografia e godimento della natura. L'area offre belle opportunità per riposo lungo l'acqua.",
+        trip_ideas_cezsoča_short: "Una passeggiata lungo l'Isonzo su ampie rive ghiaiose. Fotografia e godimento della natura. La visita richiede circa 1–2 ore ed è adatta a tutti.",
+        trip_ideas_cezsoča_half: "Inizia con una passeggiata lungo il fiume, poi esplora i sentieri circostanti per viste diverse. Dopo la visita, riposati su ampie rive ghiaiose. La combinazione di passeggiate e riposo rende questa visita piacevole.",
+        trip_ideas_cezsoča_full: "Al mattino presto esplora diverse parti del fiume e i sentieri circostanti. Nel pomeriggio riposati su ampie rive ghiaiose o esplora passeggiate più lunghe. Termina la giornata al tramonto con una passeggiata tranquilla lungo il fiume.",
+        trip_ideas_cezsoča_kids: "Le ampie rive ghiaiose sono più sicure per i bambini rispetto ai sentieri stretti. Fai attenzione alla sicurezza dell'acqua – i bambini devono essere sempre supervisionati. Scegli aree ampie e pianeggianti per giocare. Porta snack e acqua.",
+        trip_ideas_cezsoča_rain: "Con tempo piovoso, brevi passeggiate sono possibili, ma fai attenzione alle pietre scivolose. Se il tempo è troppo cattivo, considera attività alternative. Se il tempo migliora, puoi fare una breve passeggiata sicura.",
+        trip_ideas_cezsoča_tips: "Rispetta la proprietà privata – rimani sui sentieri pubblici. Se porti un cane, tienilo al guinzaglio. Non lasciare rifiuti – porta tutto con te. Fai attenzione ai livelli dell'acqua del fiume, specialmente dopo la pioggia.",
+        trip_ideas_vodenca_title: "Vodenca",
+        trip_ideas_vodenca_overview: "Vodenca è un'area alla confluenza dei fiumi, che offre belle attrazioni naturali. Ideale per coloro che cercano passeggiate tranquille e godimento dei fenomeni naturali. L'area offre accesso a belle viste e sentieri pedonali più facili.",
+        trip_ideas_vodenca_short: "Una breve passeggiata alla confluenza dei fiumi per fotografia e godimento della natura. Un punto panoramico offre belle viste. La visita richiede circa 1–2 ore.",
+        trip_ideas_vodenca_half: "Inizia con una passeggiata alla confluenza, poi esplora i sentieri circostanti. Dopo la visita, riposati con belle viste. La combinazione di attrazioni naturali e passeggiate tranquille rende questa visita piacevole.",
+        trip_ideas_vodenca_full: "Al mattino presto esplora la confluenza e i sentieri circostanti. Nel pomeriggio esplora passeggiate più lunghe o riposati con belle viste. Termina la giornata con una passeggiata tranquilla al tramonto.",
+        trip_ideas_vodenca_kids: "I sentieri pianeggianti alla confluenza sono sicuri per i bambini. Fai attenzione alla sicurezza dell'acqua. Porta snack e acqua. Scegli brevi passeggiate più facili adatte ai bambini.",
+        trip_ideas_vodenca_rain: "Con tempo piovoso, brevi passeggiate sono possibili, ma fai attenzione alle pietre scivolose. Se il tempo è troppo cattivo, considera attività alternative. Se il tempo migliora, puoi fare una breve passeggiata sicura.",
+        trip_ideas_vodenca_tips: "Fai attenzione ai livelli dell'acqua dei fiumi, specialmente dopo la pioggia. Rispetta la natura e rimani sui sentieri segnati. Porta scarpe comode da passeggio. Il parcheggio è disponibile nei punti principali."
       }
     };
 
@@ -2086,6 +3052,14 @@
         const key = el.getAttribute('data-i18n');
         if (trans[key]) {
           el.textContent = trans[key];
+        }
+      });
+      
+      // Handle data-i18n-placeholder attributes
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (trans[key]) {
+          el.placeholder = trans[key];
         }
       });
       
@@ -2218,7 +3192,13 @@
     document.querySelectorAll('.menu-card').forEach(card => {
       card.addEventListener('click', () => {
         const section = card.getAttribute('data-section');
-        openPanel(section);
+        if (section) {
+          openPanel(section);
+        } else if (card.id === 'trip-ideas-card') {
+          openTripIdeas();
+        } else if (card.id === 'quick-help-card') {
+          openQuickHelp();
+        }
       });
     });
 
@@ -2709,6 +3689,82 @@
       return html;
     }
     
+    // Trip Ideas data structure
+    const tripIdeasData = {
+      tolmin: {
+        titleKey: 'trip_ideas_tolmin_title',
+        overviewKey: 'trip_ideas_tolmin_overview',
+        shortKey: 'trip_ideas_tolmin_short',
+        halfKey: 'trip_ideas_tolmin_half',
+        fullKey: 'trip_ideas_tolmin_full',
+        kidsKey: 'trip_ideas_tolmin_kids',
+        rainKey: 'trip_ideas_tolmin_rain',
+        tipsKey: 'trip_ideas_tolmin_tips'
+      },
+      kobarid: {
+        titleKey: 'trip_ideas_kobarid_title',
+        overviewKey: 'trip_ideas_kobarid_overview',
+        shortKey: 'trip_ideas_kobarid_short',
+        halfKey: 'trip_ideas_kobarid_half',
+        fullKey: 'trip_ideas_kobarid_full',
+        kidsKey: 'trip_ideas_kobarid_kids',
+        rainKey: 'trip_ideas_kobarid_rain',
+        tipsKey: 'trip_ideas_kobarid_tips'
+      },
+      srpenica: {
+        titleKey: 'trip_ideas_srpenica_title',
+        overviewKey: 'trip_ideas_srpenica_overview',
+        shortKey: 'trip_ideas_srpenica_short',
+        halfKey: 'trip_ideas_srpenica_half',
+        fullKey: 'trip_ideas_srpenica_full',
+        kidsKey: 'trip_ideas_srpenica_kids',
+        rainKey: 'trip_ideas_srpenica_rain',
+        tipsKey: 'trip_ideas_srpenica_tips'
+      },
+      zaga: {
+        titleKey: 'trip_ideas_zaga_title',
+        overviewKey: 'trip_ideas_zaga_overview',
+        shortKey: 'trip_ideas_zaga_short',
+        halfKey: 'trip_ideas_zaga_half',
+        fullKey: 'trip_ideas_zaga_full',
+        kidsKey: 'trip_ideas_zaga_kids',
+        rainKey: 'trip_ideas_zaga_rain',
+        tipsKey: 'trip_ideas_zaga_tips'
+      },
+      bovec: {
+        titleKey: 'trip_ideas_bovec_title',
+        overviewKey: 'trip_ideas_bovec_overview',
+        shortKey: 'trip_ideas_bovec_short',
+        halfKey: 'trip_ideas_bovec_half',
+        fullKey: 'trip_ideas_bovec_full',
+        kidsKey: 'trip_ideas_bovec_kids',
+        rainKey: 'trip_ideas_bovec_rain',
+        tipsKey: 'trip_ideas_bovec_tips'
+      },
+      cezsoča: {
+        titleKey: 'trip_ideas_cezsoča_title',
+        overviewKey: 'trip_ideas_cezsoča_overview',
+        shortKey: 'trip_ideas_cezsoča_short',
+        halfKey: 'trip_ideas_cezsoča_half',
+        fullKey: 'trip_ideas_cezsoča_full',
+        kidsKey: 'trip_ideas_cezsoča_kids',
+        rainKey: 'trip_ideas_cezsoča_rain',
+        tipsKey: 'trip_ideas_cezsoča_tips'
+      },
+      vodenca: {
+        titleKey: 'trip_ideas_vodenca_title',
+        overviewKey: 'trip_ideas_vodenca_overview',
+        shortKey: 'trip_ideas_vodenca_short',
+        halfKey: 'trip_ideas_vodenca_half',
+        fullKey: 'trip_ideas_vodenca_full',
+        kidsKey: 'trip_ideas_vodenca_kids',
+        rainKey: 'trip_ideas_vodenca_rain',
+        tipsKey: 'trip_ideas_vodenca_tips'
+      }
+    };
+    
+    const tripIdeasPlaces = ['tolmin', 'kobarid', 'srpenica', 'zaga', 'bovec', 'cezsoča', 'vodenca'];
+    
     // Attractions screen functions
     function scrollToTopReliable() {
       const root = document.scrollingElement || document.documentElement;
@@ -2793,6 +3849,162 @@
     function closeAttractions() {
       hideAttractionsScreen();
       scrollToTopReliable();
+    }
+
+    // Trip Ideas screen functions
+    function showTripIdeasScreen(place) {
+      const screen = document.getElementById('trip-ideas-screen');
+      if (screen) {
+        screen.classList.add('show');
+        renderTripIdeasContent(place);
+      }
+    }
+    
+    function hideTripIdeasScreen() {
+      const screen = document.getElementById('trip-ideas-screen');
+      if (screen) {
+        screen.classList.remove('show');
+      }
+    }
+    
+    function openTripIdeas(place) {
+          closeAllPanels();
+      const selectedPlace = place || getTripIdeasPlace();
+      showTripIdeasScreen(selectedPlace);
+    }
+    
+    function closeTripIdeas() {
+      hideTripIdeasScreen();
+      scrollToTopReliable();
+      // Clear URL hash
+      if (window.location.hash.includes('trip-ideas')) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    }
+    
+    function getTripIdeasPlace() {
+      // Check URL param first
+      const urlParams = new URLSearchParams(window.location.search);
+      const placeParam = urlParams.get('place');
+      if (placeParam && tripIdeasPlaces.includes(placeParam)) {
+        localStorage.setItem('tripIdeas_lastPlace', placeParam);
+        return placeParam;
+      }
+      
+      // Check hash
+      const hash = window.location.hash;
+      if (hash.includes('trip-ideas')) {
+        const hashMatch = hash.match(/place=([^&]+)/);
+        if (hashMatch && tripIdeasPlaces.includes(hashMatch[1])) {
+          localStorage.setItem('tripIdeas_lastPlace', hashMatch[1]);
+          return hashMatch[1];
+        }
+      }
+      
+      // Check localStorage
+      const saved = localStorage.getItem('tripIdeas_lastPlace');
+      if (saved && tripIdeasPlaces.includes(saved)) {
+        return saved;
+      }
+      
+      // Default to first place
+      return tripIdeasPlaces[0];
+    }
+    
+    function renderTripIdeasContent(place) {
+      const body = document.getElementById('trip-ideas-body');
+      if (!body) return;
+      
+      const trans = translations[currentLang];
+      const placeData = tripIdeasData[place];
+      if (!placeData || !trans) return;
+      
+      const placeNames = {
+        tolmin: { sl: 'Tolmin', en: 'Tolmin', de: 'Tolmin', it: 'Tolmin' },
+        kobarid: { sl: 'Kobarid', en: 'Kobarid', de: 'Kobarid', it: 'Kobarid' },
+        srpenica: { sl: 'Srpenica', en: 'Srpenica', de: 'Srpenica', it: 'Srpenica' },
+        zaga: { sl: 'Žaga', en: 'Žaga', de: 'Žaga', it: 'Žaga' },
+        bovec: { sl: 'Bovec', en: 'Bovec', de: 'Bovec', it: 'Bovec' },
+        cezsoča: { sl: 'Čezsoča', en: 'Čezsoča', de: 'Čezsoča', it: 'Čezsoča' },
+        vodenca: { sl: 'Vodenca', en: 'Vodenca', de: 'Vodenca', it: 'Vodenca' }
+      };
+      
+      let html = `<div style="padding: 1rem;">`;
+      
+      // Intro text
+      html += `<p style="margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.6;">${trans.trip_ideas_intro || ''}</p>`;
+      
+      // Place selector
+      html += `<div class="place-selector">`;
+      tripIdeasPlaces.forEach(p => {
+        const isSelected = p === place;
+        const name = placeNames[p]?.[currentLang] || p;
+        html += `<div class="place-card ${isSelected ? 'selected' : ''}" data-place="${p}">
+          <div class="place-card-title">${name}</div>
+        </div>`;
+      });
+      html += `</div>`;
+      
+      // Change place button (if not showing selector)
+      html += `<button class="btn btn-secondary change-place-btn" id="change-place-btn" style="width: 100%; margin-bottom: 1.5rem;">${trans.trip_ideas_change_place || ''}</button>`;
+      
+      // Content sections
+      const sections = [
+        { key: 'overview', titleKey: 'trip_ideas_overview' },
+        { key: 'short', titleKey: 'trip_ideas_short' },
+        { key: 'half', titleKey: 'trip_ideas_half' },
+        { key: 'full', titleKey: 'trip_ideas_full' },
+        { key: 'kids', titleKey: 'trip_ideas_kids' },
+        { key: 'rain', titleKey: 'trip_ideas_rain' },
+        { key: 'tips', titleKey: 'trip_ideas_tips' }
+      ];
+      
+      sections.forEach(section => {
+        const contentKey = placeData[section.key + 'Key'];
+        const content = trans[contentKey];
+        if (content) {
+          html += `<div class="trip-section">
+            <h3 class="trip-section-title">${trans[section.titleKey] || ''}</h3>
+            <div class="trip-section-content">${content}</div>
+          </div>`;
+        }
+      });
+      
+      html += `</div>`;
+      
+      body.innerHTML = html;
+      
+      // Add event listeners
+      document.querySelectorAll('.place-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const newPlace = card.getAttribute('data-place');
+          if (newPlace && newPlace !== place) {
+            localStorage.setItem('tripIdeas_lastPlace', newPlace);
+            renderTripIdeasContent(newPlace);
+            // Update URL
+            window.history.replaceState(null, '', `${window.location.pathname}#trip-ideas?place=${newPlace}`);
+          }
+        });
+      });
+      
+      const changePlaceBtn = document.getElementById('change-place-btn');
+      if (changePlaceBtn) {
+        changePlaceBtn.addEventListener('click', () => {
+          const selector = document.querySelector('.place-selector');
+          if (selector) {
+            selector.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
+    }
+    
+    // Handle URL hash on load
+    function handleTripIdeasHash() {
+      const hash = window.location.hash;
+      if (hash.includes('trip-ideas')) {
+        const place = getTripIdeasPlace();
+        openTripIdeas(place);
+      }
     }
 
     // Weather Widget - Real Weather Implementation
@@ -3299,6 +4511,420 @@
       attractionsBack.addEventListener('click', closeAttractions);
     }
     
+    // Trip Ideas screen event listeners
+    const tripIdeasBack = document.getElementById('trip-ideas-back');
+    if (tripIdeasBack) {
+      tripIdeasBack.addEventListener('click', closeTripIdeas);
+    }
+    
+    // Quick Help screen event listeners
+    const quickHelpBack = document.getElementById('quick-help-back');
+    if (quickHelpBack) {
+      quickHelpBack.addEventListener('click', closeQuickHelp);
+    }
+    
+    // Feedback Modal Functions
+    const feedbackButton = document.getElementById('feedback-button');
+    const feedbackModal = document.getElementById('feedback-modal');
+    const feedbackModalClose = document.getElementById('feedback-modal-close');
+    const feedbackModalOverlay = feedbackModal?.querySelector('.feedback-modal-overlay');
+    const feedbackForm = document.getElementById('feedback-form');
+    const feedbackCancel = document.getElementById('feedback-cancel');
+    const feedbackError = document.getElementById('feedback-error');
+    const feedbackSuccess = document.getElementById('feedback-success');
+    
+    function openFeedbackModal() {
+      if (feedbackModal) {
+        feedbackModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        // Update translations for placeholders
+        updateFeedbackPlaceholders();
+      }
+    }
+    
+    function closeFeedbackModal() {
+      if (feedbackModal) {
+        feedbackModal.classList.remove('show');
+        document.body.style.overflow = '';
+        // Reset form
+        if (feedbackForm) {
+          feedbackForm.reset();
+          feedbackError.style.display = 'none';
+          feedbackSuccess.style.display = 'none';
+        }
+      }
+    }
+    
+    function updateFeedbackPlaceholders() {
+      const trans = translations[currentLang];
+      if (!trans) return;
+      
+      const addTextarea = document.getElementById('feedback-add');
+      const confusingTextarea = document.getElementById('feedback-confusing');
+      const ideaTextarea = document.getElementById('feedback-idea');
+      
+      if (addTextarea && trans.feedback_add_placeholder) {
+        addTextarea.placeholder = trans.feedback_add_placeholder;
+      }
+      if (confusingTextarea && trans.feedback_confusing_placeholder) {
+        confusingTextarea.placeholder = trans.feedback_confusing_placeholder;
+      }
+      if (ideaTextarea && trans.feedback_idea_placeholder) {
+        ideaTextarea.placeholder = trans.feedback_idea_placeholder;
+      }
+    }
+    
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+    }
+    
+    function handleFeedbackSubmit(e) {
+      e.preventDefault();
+      
+      const trans = translations[currentLang];
+      if (!trans) return;
+      
+      const addValue = document.getElementById('feedback-add').value.trim();
+      const confusingValue = document.getElementById('feedback-confusing').value.trim();
+      const ideaValue = document.getElementById('feedback-idea').value.trim();
+      const roleValue = feedbackForm.querySelector('input[name="role"]:checked')?.value || 'guest';
+      
+      // Validate required field
+      if (!addValue) {
+        feedbackError.textContent = trans.feedback_error || 'Please write at least one suggestion.';
+        feedbackError.style.display = 'block';
+        feedbackSuccess.style.display = 'none';
+        return;
+      }
+      
+      // Build feedback object
+      const feedbackData = {
+        id: generateId(),
+        timestamp: new Date().toISOString(),
+        lang: currentLang,
+        page: window.location.hash || window.location.pathname || 'main',
+        role: roleValue,
+        answers: {
+          add: addValue,
+          confusing: confusingValue || '',
+          idea: ideaValue || ''
+        }
+      };
+      
+      // Save to localStorage
+      try {
+        const existing = localStorage.getItem('guestGuide_feedback_demo');
+        const feedbackArray = existing ? JSON.parse(existing) : [];
+        feedbackArray.push(feedbackData);
+        localStorage.setItem('guestGuide_feedback_demo', JSON.stringify(feedbackArray));
+      } catch (e) {
+        console.error('Failed to save feedback:', e);
+      }
+      
+      // Show success message
+      feedbackError.style.display = 'none';
+      feedbackSuccess.style.display = 'block';
+      feedbackSuccess.textContent = trans.feedback_success || 'Thanks! Your feedback was saved (demo).';
+      
+      // Clear form
+      feedbackForm.reset();
+      
+      // Close modal after 2 seconds
+      setTimeout(() => {
+        closeFeedbackModal();
+      }, 2000);
+    }
+    
+    // Event listeners
+    if (feedbackButton) {
+      feedbackButton.addEventListener('click', openFeedbackModal);
+    }
+    
+    if (feedbackModalClose) {
+      feedbackModalClose.addEventListener('click', closeFeedbackModal);
+    }
+    
+    if (feedbackModalOverlay) {
+      feedbackModalOverlay.addEventListener('click', (e) => {
+        if (e.target === feedbackModalOverlay) {
+          closeFeedbackModal();
+        }
+      });
+    }
+    
+    if (feedbackCancel) {
+      feedbackCancel.addEventListener('click', closeFeedbackModal);
+    }
+    
+    if (feedbackForm) {
+      feedbackForm.addEventListener('submit', handleFeedbackSubmit);
+    }
+    
+    // Close on ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && feedbackModal && feedbackModal.classList.contains('show')) {
+        closeFeedbackModal();
+      }
+    });
+    
+    // Update feedback content when language changes
+    const originalUpdateLanguageForFeedback = updateLanguage;
+    updateLanguage = function(lang) {
+      originalUpdateLanguageForFeedback(lang);
+      if (feedbackModal && feedbackModal.classList.contains('show')) {
+        updateFeedbackPlaceholders();
+      }
+    };
+    
+    // Handle URL hash on load and hash change
+    window.addEventListener('hashchange', handleTripIdeasHash);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(handleTripIdeasHash, 100);
+      });
+    } else {
+      setTimeout(handleTripIdeasHash, 100);
+    }
+    
+    // Update trip ideas content when language changes
+    const originalUpdateLanguage = updateLanguage;
+    updateLanguage = function(lang) {
+      originalUpdateLanguage(lang);
+      const tripIdeasScreen = document.getElementById('trip-ideas-screen');
+      if (tripIdeasScreen && tripIdeasScreen.classList.contains('show')) {
+        const currentPlace = getTripIdeasPlace();
+        renderTripIdeasContent(currentPlace);
+      }
+      const quickHelpScreen = document.getElementById('quick-help-screen');
+      if (quickHelpScreen && quickHelpScreen.classList.contains('show')) {
+        renderQuickHelpContent();
+      }
+      // Update feedback placeholders if modal is open
+      if (typeof updateFeedbackPlaceholders === 'function') {
+        const feedbackModal = document.getElementById('feedback-modal');
+        if (feedbackModal && feedbackModal.classList.contains('show')) {
+          updateFeedbackPlaceholders();
+        }
+      }
+    };
+    
+    // Quick Help screen functions
+    function showQuickHelpScreen() {
+      const screen = document.getElementById('quick-help-screen');
+      if (screen) {
+        screen.classList.add('show');
+        renderQuickHelpContent();
+      }
+    }
+    
+    function hideQuickHelpScreen() {
+      const screen = document.getElementById('quick-help-screen');
+      if (screen) {
+        screen.classList.remove('show');
+      }
+    }
+    
+    function openQuickHelp() {
+      closeAllPanels();
+      showQuickHelpScreen();
+    }
+    
+    function closeQuickHelp() {
+      hideQuickHelpScreen();
+      scrollToTopReliable();
+    }
+    
+    function renderQuickHelpContent() {
+      const body = document.getElementById('quick-help-body');
+      if (!body) return;
+      
+      const trans = translations[currentLang];
+      if (!trans) return;
+      
+      // Get origin from localStorage, default to Bovec
+      const validOrigins = ['tolmin', 'kobarid', 'srpenica', 'zaga', 'bovec', 'cezsoča'];
+      let origin = localStorage.getItem('quickHelp_origin') || 'bovec';
+      if (!validOrigins.includes(origin)) {
+        origin = 'bovec';
+      }
+      
+      // Origin names for display
+      const originNames = {
+        tolmin: { sl: 'Tolmin', en: 'Tolmin', de: 'Tolmin', it: 'Tolmin' },
+        kobarid: { sl: 'Kobarid', en: 'Kobarid', de: 'Kobarid', it: 'Kobarid' },
+        srpenica: { sl: 'Srpenica', en: 'Srpenica', de: 'Srpenica', it: 'Srpenica' },
+        zaga: { sl: 'Žaga', en: 'Žaga', de: 'Žaga', it: 'Žaga' },
+        bovec: { sl: 'Bovec', en: 'Bovec', de: 'Bovec', it: 'Bovec' },
+        cezsoča: { sl: 'Čezsoča', en: 'Čezsoča', de: 'Čezsoča', it: 'Čezsoča' }
+      };
+      
+      // Route URLs mapping based on origin
+      const routeUrls = {
+        tolmin: {
+          bovec: 'https://www.google.com/maps/dir/?api=1&origin=Tolmin%2C%20Slovenia&destination=Bovec%20bus%20station%2C%20Slovenia',
+          kobarid: 'https://www.google.com/maps/dir/?api=1&origin=Tolmin%2C%20Slovenia&destination=Kobarid%2C%20Slovenia',
+          most: 'https://www.google.com/maps/dir/?api=1&origin=Tolmin%2C%20Slovenia&destination=Most%20na%20So%C4%8Di%20train%20station%2C%20Slovenia',
+          nova_gorica: 'https://www.google.com/maps/dir/?api=1&origin=Tolmin%2C%20Slovenia&destination=Nova%20Gorica%2C%20Slovenia',
+          ljubljana: 'https://www.google.com/maps/dir/?api=1&origin=Tolmin%2C%20Slovenia&destination=Ljubljana%2C%20Slovenia'
+        },
+        kobarid: {
+          bovec: 'https://www.google.com/maps/dir/?api=1&origin=Kobarid%2C%20Slovenia&destination=Bovec%20bus%20station%2C%20Slovenia',
+          tolmin: 'https://www.google.com/maps/dir/?api=1&origin=Kobarid%2C%20Slovenia&destination=Tolmin%2C%20Slovenia',
+          most: 'https://www.google.com/maps/dir/?api=1&origin=Kobarid%2C%20Slovenia&destination=Most%20na%20So%C4%8Di%20train%20station%2C%20Slovenia',
+          nova_gorica: 'https://www.google.com/maps/dir/?api=1&origin=Kobarid%2C%20Slovenia&destination=Nova%20Gorica%2C%20Slovenia',
+          ljubljana: 'https://www.google.com/maps/dir/?api=1&origin=Kobarid%2C%20Slovenia&destination=Ljubljana%2C%20Slovenia'
+        },
+        srpenica: {
+          bovec: 'https://www.google.com/maps/dir/?api=1&origin=Srpenica%2C%20Slovenia&destination=Bovec%20bus%20station%2C%20Slovenia',
+          tolmin: 'https://www.google.com/maps/dir/?api=1&origin=Srpenica%2C%20Slovenia&destination=Tolmin%2C%20Slovenia',
+          kobarid: 'https://www.google.com/maps/dir/?api=1&origin=Srpenica%2C%20Slovenia&destination=Kobarid%2C%20Slovenia',
+          most: 'https://www.google.com/maps/dir/?api=1&origin=Srpenica%2C%20Slovenia&destination=Most%20na%20So%C4%8Di%20train%20station%2C%20Slovenia',
+          nova_gorica: 'https://www.google.com/maps/dir/?api=1&origin=Srpenica%2C%20Slovenia&destination=Nova%20Gorica%2C%20Slovenia',
+          ljubljana: 'https://www.google.com/maps/dir/?api=1&origin=Srpenica%2C%20Slovenia&destination=Ljubljana%2C%20Slovenia'
+        },
+        zaga: {
+          bovec: 'https://www.google.com/maps/dir/?api=1&origin=%C5%BDaga%2C%20Slovenia&destination=Bovec%20bus%20station%2C%20Slovenia',
+          tolmin: 'https://www.google.com/maps/dir/?api=1&origin=%C5%BDaga%2C%20Slovenia&destination=Tolmin%2C%20Slovenia',
+          kobarid: 'https://www.google.com/maps/dir/?api=1&origin=%C5%BDaga%2C%20Slovenia&destination=Kobarid%2C%20Slovenia',
+          most: 'https://www.google.com/maps/dir/?api=1&origin=%C5%BDaga%2C%20Slovenia&destination=Most%20na%20So%C4%8Di%20train%20station%2C%20Slovenia',
+          nova_gorica: 'https://www.google.com/maps/dir/?api=1&origin=%C5%BDaga%2C%20Slovenia&destination=Nova%20Gorica%2C%20Slovenia',
+          ljubljana: 'https://www.google.com/maps/dir/?api=1&origin=%C5%BDaga%2C%20Slovenia&destination=Ljubljana%2C%20Slovenia'
+        },
+        bovec: {
+          tolmin: 'https://www.google.com/maps/dir/?api=1&origin=Bovec%20bus%20station%2C%20Slovenia&destination=Tolmin%2C%20Slovenia',
+          kobarid: 'https://www.google.com/maps/dir/?api=1&origin=Bovec%20bus%20station%2C%20Slovenia&destination=Kobarid%2C%20Slovenia',
+          most: 'https://www.google.com/maps/dir/?api=1&origin=Bovec%20bus%20station%2C%20Slovenia&destination=Most%20na%20So%C4%8Di%20train%20station%2C%20Slovenia',
+          nova_gorica: 'https://www.google.com/maps/dir/?api=1&origin=Bovec%20bus%20station%2C%20Slovenia&destination=Nova%20Gorica%2C%20Slovenia',
+          ljubljana: 'https://www.google.com/maps/dir/?api=1&origin=Bovec%20bus%20station%2C%20Slovenia&destination=Ljubljana%2C%20Slovenia'
+        },
+        cezsoča: {
+          bovec: 'https://www.google.com/maps/dir/?api=1&origin=%C4%8Cezso%C4%8Da%2C%20Slovenia&destination=Bovec%20bus%20station%2C%20Slovenia',
+          tolmin: 'https://www.google.com/maps/dir/?api=1&origin=%C4%8Cezso%C4%8Da%2C%20Slovenia&destination=Tolmin%2C%20Slovenia',
+          kobarid: 'https://www.google.com/maps/dir/?api=1&origin=%C4%8Cezso%C4%8Da%2C%20Slovenia&destination=Kobarid%2C%20Slovenia',
+          most: 'https://www.google.com/maps/dir/?api=1&origin=%C4%8Cezso%C4%8Da%2C%20Slovenia&destination=Most%20na%20So%C4%8Di%20train%20station%2C%20Slovenia',
+          nova_gorica: 'https://www.google.com/maps/dir/?api=1&origin=%C4%8Cezso%C4%8Da%2C%20Slovenia&destination=Nova%20Gorica%2C%20Slovenia',
+          ljubljana: 'https://www.google.com/maps/dir/?api=1&origin=%C4%8Cezso%C4%8Da%2C%20Slovenia&destination=Ljubljana%2C%20Slovenia'
+        }
+      };
+      
+      // Destination mapping
+      const destinations = [
+        { key: 'bovec', labelKey: 'quick_help_route_to_bovec' },
+        { key: 'tolmin', labelKey: 'quick_help_route_to_tolmin' },
+        { key: 'kobarid', labelKey: 'quick_help_route_to_kobarid' },
+        { key: 'most', labelKey: 'quick_help_route_to_most' },
+        { key: 'nova_gorica', labelKey: 'quick_help_route_to_nova_gorica' },
+        { key: 'ljubljana', labelKey: 'quick_help_route_to_ljubljana' }
+      ];
+      
+      let html = `<div style="padding: 1rem;">`;
+      
+      // Origin Selector
+      html += `<div class="quick-help-origin-selector">
+        <div class="quick-help-origin-label">${trans.quick_help_where_are_you || ''}</div>
+        <div class="quick-help-origin-grid">`;
+      
+      const originOrder = ['tolmin', 'kobarid', 'srpenica', 'zaga', 'bovec', 'cezsoča'];
+      originOrder.forEach(orig => {
+        const isSelected = orig === origin;
+        const name = originNames[orig]?.[currentLang] || orig;
+        html += `<div class="quick-help-origin-card ${isSelected ? 'selected' : ''}" data-origin="${orig}">
+          <div class="quick-help-origin-card-title">${name}</div>
+        </div>`;
+      });
+      
+      html += `</div></div>`;
+      
+      // Transport Section
+      html += `<div class="quick-help-section">
+        <h2 class="quick-help-section-title">${trans.quick_help_transport || ''}</h2>
+        
+        <!-- Bus Timetable -->
+        <a href="https://www.nomago.si/en/timetable" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+          <div class="quick-help-button-title">${trans.quick_help_bus_timetable || ''}</div>
+          <div class="quick-help-button-desc">${trans.quick_help_bus_timetable_desc || ''}</div>
+        </a>
+        
+        <!-- Download App -->
+        <div style="margin-bottom: 0.75rem;">
+          <div class="quick-help-button-title" style="margin-bottom: 0.75rem;">${trans.quick_help_download_app || ''}</div>
+          <div class="quick-help-app-buttons">
+            <a href="https://apps.apple.com/us/app/nomago/id6475821750" target="_blank" rel="noopener noreferrer" class="quick-help-app-button">
+              ${trans.quick_help_download_ios || ''}
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=si.nomago.maas.android" target="_blank" rel="noopener noreferrer" class="quick-help-app-button">
+              ${trans.quick_help_download_android || ''}
+            </a>
+          </div>
+        </div>
+        
+        <!-- Navigation Routes -->
+        <div style="margin-bottom: 0.75rem;">
+          <div class="quick-help-button-title" style="margin-bottom: 0.75rem;">${trans.quick_help_common_routes || ''}</div>`;
+      
+      // Generate route buttons based on origin
+      const originRoutes = routeUrls[origin] || {};
+      destinations.forEach(dest => {
+        // Skip if origin equals destination
+        if (origin === dest.key) return;
+        
+        const url = originRoutes[dest.key];
+        if (url) {
+          html += `<a href="${url}" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+            <div class="quick-help-button-title">${trans[dest.labelKey] || ''}</div>
+          </a>`;
+        }
+      });
+      
+      html += `</div>
+        
+        <!-- Bus Info Note -->
+        <div class="quick-help-info-note">
+          ${trans.quick_help_bus_info || ''}
+        </div>
+      </div>`;
+      
+      // Daily Essentials Section
+      html += `<div class="quick-help-section">
+        <h2 class="quick-help-section-title">${trans.quick_help_essentials || ''}</h2>
+        
+        <a href="https://www.google.com/maps/search/?api=1&query=supermarket%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+          <div class="quick-help-button-title">${trans.quick_help_supermarket || ''}</div>
+        </a>
+        
+        <a href="https://www.google.com/maps/search/?api=1&query=ATM%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+          <div class="quick-help-button-title">${trans.quick_help_atm || ''}</div>
+        </a>
+        
+        <a href="https://www.google.com/maps/search/?api=1&query=gas%20station%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+          <div class="quick-help-button-title">${trans.quick_help_gas || ''}</div>
+        </a>
+        
+        <a href="https://www.google.com/maps/search/?api=1&query=parking%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+          <div class="quick-help-button-title">${trans.quick_help_parking || ''}</div>
+        </a>
+        
+        <a href="https://www.google.com/maps/search/?api=1&query=public%20toilet%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+          <div class="quick-help-button-title">${trans.quick_help_toilet || ''}</div>
+        </a>
+      </div>`;
+      
+      html += `</div>`;
+      
+      body.innerHTML = html;
+      
+      // Add event listeners for origin selector
+      document.querySelectorAll('.quick-help-origin-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const newOrigin = card.getAttribute('data-origin');
+          if (newOrigin && newOrigin !== origin) {
+            localStorage.setItem('quickHelp_origin', newOrigin);
+            renderQuickHelpContent();
+          }
+        });
+      });
+    }
+
     // Swipe gesture for attractions screen (swipe left to right to close)
     const attractionsScreen = document.getElementById('attractions-screen');
     if (attractionsScreen) {
