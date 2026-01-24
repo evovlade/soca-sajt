@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="sl" class="h-full">
  <head>
@@ -703,6 +704,11 @@
       opacity: 1;
     }
     
+    #emergency-panel.open {
+      max-height: calc(100dvh - 120px);
+      max-height: calc(100vh - 120px);
+    }
+    
     .panel-content {
       background: var(--glass-bg);
       backdrop-filter: blur(20px);
@@ -712,11 +718,24 @@
       padding: 1.5rem;
     }
     
+    #emergency-panel .panel-content {
+      max-height: calc(100dvh - 150px);
+      max-height: calc(100vh - 150px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding: 1.25rem 1.5rem;
+    }
+    
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1.5rem;
+    }
+    
+    #emergency-panel .panel-header {
+      margin-bottom: 1.25rem;
     }
     
     .panel-title {
@@ -749,6 +768,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+      padding-bottom: 100px;
     }
     
     .emergency-item {
@@ -1233,6 +1253,214 @@
       font-weight: 700;
     }
     
+    .quick-help-taxi-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    
+    .quick-help-taxi-item {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    
+    .quick-help-taxi-item:hover {
+      background: rgba(34, 211, 238, 0.1);
+      border-color: var(--accent);
+    }
+    
+    .quick-help-taxi-name {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .quick-help-taxi-phone {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .quick-help-taxi-phone:hover {
+      color: var(--highlight);
+      text-decoration: underline;
+    }
+    
+    .quick-help-ad-placeholder {
+      background: rgba(34, 211, 238, 0.05);
+      border: 1px dashed var(--glass-border);
+      border-radius: 12px;
+      padding: 2rem 1rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    
+    .quick-help-ad-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    
+    .quick-help-emergency-item {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    
+    .quick-help-emergency-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ef4444;
+      min-width: 3rem;
+    }
+    
+    .quick-help-emergency-label {
+      flex: 1;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .quick-help-service-item {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    
+    .quick-help-service-name {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.625rem;
+    }
+    
+    .quick-help-service-address {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.375rem;
+    }
+    
+    .quick-help-service-phone {
+      font-size: 0.9375rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .adrenalin-activity-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    
+    .adrenalin-activity-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    
+    .adrenalin-activity-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    
+    .adrenalin-activity-info {
+      flex: 1;
+    }
+    
+    .adrenalin-activity-name {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .adrenalin-activity-provider {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .adrenalin-activity-actions {
+      display: flex;
+      gap: 0;
+    }
+    
+    .adrenalin-activity-actions .quick-help-button {
+      margin-bottom: 0;
+    }
+    
+    .quick-help-service-web {
+      font-size: 0.875rem;
+      color: var(--accent);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .quick-help-service-web:hover {
+      text-decoration: underline;
+    }
+    
+    .quick-help-service-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    
+    .quick-help-call-btn,
+    .quick-help-directions-btn {
+      flex: 1;
+      background: rgba(34, 211, 238, 0.2);
+      color: var(--accent);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+    }
+    
+    .quick-help-call-btn:hover,
+    .quick-help-directions-btn:hover {
+      background: rgba(34, 211, 238, 0.3);
+      border-color: var(--accent);
+    }
+    
+    .quick-help-taxi-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .quick-help-taxi-phone-display {
+      font-size: 0.9375rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    
     .place-selector {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1491,6 +1719,76 @@
     
     .attractions-place-chip:active {
       transform: scale(0.95);
+    }
+    
+    .attractions-selected-header {
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 0.875rem 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .attractions-selected-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    
+    .attractions-selected-value {
+      font-size: 0.9375rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    
+    .attractions-place-selector-dropdown {
+      margin-bottom: 1.5rem;
+    }
+    
+    .attractions-place-select {
+      width: 100%;
+      background: rgba(16, 32, 24, 0.9);
+      border: 2px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 0.875rem 1rem;
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2322d3ee' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 12px;
+      padding-right: 2.5rem;
+    }
+    
+    .attractions-place-select:hover {
+      border-color: var(--accent);
+      background-color: rgba(34, 211, 238, 0.1);
+    }
+    
+    .attractions-place-select:focus {
+      outline: none;
+      border-color: var(--accent);
+      background-color: rgba(34, 211, 238, 0.15);
+    }
+    
+    .attractions-place-select option {
+      background: rgba(16, 32, 24, 0.95);
+      color: var(--text-primary);
+      padding: 0.5rem;
+    }
+    
+    .attractions-place-select option:hover,
+    .attractions-place-select option:checked {
+      background: rgba(34, 211, 238, 0.2);
+      color: var(--accent);
     }
     
     .attractions-place-intro {
@@ -2061,6 +2359,8 @@
         <option value="en">EN</option>
         <option value="de">DE</option>
         <option value="it">IT</option>
+        <option value="pl">PL</option>
+        <option value="cs">CS</option>
        </select>
       </div>
      </div>
@@ -2081,7 +2381,7 @@
       <p class="hero-location"><span>📍</span> <span id="hero-location">Slovenija</span></p>
      </div>
     </div><!-- Quick Actions -->
-    <div class="quick-actions"><a href="tel:+38640123456" class="quick-action-btn" id="call-action"> <span class="quick-action-icon">📞</span> <span class="quick-action-label" data-i18n="call_host">Pokliči gostitelja</span> </a> <a href="#" id="directions-action" target="_blank" rel="noopener noreferrer" class="quick-action-btn"> <span class="quick-action-icon">🗺️</span> <span class="quick-action-label" data-i18n="directions">Navodila</span> </a> <a href="#" id="attractions-action" class="quick-action-btn"> <span class="quick-action-icon">⭐</span> <span class="quick-action-label" data-i18n="attractions">Znamenitosti</span> </a>
+    <div class="quick-actions"><a href="tel:+38640123456" class="quick-action-btn" id="call-action"> <span class="quick-action-icon">📞</span> <span class="quick-action-label" data-i18n="call_host">Pokliči gostitelja</span> </a> <a href="#" id="directions-action" target="_blank" rel="noopener noreferrer" class="quick-action-btn"> <span class="quick-action-icon">🗺️</span> <span class="quick-action-label" data-i18n="directions">Navodila</span> </a> <a href="#" id="adrenalin-action" class="quick-action-btn"> <span class="quick-action-icon">🎯</span> <span class="quick-action-label" data-i18n="adrenalin">Adrenalin/Aktivnosti</span> </a>
     </div><!-- Menu Grid -->
     <div class="menu-grid">
      <div class="menu-card" data-section="emergency">
@@ -2105,19 +2405,26 @@
       <h3 class="menu-title" data-i18n="parking">Parkiranje</h3>
       <p class="menu-subtitle" data-i18n="parking_sub">Informacije</p>
      </div>
-     <div class="menu-card" id="trip-ideas-card">
+     <div class="menu-card" id="attractions-card">
       <div class="menu-icon">
-       🗺️
+       ⭐
       </div>
-      <h3 class="menu-title" data-i18n="trip_ideas">Ideje za izlete</h3>
-      <p class="menu-subtitle" data-i18n="trip_ideas_sub">Izleti</p>
+      <h3 class="menu-title" data-i18n="attractions">Znamenitosti</h3>
+      <p class="menu-subtitle" data-i18n="attractions_sub">Znamenitosti</p>
      </div>
-     <div class="menu-card" id="quick-help-card">
+     <div class="menu-card" id="daily-essentials-card">
       <div class="menu-icon">
-       ⚡
+       🛒
       </div>
-      <h3 class="menu-title" data-i18n="quick_help">Hitra pomoč</h3>
-      <p class="menu-subtitle" data-i18n="quick_help_sub">Pomoč</p>
+      <h3 class="menu-title" data-i18n="daily_essentials">Daily essentials</h3>
+      <p class="menu-subtitle" data-i18n="daily_essentials_sub">Osnovno</p>
+     </div>
+     <div class="menu-card" id="taxi-bus-card">
+      <div class="menu-icon">
+       🚌
+      </div>
+      <h3 class="menu-title" data-i18n="taxi_bus">Taxi/Bus</h3>
+      <p class="menu-subtitle" data-i18n="taxi_bus_sub">Taxi/Bus</p>
      </div>
     </div><!-- Emergency Panel -->
     <div class="accordion-panel" id="emergency-panel">
@@ -2125,68 +2432,7 @@
       <div class="panel-header">
        <h3 class="panel-title" data-i18n="emergency">Nujno</h3><button class="close-btn" data-close="emergency" type="button">×</button>
       </div>
-      <div class="emergency-list">
-       <div class="emergency-item">
-        <div class="emergency-info">
-         <div class="emergency-name" data-i18n="ambulance">
-          Nujna pomoč
-         </div>
-         <div class="emergency-number">
-          112
-         </div>
-        </div><a href="tel:112" class="call-btn" data-i18n="call_btn">Pokliči</a>
-       </div>
-       <div class="emergency-item">
-        <div class="emergency-info">
-         <div class="emergency-name" data-i18n="police">
-          Policija
-         </div>
-         <div class="emergency-number">
-          113
-         </div>
-        </div><a href="tel:113" class="call-btn" data-i18n="call_btn">Pokliči</a>
-       </div>
-       <div class="emergency-item">
-        <div class="emergency-info">
-         <div class="emergency-name" data-i18n="fire">
-          Gasilci
-         </div>
-         <div class="emergency-number">
-          113
-         </div>
-        </div><a href="tel:113" class="call-btn" data-i18n="call_btn">Pokliči</a>
-       </div>
-       <div class="emergency-item">
-        <div class="emergency-info">
-         <div class="emergency-name" data-i18n="dentist">
-          Dežurni zobozdravnik
-         </div>
-         <div class="emergency-number">
-          +386 31 234 567
-         </div>
-        </div><a href="tel:+38631234567" class="call-btn" data-i18n="call_btn">Pokliči</a>
-       </div>
-       <div class="emergency-item">
-        <div class="emergency-info">
-         <div class="emergency-name" data-i18n="hospital">
-          Bolnišnica Bovec
-         </div>
-         <div class="emergency-number">
-          +386 41 234 568
-         </div>
-        </div><a href="tel:+38641234568" class="call-btn" data-i18n="call_btn">Pokliči</a>
-       </div>
-       <div class="emergency-item">
-        <div class="emergency-info">
-         <div class="emergency-name" data-i18n="pharmacy">
-          Lekarna 24h
-         </div>
-         <div class="emergency-number">
-          +386 51 234 569
-         </div>
-        </div><a href="tel:+38651234569" class="call-btn" data-i18n="call_btn">Pokliči</a>
-       </div>
-      </div>
+      <div class="emergency-list" id="emergency-list-content"></div>
      </div>
     </div><!-- Rules Panel -->
     <div class="accordion-panel" id="rules-panel">
@@ -2338,13 +2584,29 @@
     </div>
     <div class="screen-body" id="trip-ideas-body"></div>
     <footer class="app-footer attractions-footer" data-i18n="footer_attribution">Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov</footer>
-  </div><!-- Quick Help Screen -->
-  <div id="quick-help-screen" class="screen">
+  </div><!-- Daily Essentials Screen -->
+  <div id="daily-essentials-screen" class="screen">
    <div class="screen-header">
-    <button id="quick-help-back" type="button">←</button>
-    <div class="screen-title" data-i18n="quick_help">Hitra pomoč</div>
+    <button id="daily-essentials-back" type="button">←</button>
+    <div class="screen-title" data-i18n="daily_essentials">Daily essentials</div>
    </div>
-   <div class="screen-body" id="quick-help-body"></div>
+   <div class="screen-body" id="daily-essentials-body"></div>
+   <footer class="app-footer attractions-footer" data-i18n="footer_attribution">Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov</footer>
+  </div><!-- Taxi/Bus Screen -->
+  <div id="taxi-bus-screen" class="screen">
+   <div class="screen-header">
+    <button id="taxi-bus-back" type="button">←</button>
+    <div class="screen-title" data-i18n="taxi_bus">Taxi/Bus</div>
+   </div>
+   <div class="screen-body" id="taxi-bus-body"></div>
+   <footer class="app-footer attractions-footer" data-i18n="footer_attribution">Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov</footer>
+  </div><!-- Adrenalin/Aktivnosti Screen -->
+  <div id="adrenalin-screen" class="screen">
+   <div class="screen-header">
+    <button id="adrenalin-back" type="button">←</button>
+    <div class="screen-title" data-i18n="adrenalin">Adrenalin/Aktivnosti</div>
+   </div>
+   <div class="screen-body" id="adrenalin-body"></div>
    <footer class="app-footer attractions-footer" data-i18n="footer_attribution">Ustvarjeno z ❤️ od V.N. · Demo različica · Darilo lokalni skupnosti za boljšo izkušnjo turistov</footer>
   </div><!-- Toast -->
   <div class="toast" id="toast"><span class="toast-icon">✓</span> <span class="toast-text" id="toast-text" data-i18n="copied">Kopirano!</span>
@@ -2478,7 +2740,7 @@
         info_title: "Info",
         info_location: "Lokacija",
         copy_address: "Kopiraj naslov",
-        directions: "Navodila do apartmaja",
+        directions: "Navodila",
         address_copied: "Naslov kopiran!",
         info_checkinout: "Prijava / Odjava",
         checkin_from: "Prijava: od",
@@ -2501,6 +2763,8 @@
         gallery_placeholder: "Slika",
         video_placeholder: "Video",
         attractions_page_title: "Znamenitosti",
+        attractions_sub: "Znamenitosti",
+        attractions_selected: "Izabrano",
         attractions_intro: "Izberi kraj in odkrij naravne in kulturne bisere doline Soče. Vsaka točka ima opis, praktične nasvete in gumb za Zemljevide.",
         attractions_read_more: "Preberi več",
         attractions_show_less: "Skrij",
@@ -2931,7 +3195,31 @@
         trip_ideas_tips: "Praktični nasveti",
         quick_help: "Hitra pomoč",
         quick_help_sub: "Pomoč",
+        nujno: "NUJNO",
+        emergency_112: "Nujna pomoč",
+        emergency_113: "Policija",
+        service_tourist_medical: "Turistična zdravstvena služba (Bovec)",
+        service_emergency_medical: "Nujna zdravstvena služba (Tolmin) – 24 ur na dan",
+        service_dental: "Zdravstveni dom zobozdravstvena oskrba Nova Gorica",
+        service_pharmacy_bovec: "Lekarna Bovec",
+        service_pharmacy_kobarid: "Lekarna Kobarid",
+        service_pharmacy_tolmin: "Lekarna Tolmin",
+        service_pharmacy_kanal: "Lekarna Kanal",
+        service_police: "Policijska postaja v Bovec",
+        service_firefighters: "Gasilci (Bovec)",
+        taxi_bus: "Taxi/Bus",
+        taxi_bus_sub: "Taxi/Bus",
+        taxi_services: "Taxi službe",
+        ad_promo: "Oglas / Promocija",
         quick_help_transport: "🚌 Prevoz",
+        adrenalin: "Adrenalin/Aktivnosti",
+        adrenalin_sub: "Aktivnosti",
+        adrenalin_link: "sojnca.com",
+        activity_archery: "Lokostrelstvo",
+        in_preparation: "V pripravi",
+        placeholder_1: "Zastopnik 1",
+        placeholder_2: "Zastopnik 2",
+        placeholder_3: "Zastopnik 3",
         quick_help_essentials: "🛒 Dnevne potrebščine",
         quick_help_bus_timetable: "Preveri vozni red avtobusa (Nomago)",
         quick_help_bus_timetable_desc: "Poišči točne odhode in povezave.",
@@ -3035,7 +3323,7 @@
         call: "Call",
         call_host: "Call host",
         navigate: "Navigate",
-        directions: "Directions to apartment",
+        directions: "Directions",
         attractions: "Attractions",
         wifi: "WiFi",
         brand_title: "SOČA VALLEY",
@@ -3096,7 +3384,7 @@
         info_title: "Info",
         info_location: "Location",
         copy_address: "Copy address",
-        directions: "Directions to apartment",
+        directions: "Directions",
         address_copied: "Address copied!",
         info_checkinout: "Check-in / Check-out",
         checkin_from: "Check-in: from",
@@ -3119,6 +3407,8 @@
         gallery_placeholder: "Image",
         video_placeholder: "Video",
         attractions_page_title: "Attractions",
+        attractions_sub: "Attractions",
+        attractions_selected: "Selected",
         attractions_intro: "Pick a place and explore the natural and cultural highlights of the Soča Valley. Each spot includes a guide, practical tips, and a Maps button.",
         attractions_read_more: "Read more",
         attractions_show_less: "Show less",
@@ -3549,7 +3839,35 @@
         trip_ideas_tips: "Practical tips",
         quick_help: "Quick Help",
         quick_help_sub: "Help",
+        nujno: "NUJNO",
+        emergency_112: "Emergency",
+        emergency_113: "Police",
+        service_tourist_medical: "Tourist medical service (Bovec)",
+        service_emergency_medical: "Emergency medical service (Tolmin) – 24 hours a day",
+        service_dental: "Health Center Dental Care Nova Gorica",
+        service_pharmacy_bovec: "Pharmacy Bovec",
+        service_pharmacy_kobarid: "Pharmacy Kobarid",
+        service_pharmacy_tolmin: "Pharmacy Tolmin",
+        service_pharmacy_kanal: "Pharmacy Kanal",
+        service_police: "Police station in Bovec",
+        service_firefighters: "Firefighters (Bovec)",
+        taxi_bus: "Taxi/Bus",
+        taxi_bus_sub: "Taxi/Bus",
+        taxi_services: "Taxi Services",
+        ad_promo: "Ad / Promo",
+        quick_help_taxi_services: "Taxi Services",
+        quick_help_ad_label: "Ad / Promo",
         quick_help_transport: "🚌 Transport",
+        adrenalin: "Adrenalin/Aktivnosti",
+        adrenalin_sub: "Aktivnosti",
+        adrenalin_link: "sojnca.com",
+        activity_archery: "Archery",
+        in_preparation: "In preparation",
+        placeholder_1: "Placeholder 1",
+        placeholder_2: "Placeholder 2",
+        placeholder_3: "Placeholder 3",
+        daily_essentials: "Daily essentials",
+        daily_essentials_sub: "Essentials",
         quick_help_essentials: "🛒 Daily essentials",
         quick_help_bus_timetable: "Check bus timetable (Nomago)",
         quick_help_bus_timetable_desc: "Find exact departures and connections.",
@@ -3653,7 +3971,7 @@
         call: "Anrufen",
         call_host: "Vermieter anrufen",
         navigate: "Navigation",
-        directions: "Zur Unterkunft",
+        directions: "Wegbeschreibung",
         directions_to_apartment: "Zur Unterkunft",
         brand_title: "SOČA-TAL",
         brand_subtitle: "BOVEC",
@@ -3734,6 +4052,8 @@
         gallery_placeholder: "Bild",
         video_placeholder: "Video",
         attractions_page_title: "Sehenswürdigkeiten",
+        attractions_sub: "Sehenswürdigkeiten",
+        attractions_selected: "Ausgewählt",
         attractions_intro: "Wähle einen Ort und entdecke die Natur- und Kultur-Highlights des Soča-Tals. Jeder Punkt enthält eine kurze Guide-Info, praktische Tipps und einen Maps-Button.",
         attractions_read_more: "Mehr lesen",
         attractions_show_less: "Weniger",
@@ -4164,7 +4484,35 @@
         trip_ideas_tips: "Praktische Tipps",
         quick_help: "Schnelle Hilfe",
         quick_help_sub: "Hilfe",
+        quick_help_taxi_services: "Taxi-Dienste",
+        quick_help_ad_label: "Werbung / Promotion",
+        nujno: "NUJNO",
+        emergency_112: "Notfall",
+        emergency_113: "Polizei",
+        service_tourist_medical: "Touristische medizinische Dienstleistung (Bovec)",
+        service_emergency_medical: "Notfallmedizinischer Dienst (Tolmin) – 24 Stunden am Tag",
+        service_dental: "Gesundheitszentrum Zahnpflege Nova Gorica",
+        service_pharmacy_bovec: "Apotheke Bovec",
+        service_pharmacy_kobarid: "Apotheke Kobarid",
+        service_pharmacy_tolmin: "Apotheke Tolmin",
+        service_pharmacy_kanal: "Apotheke Kanal",
+        service_police: "Polizeistation in Bovec",
+        service_firefighters: "Feuerwehr (Bovec)",
+        taxi_bus: "Taxi/Bus",
+        taxi_bus_sub: "Taxi/Bus",
+        taxi_services: "Taxi-Dienste",
+        ad_promo: "Werbung / Promotion",
         quick_help_transport: "🚌 Transport",
+        adrenalin: "Adrenalin/Aktivitäten",
+        adrenalin_sub: "Aktivitäten",
+        adrenalin_link: "sojnca.com",
+        activity_archery: "Bogenschießen",
+        in_preparation: "In Vorbereitung",
+        placeholder_1: "Platzhalter 1",
+        placeholder_2: "Platzhalter 2",
+        placeholder_3: "Platzhalter 3",
+        daily_essentials: "Tägliche Bedürfnisse",
+        daily_essentials_sub: "Grundlegendes",
         quick_help_essentials: "🛒 Tägliche Bedürfnisse",
         quick_help_bus_timetable: "Busfahrplan prüfen (Nomago)",
         quick_help_bus_timetable_desc: "Finden Sie genaue Abfahrtszeiten und Verbindungen.",
@@ -4268,7 +4616,7 @@
         call: "Chiama",
         call_host: "Chiama ospite",
         navigate: "Naviga",
-        directions: "Verso l'appartamento",
+        directions: "Indicazioni",
         attractions: "Attrazioni",
         brand_title: "VALLE DELL'ISONZO",
         brand_subtitle: "BOVEC",
@@ -4351,6 +4699,8 @@
         gallery_placeholder: "Immagine",
         video_placeholder: "Video",
         attractions_page_title: "Attrazioni",
+        attractions_sub: "Attrazioni",
+        attractions_selected: "Selezionato",
         attractions_intro: "Scegli una località e scopri i tesori naturali e culturali della Valle dell'Isonzo. Ogni punto include una guida, consigli pratici e un pulsante Maps.",
         attractions_read_more: "Leggi di più",
         attractions_show_less: "Riduci",
@@ -4781,7 +5131,35 @@
         trip_ideas_tips: "Consigli pratici",
         quick_help: "Aiuto rapido",
         quick_help_sub: "Aiuto",
+        quick_help_taxi_services: "Servizi taxi",
+        quick_help_ad_label: "Pubblicità / Promozione",
+        nujno: "NUJNO",
+        emergency_112: "Emergenza",
+        emergency_113: "Polizia",
+        service_tourist_medical: "Servizio medico turistico (Bovec)",
+        service_emergency_medical: "Servizio medico di emergenza (Tolmin) – 24 ore al giorno",
+        service_dental: "Centro sanitario assistenza dentale Nova Gorica",
+        service_pharmacy_bovec: "Farmacia Bovec",
+        service_pharmacy_kobarid: "Farmacia Kobarid",
+        service_pharmacy_tolmin: "Farmacia Tolmin",
+        service_pharmacy_kanal: "Farmacia Kanal",
+        service_police: "Stazione di polizia a Bovec",
+        service_firefighters: "Vigili del fuoco (Bovec)",
+        taxi_bus: "Taxi/Bus",
+        taxi_bus_sub: "Taxi/Bus",
+        taxi_services: "Servizi taxi",
+        ad_promo: "Pubblicità / Promozione",
+        daily_essentials: "Essenziali quotidiani",
+        daily_essentials_sub: "Essenziali",
         quick_help_transport: "🚌 Trasporti",
+        adrenalin: "Adrenalin/Attività",
+        adrenalin_sub: "Attività",
+        adrenalin_link: "sojnca.com",
+        activity_archery: "Tiro con l'arco",
+        in_preparation: "In preparazione",
+        placeholder_1: "Segnaposto 1",
+        placeholder_2: "Segnaposto 2",
+        placeholder_3: "Segnaposto 3",
         quick_help_essentials: "🛒 Necessità quotidiane",
         quick_help_bus_timetable: "Controlla orario autobus (Nomago)",
         quick_help_bus_timetable_desc: "Trova partenze esatte e collegamenti.",
@@ -4877,6 +5255,186 @@
         trip_ideas_vodenca_kids: "I sentieri pianeggianti alla confluenza sono sicuri per i bambini. Fai attenzione alla sicurezza dell'acqua. Porta snack e acqua. Scegli brevi passeggiate più facili adatte ai bambini.",
         trip_ideas_vodenca_rain: "Con tempo piovoso, brevi passeggiate sono possibili, ma fai attenzione alle pietre scivolose. Se il tempo è troppo cattivo, considera attività alternative. Se il tempo migliora, puoi fare una breve passeggiata sicura.",
         trip_ideas_vodenca_tips: "Fai attenzione ai livelli dell'acqua dei fiumi, specialmente dopo la pioggia. Rispetta la natura e rimani sui sentieri segnati. Porta scarpe comode da passeggio. Il parcheggio è disponibile nei punti principali."
+      },
+      pl: {
+        welcome: "Witamy",
+        enter: "Wejdź",
+        guest_guide: "Przewodnik gościa",
+        call: "Zadzwoń",
+        call_host: "Zadzwoń do właściciela",
+        navigate: "Nawigacja",
+        directions: "Dojazd",
+        attractions: "Atrakcje",
+        wifi: "WiFi",
+        emergency: "Pilne",
+        emergency_sub: "Pilne połączenia",
+        rules: "Regulamin",
+        rules_sub: "Zasady",
+        parking: "Parking",
+        parking_sub: "Informacje",
+        recommendations: "Rekomendacje",
+        recommendations_sub: "Okolica",
+        ambulance: "Pogotowie",
+        police: "Policja",
+        fire: "Straż pożarna",
+        dentist: "Dyżurny dentysta",
+        hospital: "Szpital Bovec",
+        pharmacy: "Apteka 24h",
+        call_btn: "Zadzwoń",
+        nujno: "NUJNO",
+        emergency_112: "Pogotowie",
+        emergency_113: "Policja",
+        service_tourist_medical: "Służba medyczna dla turystów (Bovec)",
+        service_emergency_medical: "Pogotowie ratunkowe (Tolmin) – 24 godziny na dobę",
+        service_dental: "Ośrodek zdrowia opieka dentystyczna Nova Gorica",
+        service_pharmacy_bovec: "Apteka Bovec",
+        service_pharmacy_kobarid: "Apteka Kobarid",
+        service_pharmacy_tolmin: "Apteka Tolmin",
+        service_pharmacy_kanal: "Apteka Kanal",
+        service_police: "Komisariat policji w Bovec",
+        service_firefighters: "Straż pożarna (Bovec)",
+        taxi_bus: "Taxi/Bus",
+        taxi_bus_sub: "Taxi/Bus",
+        taxi_services: "Usługi taksówkowe",
+        ad_promo: "Reklama / Promocja",
+        attractions_page_title: "Atrakcje",
+        attractions_sub: "Atrakcje",
+        attractions_selected: "Wybrane",
+        attractions_intro: "Wybierz miejsce i odkryj naturalne i kulturalne perły doliny Soča. Każdy punkt ma opis, praktyczne porady i przycisk do Map.",
+        attractions_read_more: "Czytaj więcej",
+        attractions_show_less: "Ukryj",
+        attractions_open_maps: "Otwórz w Mapach",
+        attractions_time: "Czas",
+        attractions_difficulty: "Trudność",
+        attractions_family: "Dla rodzin",
+        attractions_difficulty_easy: "Łatwe",
+        attractions_difficulty_moderate: "Średnie",
+        attractions_difficulty_hard: "Trudne",
+        attractions_family_yes: "Tak",
+        attractions_family_care: "Z ostrożnością",
+        attractions_family_no: "Nie zalecane",
+        adrenalin: "Adrenalin/Aktywności",
+        adrenalin_sub: "Aktywności",
+        adrenalin_link: "sojnca.com",
+        activity_archery: "Łucznictwo",
+        in_preparation: "W przygotowaniu",
+        placeholder_1: "Zastępnik 1",
+        placeholder_2: "Zastępnik 2",
+        placeholder_3: "Zastępnik 3",
+        quick_help_transport: "🚌 Transport",
+        quick_help_bus_timetable: "Sprawdź rozkład autobusów (Nomago)",
+        quick_help_bus_timetable_desc: "Znajdź dokładne odjazdy i połączenia.",
+        quick_help_download_app: "Pobierz aplikację Nomago",
+        quick_help_download_ios: "iOS",
+        quick_help_download_android: "Android",
+        quick_help_common_routes: "Popularne trasy (Nawigacja)",
+        quick_help_route_to_bovec: "Do Bovec",
+        quick_help_route_to_tolmin: "Do Tolmin",
+        quick_help_route_to_kobarid: "Do Kobarid",
+        quick_help_route_to_most: "Do Most na Soči (pociąg)",
+        quick_help_route_to_nova_gorica: "Do Nova Gorica",
+        quick_help_route_to_ljubljana: "Do Ljubljana",
+        quick_help_bus_info: "Z Bovec autobusy zwykle jadą w kierunku Tolmin, a następnie dalej w kierunku Nova Gorica lub Most na Soči. Istnieje również co najmniej jedno dzienne połączenie z Ljubljaną.",
+        quick_help_where_are_you: "Gdzie jesteś teraz?",
+        daily_essentials: "Podstawowe potrzeby",
+        daily_essentials_sub: "Podstawowe",
+        quick_help_supermarket: "Supermarket",
+        quick_help_atm: "Bankomat",
+        quick_help_gas: "Stacja benzynowa",
+        quick_help_parking: "Parking",
+        quick_help_toilet: "Toaleta publiczna",
+        footer_attribution: "Stworzone z ❤️ przez V.N. · Wersja demo · Prezent dla lokalnej społeczności na lepsze doświadczenie turystów",
+        brand_title: "DOLINA SOČY"
+      },
+      cs: {
+        welcome: "Vítejte",
+        enter: "Vstoupit",
+        guest_guide: "Průvodce hosta",
+        call: "Zavolat",
+        call_host: "Zavolat majiteli",
+        navigate: "Navigace",
+        directions: "Trasa",
+        attractions: "Atrakce",
+        wifi: "WiFi",
+        emergency: "Nouzové",
+        emergency_sub: "Nouzová volání",
+        rules: "Domovní řád",
+        rules_sub: "Pravidla",
+        parking: "Parkování",
+        parking_sub: "Informace",
+        recommendations: "Doporučení",
+        recommendations_sub: "Okolí",
+        ambulance: "Záchranná služba",
+        police: "Policie",
+        fire: "Hasiči",
+        dentist: "Lékařská pohotovost",
+        hospital: "Nemocnice Bovec",
+        pharmacy: "Lékárna 24h",
+        call_btn: "Zavolat",
+        nujno: "NUJNO",
+        emergency_112: "Záchranná služba",
+        emergency_113: "Policie",
+        service_tourist_medical: "Turistická zdravotní služba (Bovec)",
+        service_emergency_medical: "Nouzová zdravotní služba (Tolmin) – 24 hodin denně",
+        service_dental: "Zdravotní středisko zubní péče Nova Gorica",
+        service_pharmacy_bovec: "Lékárna Bovec",
+        service_pharmacy_kobarid: "Lékárna Kobarid",
+        service_pharmacy_tolmin: "Lékárna Tolmin",
+        service_pharmacy_kanal: "Lékárna Kanal",
+        service_police: "Policejní stanice v Bovec",
+        service_firefighters: "Hasiči (Bovec)",
+        taxi_bus: "Taxi/Bus",
+        taxi_bus_sub: "Taxi/Bus",
+        taxi_services: "Taxi služby",
+        ad_promo: "Reklama / Propagace",
+        attractions_page_title: "Atrakce",
+        attractions_sub: "Atrakce",
+        attractions_selected: "Vybrané",
+        attractions_intro: "Vyberte místo a objevte přírodní a kulturní perly údolí Soča. Každý bod má popis, praktické rady a tlačítko do Map.",
+        attractions_read_more: "Číst více",
+        attractions_show_less: "Skrýt",
+        attractions_open_maps: "Otevřít v Mapách",
+        attractions_time: "Čas",
+        attractions_difficulty: "Obtížnost",
+        attractions_family: "Pro rodiny",
+        attractions_difficulty_easy: "Snadné",
+        attractions_difficulty_moderate: "Střední",
+        attractions_difficulty_hard: "Těžké",
+        attractions_family_yes: "Ano",
+        attractions_family_care: "S opatrností",
+        attractions_family_no: "Nedoporučuje se",
+        adrenalin: "Adrenalin/Aktivity",
+        adrenalin_sub: "Aktivity",
+        adrenalin_link: "sojnca.com",
+        activity_archery: "Lukostřelba",
+        in_preparation: "V přípravě",
+        placeholder_1: "Zástupce 1",
+        placeholder_2: "Zástupce 2",
+        placeholder_3: "Zástupce 3",
+        quick_help_transport: "🚌 Doprava",
+        quick_help_bus_timetable: "Zkontroluj jízdní řád autobusů (Nomago)",
+        quick_help_bus_timetable_desc: "Najděte přesné odjezdy a spojení.",
+        quick_help_download_app: "Stáhnout aplikaci Nomago",
+        quick_help_download_ios: "iOS",
+        quick_help_download_android: "Android",
+        quick_help_common_routes: "Běžné trasy (Navigace)",
+        quick_help_route_to_bovec: "Do Bovec",
+        quick_help_route_to_tolmin: "Do Tolmin",
+        quick_help_route_to_kobarid: "Do Kobarid",
+        quick_help_route_to_most: "Do Most na Soči (vlak)",
+        quick_help_route_to_nova_gorica: "Do Nova Gorica",
+        quick_help_route_to_ljubljana: "Do Ljubljana",
+        quick_help_bus_info: "Z Bovec autobusy obvykle jedou směrem na Tolmin a dále směrem na Nova Gorica nebo Most na Soči. Existuje také alespoň jedno denní spojení s Ljubljanou.",
+        quick_help_where_are_you: "Kde jste teď?",
+        daily_essentials: "Základní potřeby",
+        daily_essentials_sub: "Základní",
+        quick_help_supermarket: "Supermarket",
+        quick_help_atm: "Bankomat",
+        quick_help_gas: "Čerpací stanice",
+        quick_help_parking: "Parkování",
+        quick_help_toilet: "Veřejné WC",
+        footer_attribution: "Vytvořeno s ❤️ od V.N. · Demo verze · Dar místní komunitě pro lepší zážitek turistů",
+        brand_title: "ÚDOLÍ SOČE"
       }
     };
 
@@ -5041,6 +5599,30 @@
           renderParkingPanel(filteredOptions, currentTown);
         }
       }
+      
+      // Update emergency panel if open
+      const emergencyPanel = document.getElementById('emergency-panel');
+      if (emergencyPanel && emergencyPanel.classList.contains('open')) {
+        renderEmergencyContent();
+      }
+      
+      // Update taxi/bus screen if open
+      const taxiBusScreen = document.getElementById('taxi-bus-screen');
+      if (taxiBusScreen && taxiBusScreen.classList.contains('show')) {
+        renderTaxiBusContent();
+      }
+      
+      // Update adrenalin screen if open
+      const adrenalinScreen = document.getElementById('adrenalin-screen');
+      if (adrenalinScreen && adrenalinScreen.classList.contains('show')) {
+        renderAdrenalinContent();
+      }
+      
+      // Update daily essentials screen if open
+      const dailyEssentialsScreen = document.getElementById('daily-essentials-screen');
+      if (dailyEssentialsScreen && dailyEssentialsScreen.classList.contains('show')) {
+        renderDailyEssentialsContent();
+      }
     }
 
     // Initialize with saved language
@@ -5061,6 +5643,117 @@
       }
 
     // Accordion panels
+    function renderEmergencyContent() {
+      const emergencyList = document.getElementById('emergency-list-content');
+      if (!emergencyList) return;
+      
+      const trans = translations[currentLang];
+      if (!trans) return;
+      
+      let html = '';
+      
+      // Emergency numbers 112 and 113
+      html += `<div class="quick-help-emergency-item">
+        <div class="quick-help-emergency-number">112</div>
+        <div class="quick-help-emergency-label">${trans.emergency_112 || 'Emergency'}</div>
+        <a href="tel:112" class="quick-help-call-btn">${trans.call || 'Pozovi'}</a>
+      </div>`;
+      
+      html += `<div class="quick-help-emergency-item">
+        <div class="quick-help-emergency-number">113</div>
+        <div class="quick-help-emergency-label">${trans.emergency_113 || 'Police'}</div>
+        <a href="tel:113" class="quick-help-call-btn">${trans.call || 'Pozovi'}</a>
+      </div>`;
+      
+      // Services list
+      const services = [
+        {
+          name: trans.service_tourist_medical || 'Tourist medical service (Bovec)',
+          address: 'Kot 85, 5230 Bovec',
+          phone: '+386 5 620 33 22',
+          tel: 'tel:+38656203322',
+          directions: 'https://www.google.com/maps/search/?api=1&query=Kot+85%2C+5230+Bovec'
+        },
+        {
+          name: trans.service_emergency_medical || 'Emergency medical service (Tolmin) – 24 hours a day',
+          address: 'Prešernova 6/a, 5220 Tolmin',
+          phone: '+386 5 38 81 120',
+          tel: 'tel:+38653881120',
+          directions: 'https://www.google.com/maps/search/?api=1&query=Pre%C5%A1ernova+6%2Fa%2C+5220+Tolmin'
+        },
+        {
+          name: trans.service_dental || 'Health Center Dental Care Nova Gorica',
+          address: '',
+          phone: '+386 5 39 38 700',
+          tel: 'tel:+38653938700',
+          directions: 'https://www.google.com/maps/search/?api=1&query=Health+Center+Dental+Care+Nova+Gorica'
+        },
+        {
+          name: trans.service_pharmacy_bovec || 'Pharmacy Bovec',
+          address: 'Kot 86, 5230 Bovec',
+          phone: '+386 5 38 96 180',
+          tel: 'tel:+38653896180',
+          directions: 'https://www.google.com/maps/search/?api=1&query=Kot+86%2C+5230+Bovec'
+        },
+        {
+          name: trans.service_pharmacy_kobarid || 'Pharmacy Kobarid',
+          address: 'Trg svobode 3b, 5222 Kobarid',
+          phone: '+386 5 38 85 077',
+          tel: 'tel:+38653885077',
+          directions: 'https://www.google.com/maps/search/?api=1&query=Trg+svobode+3b%2C+5222+Kobarid'
+        },
+        {
+          name: trans.service_pharmacy_tolmin || 'Pharmacy Tolmin',
+          address: 'Trg maršala Tita 11, 5220 Tolmin',
+          phone: '+386 5 38 11 480',
+          tel: 'tel:+38653811480',
+          web: 'www.lekarna-tolmin.si',
+          directions: 'https://www.google.com/maps/search/?api=1&query=Trg+mar%C5%A1ala+Tita+11%2C+5220+Tolmin'
+        },
+        {
+          name: trans.service_pharmacy_kanal || 'Pharmacy Kanal',
+          address: 'Morsko 1, 5213 Kanal',
+          phone: '+386 5 395 12 23',
+          tel: 'tel:+38653951223',
+          web: 'www.goriskalekarna.si/lekarne/lekarna-kanal',
+          directions: 'https://www.google.com/maps/search/?api=1&query=Morsko+1%2C+5213+Kanal'
+        },
+        {
+          name: trans.service_police || 'Police station in Bovec',
+          address: '',
+          phone: '05 389 68 50',
+          tel: 'tel:+38653896850',
+          directions: 'https://www.google.com/maps/search/?api=1&query=Police+Station+Bovec+Slovenia'
+        },
+        {
+          name: trans.service_firefighters || 'Firefighters (Bovec)',
+          address: '',
+          phone: '05 388 60 95',
+          tel: 'tel:+38653886095',
+          directions: 'https://www.google.com/maps/search/?api=1&query=Firefighters+Bovec+Slovenia'
+        }
+      ];
+      
+      services.forEach(service => {
+        html += `<div class="quick-help-service-item">
+          <div class="quick-help-service-name">${service.name}</div>`;
+        if (service.address) {
+          html += `<div class="quick-help-service-address">${service.address}</div>`;
+        }
+        html += `<div class="quick-help-service-phone">${service.phone}</div>`;
+        if (service.web) {
+          html += `<a href="https://${service.web}" target="_blank" rel="noopener noreferrer" class="quick-help-service-web">${service.web}</a>`;
+        }
+        html += `<div class="quick-help-service-actions">
+          <a href="${service.tel}" class="quick-help-call-btn">${trans.call || 'Pozovi'}</a>
+          <a href="${service.directions}" target="_blank" rel="noopener noreferrer" class="quick-help-directions-btn">${trans.directions || 'Directions'}</a>
+        </div>
+        </div>`;
+      });
+      
+      emergencyList.innerHTML = html;
+    }
+    
     function openPanel(panelId) {
       if (activePanel && activePanel !== panelId) {
         document.getElementById(activePanel + '-panel').classList.remove('open');
@@ -5071,6 +5764,10 @@
       
       if (panelId === 'parking') {
         loadParkingOptions();
+      }
+      
+      if (panelId === 'emergency') {
+        renderEmergencyContent();
       }
       
       setTimeout(() => {
@@ -5090,10 +5787,12 @@
         const section = card.getAttribute('data-section');
         if (section) {
           openPanel(section);
-        } else if (card.id === 'trip-ideas-card') {
-          openTripIdeas();
-        } else if (card.id === 'quick-help-card') {
-          openQuickHelp();
+        } else if (card.id === 'attractions-card') {
+          openAttractions();
+        } else if (card.id === 'daily-essentials-card') {
+          openDailyEssentials();
+        } else if (card.id === 'taxi-bus-card') {
+          openTaxiBus();
         }
       });
     });
@@ -6480,15 +7179,29 @@
       // Place selector
       const places = ['tolmin', 'most_na_soci', 'kobarid', 'srpenica', 'zaga', 'cezsoča', 'bovec', 'trenta', 'lepena'];
       
+      // Get selected place name
+      const selectedPlaceData = ATTRACTIONS[selectedPlace];
+      const selectedPlaceName = selectedPlaceData ? (trans[selectedPlaceData.nameKey] || selectedPlace) : selectedPlace;
+      
       let html = `<div class="attractions-intro">${trans.attractions_intro || ''}</div>`;
-      html += '<div class="attractions-place-selector">';
+      
+      // Show selected location header
+      html += `<div class="attractions-selected-header">
+        <span class="attractions-selected-label">${trans.attractions_selected || 'Selected'}:</span>
+        <span class="attractions-selected-value">${selectedPlaceName}</span>
+      </div>`;
+      
+      // Dropdown selector
+      html += '<div class="attractions-place-selector-dropdown">';
+      html += `<select id="attractions-place-select" class="attractions-place-select">`;
       places.forEach(placeId => {
         const placeData = ATTRACTIONS[placeId];
         if (!placeData) return;
         const placeName = trans[placeData.nameKey] || placeId;
         const isSelected = placeId === selectedPlace;
-        html += `<button class="attractions-place-chip ${isSelected ? 'active' : ''}" data-place="${placeId}" type="button">${placeName}</button>`;
+        html += `<option value="${placeId}" ${isSelected ? 'selected' : ''}>${placeName}</option>`;
       });
+      html += '</select>';
       html += '</div>';
       
       // Get selected place data
@@ -6554,14 +7267,20 @@
       
       body.innerHTML = html;
       
-      // Place selector handlers
-      body.querySelectorAll('.attractions-place-chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-          const placeId = chip.getAttribute('data-place');
+      // Place selector dropdown handler
+      const placeSelect = body.querySelector('#attractions-place-select');
+      if (placeSelect) {
+        placeSelect.addEventListener('change', () => {
+          const placeId = placeSelect.value;
           localStorage.setItem('attractions_place', placeId);
           renderAttractionsContent(); // Re-render with new place
+          // Update trip ideas if screen is open
+          const tripIdeasScreen = document.getElementById('trip-ideas-screen');
+          if (tripIdeasScreen && tripIdeasScreen.classList.contains('show')) {
+            renderTripIdeasContent(placeId);
+          }
         });
-      });
+      }
       
       // Category accordion handlers
       body.querySelectorAll('.attractions-category-header').forEach(header => {
@@ -6740,7 +7459,8 @@
         card.addEventListener('click', () => {
           const newPlace = card.getAttribute('data-place');
           if (newPlace && newPlace !== place) {
-            localStorage.setItem('tripIdeas_lastPlace', newPlace);
+            // Sync with attractions selection
+            localStorage.setItem('attractions_place', newPlace);
             renderTripIdeasContent(newPlace);
             // Update URL
             window.history.replaceState(null, '', `${window.location.pathname}#trip-ideas?place=${newPlace}`);
@@ -7258,12 +7978,12 @@
 
     initGallery();
     
-    // Attractions screen event listeners
-    const attractionsAction = document.getElementById('attractions-action');
-    if (attractionsAction) {
-      attractionsAction.addEventListener('click', (e) => {
+    // Adrenalin quick action event listener
+    const adrenalinAction = document.getElementById('adrenalin-action');
+    if (adrenalinAction) {
+      adrenalinAction.addEventListener('click', (e) => {
         e.preventDefault();
-        openAttractions();
+        openAdrenalin();
       });
     }
     
@@ -7272,14 +7992,15 @@
       attractionsBack.addEventListener('click', closeAttractions);
     }
     
-    // Swipe-back gesture for attractions screen
-    const attractionsScreen = document.getElementById('attractions-screen');
-    if (attractionsScreen) {
+    // Swipe-back gesture helper function
+    function addSwipeBack(screenElement, closeFunction) {
+      if (!screenElement) return;
+      
       let touchStartX = null;
       let touchStartY = null;
       let touchStartTime = null;
       
-      attractionsScreen.addEventListener('touchstart', (e) => {
+      screenElement.addEventListener('touchstart', (e) => {
         const touch = e.touches[0];
         // Only detect if touch starts within left 20px
         if (touch.clientX <= 20) {
@@ -7289,7 +8010,7 @@
         }
       }, { passive: true });
       
-      attractionsScreen.addEventListener('touchmove', (e) => {
+      screenElement.addEventListener('touchmove', (e) => {
         if (touchStartX === null) return;
         
         const touch = e.touches[0];
@@ -7299,18 +8020,36 @@
         // Require horizontal movement > vertical movement
         if (deltaX > 0 && deltaX > deltaY && deltaX > 70) {
           // Swipe right detected - trigger back action
-          closeAttractions();
+          closeFunction();
           touchStartX = null;
           touchStartY = null;
           touchStartTime = null;
         }
       }, { passive: true });
       
-      attractionsScreen.addEventListener('touchend', () => {
+      screenElement.addEventListener('touchend', () => {
         touchStartX = null;
         touchStartY = null;
         touchStartTime = null;
       }, { passive: true });
+    }
+    
+    // Swipe-back gesture for attractions screen
+    const attractionsScreen = document.getElementById('attractions-screen');
+    if (attractionsScreen) {
+      addSwipeBack(attractionsScreen, closeAttractions);
+    }
+    
+    // Swipe-back gesture for taxi-bus screen
+    const taxiBusScreen = document.getElementById('taxi-bus-screen');
+    if (taxiBusScreen) {
+      addSwipeBack(taxiBusScreen, closeTaxiBus);
+    }
+    
+    // Swipe-back gesture for adrenalin screen
+    const adrenalinScreen = document.getElementById('adrenalin-screen');
+    if (adrenalinScreen) {
+      addSwipeBack(adrenalinScreen, closeAdrenalin);
     }
     
     // Trip Ideas screen event listeners
@@ -7319,10 +8058,154 @@
       tripIdeasBack.addEventListener('click', closeTripIdeas);
     }
     
-    // Quick Help screen event listeners
-    const quickHelpBack = document.getElementById('quick-help-back');
-    if (quickHelpBack) {
-      quickHelpBack.addEventListener('click', closeQuickHelp);
+    // Daily Essentials screen functions
+    function showDailyEssentialsScreen() {
+      const screen = document.getElementById('daily-essentials-screen');
+      if (screen) {
+        screen.classList.add('show');
+        renderDailyEssentialsContent();
+      }
+    }
+    
+    function hideDailyEssentialsScreen() {
+      const screen = document.getElementById('daily-essentials-screen');
+      if (screen) {
+        screen.classList.remove('show');
+      }
+    }
+    
+    function openDailyEssentials() {
+      closeAllPanels();
+      showDailyEssentialsScreen();
+    }
+    
+    function closeDailyEssentials() {
+      hideDailyEssentialsScreen();
+      scrollToTopReliable();
+    }
+    
+    function renderDailyEssentialsContent() {
+      const body = document.getElementById('daily-essentials-body');
+      if (!body) return;
+      
+      const trans = translations[currentLang];
+      if (!trans) return;
+      
+      let html = `<div style="padding: 1rem;">
+        <div class="quick-help-section">
+          <h2 class="quick-help-section-title">${trans.daily_essentials || 'Daily essentials'}</h2>
+          
+          <a href="https://www.google.com/maps/search/?api=1&query=supermarket%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+            <div class="quick-help-button-title">${trans.quick_help_supermarket || ''}</div>
+          </a>
+          
+          <a href="https://www.google.com/maps/search/?api=1&query=ATM%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+            <div class="quick-help-button-title">${trans.quick_help_atm || ''}</div>
+          </a>
+          
+          <a href="https://www.google.com/maps/search/?api=1&query=gas%20station%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+            <div class="quick-help-button-title">${trans.quick_help_gas || ''}</div>
+          </a>
+          
+          <a href="https://www.google.com/maps/search/?api=1&query=parking%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+            <div class="quick-help-button-title">${trans.quick_help_parking || ''}</div>
+          </a>
+          
+          <a href="https://www.google.com/maps/search/?api=1&query=public%20toilet%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
+            <div class="quick-help-button-title">${trans.quick_help_toilet || ''}</div>
+          </a>
+        </div>
+      </div>`;
+      
+      body.innerHTML = html;
+    }
+    
+    // Daily Essentials screen event listeners
+    const dailyEssentialsBack = document.getElementById('daily-essentials-back');
+    if (dailyEssentialsBack) {
+      dailyEssentialsBack.addEventListener('click', closeDailyEssentials);
+    }
+    
+    // Taxi/Bus screen event listeners
+    const taxiBusBack = document.getElementById('taxi-bus-back');
+    if (taxiBusBack) {
+      taxiBusBack.addEventListener('click', closeTaxiBus);
+    }
+    
+    // Adrenalin screen functions
+    function showAdrenalinScreen() {
+      const screen = document.getElementById('adrenalin-screen');
+      if (screen) {
+        screen.classList.add('show');
+        renderAdrenalinContent();
+      }
+    }
+    
+    function hideAdrenalinScreen() {
+      const screen = document.getElementById('adrenalin-screen');
+      if (screen) {
+        screen.classList.remove('show');
+      }
+    }
+    
+    function openAdrenalin() {
+      closeAllPanels();
+      showAdrenalinScreen();
+    }
+    
+    function closeAdrenalin() {
+      hideAdrenalinScreen();
+      scrollToTopReliable();
+    }
+    
+    function renderAdrenalinContent() {
+      const body = document.getElementById('adrenalin-body');
+      if (!body) return;
+      
+      const trans = translations[currentLang];
+      if (!trans) return;
+      
+      let html = `<div style="padding: 1rem;">
+        <div class="quick-help-section">
+          <div class="adrenalin-activity-card">
+            <div class="adrenalin-activity-header">
+              <img src="https://sojnca.com/favicon.ico" alt="Sojnca" class="adrenalin-activity-logo" onerror="this.style.display='none';">
+              <div class="adrenalin-activity-info">
+                <div class="adrenalin-activity-name">${trans.activity_archery || 'Lokostrelstvo'}</div>
+                <div class="adrenalin-activity-provider">Sojnca</div>
+              </div>
+            </div>
+            <div class="adrenalin-activity-actions">
+              <a href="https://sojnca.com/activities" target="_blank" rel="noopener noreferrer" class="quick-help-button" style="flex: 1; margin-right: 0.75rem;">
+                <div class="quick-help-button-title">${trans.adrenalin_link || 'sojnca.com'}</div>
+              </a>
+              <a href="https://www.google.com/maps/search/?api=1&query=Ledina%204%2C%205230%20Bovec" target="_blank" rel="noopener noreferrer" class="quick-help-button" style="flex: 1;">
+                <div class="quick-help-button-title">${trans.directions || 'Directions'}</div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="quick-help-section">
+          <h2 class="quick-help-section-title">${trans.in_preparation || 'U pripremi'}</h2>
+          <div class="quick-help-ad-placeholder" style="margin-bottom: 1rem;">
+            <div class="quick-help-ad-label">${trans.placeholder_1 || 'Placeholder 1'}</div>
+          </div>
+          <div class="quick-help-ad-placeholder" style="margin-bottom: 1rem;">
+            <div class="quick-help-ad-label">${trans.placeholder_2 || 'Placeholder 2'}</div>
+          </div>
+          <div class="quick-help-ad-placeholder">
+            <div class="quick-help-ad-label">${trans.placeholder_3 || 'Placeholder 3'}</div>
+          </div>
+        </div>
+      </div>`;
+      
+      body.innerHTML = html;
+    }
+    
+    // Adrenalin screen event listeners
+    const adrenalinBack = document.getElementById('adrenalin-back');
+    if (adrenalinBack) {
+      adrenalinBack.addEventListener('click', closeAdrenalin);
     }
     
     // Feedback Modal Functions
@@ -7497,9 +8380,9 @@
         const currentPlace = getTripIdeasPlace();
         renderTripIdeasContent(currentPlace);
       }
-      const quickHelpScreen = document.getElementById('quick-help-screen');
-      if (quickHelpScreen && quickHelpScreen.classList.contains('show')) {
-        renderQuickHelpContent();
+      const taxiBusScreen = document.getElementById('taxi-bus-screen');
+      if (taxiBusScreen && taxiBusScreen.classList.contains('show')) {
+        renderTaxiBusContent();
       }
       // Update feedback placeholders if modal is open
       if (typeof updateFeedbackPlaceholders === 'function') {
@@ -7510,34 +8393,34 @@
       }
     };
     
-    // Quick Help screen functions
-    function showQuickHelpScreen() {
-      const screen = document.getElementById('quick-help-screen');
+    // Taxi/Bus screen functions
+    function showTaxiBusScreen() {
+      const screen = document.getElementById('taxi-bus-screen');
       if (screen) {
         screen.classList.add('show');
-        renderQuickHelpContent();
+        renderTaxiBusContent();
       }
     }
     
-    function hideQuickHelpScreen() {
-      const screen = document.getElementById('quick-help-screen');
+    function hideTaxiBusScreen() {
+      const screen = document.getElementById('taxi-bus-screen');
       if (screen) {
         screen.classList.remove('show');
       }
     }
     
-    function openQuickHelp() {
+    function openTaxiBus() {
       closeAllPanels();
-      showQuickHelpScreen();
+      showTaxiBusScreen();
     }
     
-    function closeQuickHelp() {
-      hideQuickHelpScreen();
+    function closeTaxiBus() {
+      hideTaxiBusScreen();
       scrollToTopReliable();
     }
     
-    function renderQuickHelpContent() {
-      const body = document.getElementById('quick-help-body');
+    function renderTaxiBusContent() {
+      const body = document.getElementById('taxi-bus-body');
       if (!body) return;
       
       const trans = translations[currentLang];
@@ -7621,6 +8504,54 @@
       
       let html = `<div style="padding: 1rem;">`;
       
+      // Taxi Services Section (before Transport)
+      html += `<div class="quick-help-section">
+        <h2 class="quick-help-section-title">${trans.taxi_services || 'Taxi službe'}</h2>
+        
+        <div class="quick-help-taxi-list">
+          <div class="quick-help-taxi-item">
+            <div class="quick-help-taxi-name">Soča Taxi Express</div>
+            <div class="quick-help-taxi-actions">
+              <span class="quick-help-taxi-phone-display">+386 30 123 456</span>
+              <a href="tel:+38630123456" class="quick-help-call-btn">${trans.call || 'Pozovi'}</a>
+            </div>
+          </div>
+          <div class="quick-help-taxi-item">
+            <div class="quick-help-taxi-name">Kanin Ride</div>
+            <div class="quick-help-taxi-actions">
+              <span class="quick-help-taxi-phone-display">+386 31 234 567</span>
+              <a href="tel:+38631234567" class="quick-help-call-btn">${trans.call || 'Pozovi'}</a>
+            </div>
+          </div>
+          <div class="quick-help-taxi-item">
+            <div class="quick-help-taxi-name">Bovec QuickCab</div>
+            <div class="quick-help-taxi-actions">
+              <span class="quick-help-taxi-phone-display">+386 40 345 678</span>
+              <a href="tel:+38640345678" class="quick-help-call-btn">${trans.call || 'Pozovi'}</a>
+            </div>
+          </div>
+          <div class="quick-help-taxi-item">
+            <div class="quick-help-taxi-name">Tolmin Night Taxi</div>
+            <div class="quick-help-taxi-actions">
+              <span class="quick-help-taxi-phone-display">+386 41 456 789</span>
+              <a href="tel:+38641456789" class="quick-help-call-btn">${trans.call || 'Pozovi'}</a>
+            </div>
+          </div>
+          <div class="quick-help-taxi-item">
+            <div class="quick-help-taxi-name">Emerald Valley Taxi</div>
+            <div class="quick-help-taxi-actions">
+              <span class="quick-help-taxi-phone-display">+386 51 567 890</span>
+              <a href="tel:+38651567890" class="quick-help-call-btn">${trans.call || 'Pozovi'}</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Ad / Promo Placeholder -->
+        <div class="quick-help-ad-placeholder">
+          <div class="quick-help-ad-label">${trans.ad_promo || 'Ad / Promo'}</div>
+        </div>
+      </div>`;
+      
       // Origin Selector
       html += `<div class="quick-help-origin-selector">
         <div class="quick-help-origin-label">${trans.quick_help_where_are_you || ''}</div>
@@ -7686,31 +8617,6 @@
         </div>
       </div>`;
       
-      // Daily Essentials Section
-      html += `<div class="quick-help-section">
-        <h2 class="quick-help-section-title">${trans.quick_help_essentials || ''}</h2>
-        
-        <a href="https://www.google.com/maps/search/?api=1&query=supermarket%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
-          <div class="quick-help-button-title">${trans.quick_help_supermarket || ''}</div>
-        </a>
-        
-        <a href="https://www.google.com/maps/search/?api=1&query=ATM%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
-          <div class="quick-help-button-title">${trans.quick_help_atm || ''}</div>
-        </a>
-        
-        <a href="https://www.google.com/maps/search/?api=1&query=gas%20station%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
-          <div class="quick-help-button-title">${trans.quick_help_gas || ''}</div>
-        </a>
-        
-        <a href="https://www.google.com/maps/search/?api=1&query=parking%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
-          <div class="quick-help-button-title">${trans.quick_help_parking || ''}</div>
-        </a>
-        
-        <a href="https://www.google.com/maps/search/?api=1&query=public%20toilet%20near%20me" target="_blank" rel="noopener noreferrer" class="quick-help-button">
-          <div class="quick-help-button-title">${trans.quick_help_toilet || ''}</div>
-        </a>
-      </div>`;
-      
       html += `</div>`;
       
       body.innerHTML = html;
@@ -7721,7 +8627,7 @@
           const newOrigin = card.getAttribute('data-origin');
           if (newOrigin && newOrigin !== origin) {
             localStorage.setItem('quickHelp_origin', newOrigin);
-            renderQuickHelpContent();
+            renderTaxiBusContent();
           }
         });
       });
