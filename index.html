@@ -721,10 +721,15 @@
     #emergency-panel .panel-content {
       max-height: calc(100dvh - 150px);
       max-height: calc(100vh - 150px);
-      overflow-y: auto;
+      overflow-y: auto !important;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       padding: 1.25rem 1.5rem;
+      scroll-behavior: smooth;
+    }
+    
+    #emergency-panel.open .panel-content {
+      overflow-y: auto !important;
     }
     
     .panel-header {
@@ -5650,6 +5655,12 @@
       const trans = translations[currentLang];
       if (!trans) return;
       
+      // Reset scroll position before rendering
+      const panelContent = emergencyList.closest('.panel-content');
+      if (panelContent) {
+        panelContent.scrollTop = 0;
+      }
+      
       let html = '';
       
       // Emergency numbers 112 and 113
@@ -5752,6 +5763,16 @@
       });
       
       emergencyList.innerHTML = html;
+      
+      // Ensure scroll is active after content is rendered
+      setTimeout(() => {
+        const panelContent = emergencyList.closest('.panel-content');
+        if (panelContent) {
+          panelContent.scrollTop = 0;
+          // Force scroll container to be active
+          panelContent.style.overflowY = 'auto';
+        }
+      }, 10);
     }
     
     function openPanel(panelId) {
@@ -5768,11 +5789,19 @@
       
       if (panelId === 'emergency') {
         renderEmergencyContent();
+        // Scroll emergency panel content to top immediately
+        setTimeout(() => {
+          const panelContent = panel.querySelector('.panel-content');
+          if (panelContent) {
+            panelContent.scrollTop = 0;
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }, 50);
+      } else {
+        setTimeout(() => {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
       }
-      
-      setTimeout(() => {
-        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 100);
     }
 
     function closePanel(panelId) {
