@@ -186,6 +186,22 @@
       padding-top: calc(1rem + env(safe-area-inset-top));
       animation: slideDown 0.5s ease-out;
       position: relative;
+      overflow: hidden;
+    }
+    
+    .weather-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .header-content, .hero-content, header * {
+      position: relative;
+      z-index: 2;
     }
     
     /* Header Weather Scene - Cinematic Background */
@@ -2353,6 +2369,7 @@
   </div><!-- Main App -->
   <div id="app-container"><!-- Glass Header -->
    <header class="glass-header">
+    <iframe class="weather-bg" src="weather-animations.html" title="Weather background"></iframe>
     <div id="header-weather-scene" class="header-weather-scene" aria-hidden="true"></div>
     <div class="header-content">
      <div class="header-title-section">
@@ -5464,13 +5481,11 @@
         return;
       }
       
-      let welcomeStartTime = Date.now();
-      const MIN_WELCOME_TIME = 5000; // 5 seconds
+      const WELCOME_DISPLAY_TIME = 5000; // 5 seconds
 
-      function hideWelcome() {
-        const elapsed = Date.now() - welcomeStartTime;
-        const remaining = Math.max(0, MIN_WELCOME_TIME - elapsed);
-        
+      // Don't auto-hide if already shown in this session
+      if (!sessionStorage.getItem('welcomeShown')) {
+        // Auto-hide after exactly 5 seconds
         setTimeout(() => {
           if (welcomeOverlay) {
             welcomeOverlay.classList.add('hide');
@@ -5479,16 +5494,8 @@
               if (appContainer) appContainer.classList.add('show');
             }, 500);
           }
-        }, remaining);
-      }
-
-      // Don't auto-hide if already shown in this session
-      if (!sessionStorage.getItem('welcomeShown')) {
-        // Auto-hide after exactly 5 seconds
-        setTimeout(() => {
-          hideWelcome();
           sessionStorage.setItem('welcomeShown', 'true');
-        }, MIN_WELCOME_TIME);
+        }, WELCOME_DISPLAY_TIME);
       } else {
         if (welcomeOverlay) welcomeOverlay.style.display = 'none';
         if (appContainer) appContainer.classList.add('show');
