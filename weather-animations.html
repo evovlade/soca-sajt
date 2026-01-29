@@ -1,1069 +1,395 @@
 <!doctype html>
-<html lang="sr" class="h-full">
+<html lang="sr">
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Realistic Weather Animations</title>
-  <script src="/_sdk/element_sdk.js"></script>
+  <title>Cinematic Weather</title>
   <style>
+    /* --- PURE CINEMATIC STYLE --- */
     body {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow-x: hidden;
-      background: #0a0e27;
-    }
-
-    .h-full {
-      height: 100%;
-    }
-
-    .app-wrapper {
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .weather-header {
-      position: relative;
-      width: 100%;
-      height: 500px;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: #000;
+      height: 100vh;
+      width: 100vw;
     }
 
-    .weather-title {
-      position: relative;
-      z-index: 100;
-      text-align: center;
-      color: white;
-      text-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
-      filter: drop-shadow(0 0 30px rgba(255,255,255,0.3));
-    }
-
-    .weather-title h1 {
-      font-size: 72px;
-      margin: 0;
-      font-weight: 800;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    .weather-title p {
-      font-size: 28px;
-      margin: 15px 0 0 0;
-      opacity: 0.95;
-      font-weight: 300;
-    }
-
-    .weather-scene {
+    /* Glavni kontejner koji drži sve layere */
+    #scene-container {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 1.5s ease-in-out;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0; /* Počinje crno */
+      transition: opacity 2s ease-in-out;
+    }
+
+    /* VINJETA - Daje filmski izgled (tamni uglovi) */
+    .vignette {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%);
+      z-index: 100;
       pointer-events: none;
     }
 
-    .weather-scene.active {
-      opacity: 1;
-      pointer-events: auto;
+    /* CANVAS ZA PADAVINE (Najbolje performanse) */
+    #particleCanvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 50;
+      pointer-events: none;
     }
 
-    /* SUNNY SCENE - Ultra Realistic */
-    .sunny-scene {
-      background: linear-gradient(180deg, #4A90E2 0%, #87CEEB 40%, #E0F6FF 100%);
+    /* POZADINSKI GRADIJENTI (Skybox) */
+    .sky-layer {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      transition: opacity 2s ease-in-out;
+      opacity: 0;
+      z-index: 1;
+    }
+    .sky-layer.active { opacity: 1; }
+
+    /* DEFINICIJE BOJA NEBA (Dublje, modernije boje) */
+    .sky-sunny { background: linear-gradient(to bottom, #1E90FF 0%, #87CEFA 100%); }
+    .sky-cloudy { background: linear-gradient(to bottom, #5D6D7E 0%, #BFC9CA 100%); }
+    .sky-rain { background: linear-gradient(to bottom, #2C3E50 0%, #4A5868 100%); }
+    .sky-storm { background: linear-gradient(to bottom, #17202A 0%, #283747 100%); }
+    .sky-snow { background: linear-gradient(to bottom, #85929E 0%, #D6EAF8 100%); }
+    
+    /* NOĆNE VARIJANTE */
+    .sky-clear-night { background: linear-gradient(to bottom, #020111 0%, #191629 100%); }
+    .sky-cloudy-night { background: linear-gradient(to bottom, #111 0%, #2c3e50 100%); }
+
+    /* CELESTIAL BODIES (Sunce/Mesec sa GLOW efektom) */
+    .celestial-container {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10;
+      pointer-events: none;
     }
 
     .sun {
       position: absolute;
-      top: 50px;
-      right: 100px;
-      width: 150px;
-      height: 150px;
-      background: radial-gradient(circle at 40% 40%, #FFF4E0 0%, #FFE87C 30%, #FFD700 60%, #FF8C00 100%);
+      top: 8%; right: 8%;
+      width: 100px; height: 100px;
+      background: #FFD700;
       border-radius: 50%;
-      box-shadow: 
-        0 0 60px 10px rgba(255, 215, 0, 0.8),
-        0 0 120px 20px rgba(255, 215, 0, 0.5),
-        0 0 200px 40px rgba(255, 180, 0, 0.3),
-        inset -10px -10px 30px rgba(255, 140, 0, 0.5);
-      animation: sunPulse 6s ease-in-out infinite, sunRotate 120s linear infinite;
+      box-shadow: 0 0 80px rgba(255, 215, 0, 0.8), 0 0 150px rgba(255, 140, 0, 0.4);
+      opacity: 0;
+      transition: opacity 2s, transform 10s ease-out;
+      transform: translateY(20px);
     }
-
-    .sun::before {
-      content: '';
+    
+    .moon {
       position: absolute;
-      top: -40px;
-      left: -40px;
-      right: -40px;
-      bottom: -40px;
-      background: radial-gradient(circle, rgba(255, 235, 100, 0.4) 0%, transparent 70%);
-      animation: sunGlow 4s ease-in-out infinite alternate;
+      top: 10%; right: 10%;
+      width: 80px; height: 80px;
+      background: #FDFEFE;
       border-radius: 50%;
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.6), 0 0 100px rgba(255, 255, 255, 0.2);
+      opacity: 0;
+      transition: opacity 2s;
     }
 
-    .sun::after {
-      content: '';
+    .visible { opacity: 1 !important; transform: translateY(0) !important; }
+
+    /* OBLACI (Mekani, proceduralni) */
+    .clouds-layer {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 50%);
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 20;
+      opacity: 0;
+      transition: opacity 2s;
+      filter: blur(3px); /* Filmski blur za dubinu */
     }
+    .clouds-layer.active { opacity: 1; }
 
-    @keyframes sunPulse {
-      0%, 100% { 
-        transform: scale(1);
-        filter: brightness(1);
-      }
-      50% { 
-        transform: scale(1.08);
-        filter: brightness(1.15);
-      }
-    }
-
-    @keyframes sunRotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes sunGlow {
-      0% { opacity: 0.5; transform: scale(0.95); }
-      100% { opacity: 1; transform: scale(1.05); }
-    }
-
-    /* Sun Rays */
-    .sun-ray {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 4px;
-      height: 80px;
-      background: linear-gradient(to bottom, rgba(255, 215, 0, 0.8), transparent);
-      transform-origin: 2px 0;
-      animation: rayRotate 20s linear infinite;
-    }
-
-    @keyframes rayRotate {
-      from { transform: translate(-50%, -50%) rotate(0deg); }
-      to { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
-    /* Realistic Clouds */
     .cloud {
       position: absolute;
-      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
-      animation: cloudFloat 40s linear infinite;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 100px;
+      animation: float 60s linear infinite;
+    }
+    .night-cloud { background: rgba(149, 165, 166, 0.2); }
+
+    @keyframes float {
+      from { transform: translateX(-150%); }
+      to { transform: translateX(150vw); }
     }
 
-    .cloud-part {
+    /* MUNJA (Flash) */
+    .lightning-overlay {
       position: absolute;
-      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.95) 0%, rgba(240, 248, 255, 0.85) 100%);
-      border-radius: 50%;
-    }
-
-    .cloud1 { top: 70px; left: -250px; animation-duration: 45s; }
-    .cloud2 { top: 180px; left: -300px; animation-delay: -15s; animation-duration: 55s; }
-    .cloud3 { top: 130px; left: -350px; animation-delay: -30s; animation-duration: 50s; }
-
-    @keyframes cloudFloat {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(calc(100vw + 400px)); }
-    }
-
-    /* RAINY SCENE - Ultra Realistic */
-    .rainy-scene {
-      background: linear-gradient(180deg, #2C3E50 0%, #34495E 50%, #4A5568 100%);
-    }
-
-    .rain {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    .raindrop {
-      position: absolute;
-      background: linear-gradient(to bottom, transparent 0%, rgba(200, 220, 255, 0.7) 20%, rgba(174, 194, 224, 0.9) 100%);
-      border-radius: 0 0 50% 50%;
-      animation: rainFall linear infinite;
-      filter: blur(0.3px);
-    }
-
-    @keyframes rainFall {
-      0% {
-        transform: translateY(-100px) scaleY(1);
-        opacity: 0;
-      }
-      5% {
-        opacity: 1;
-      }
-      95% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(550px) scaleY(1.2);
-        opacity: 0;
-      }
-    }
-
-    /* Rain Splash Effect */
-    .rain-splash {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    .splash {
-      position: absolute;
-      width: 8px;
-      height: 2px;
-      background: radial-gradient(ellipse, rgba(200, 220, 255, 0.6), transparent);
-      border-radius: 50%;
-      animation: splash 1.5s ease-out infinite;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #fff;
       opacity: 0;
+      z-index: 90;
+      mix-blend-mode: overlay;
     }
 
-    @keyframes splash {
-      0% {
-        transform: scale(0.5, 1);
-        opacity: 0;
-      }
-      20% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: scale(3, 0.3);
-        opacity: 0;
-      }
-    }
-
-    .storm-cloud {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 200px;
-      background: linear-gradient(to bottom, 
-        rgba(40, 50, 70, 0.95) 0%,
-        rgba(50, 60, 80, 0.85) 50%,
-        transparent 100%
-      );
-      filter: blur(2px);
-      animation: cloudMove 30s ease-in-out infinite;
-    }
-
-    @keyframes cloudMove {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(-50px); }
-    }
-
-    /* STORMY SCENE - Extreme Realism */
-    .stormy-scene {
-      background: linear-gradient(180deg, #0F1419 0%, #1a1f2e 50%, #16213e 100%);
-    }
-
-    .lightning-bolt {
-      position: absolute;
-      opacity: 0;
-      filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 40px rgba(100, 150, 255, 0.8));
-    }
-
-    .bolt-segment {
-      position: absolute;
-      background: linear-gradient(to bottom, 
-        rgba(255, 255, 255, 1) 0%,
-        rgba(200, 230, 255, 0.95) 50%,
-        rgba(150, 200, 255, 0.8) 100%
-      );
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(100, 150, 255, 0.6);
-    }
-
-    .lightning1 { top: 30px; left: 25%; animation: lightning1Strike 5s infinite; }
-    .lightning2 { top: 40px; left: 65%; animation: lightning2Strike 7s infinite; animation-delay: 2s; }
-    .lightning3 { top: 35px; left: 45%; animation: lightning3Strike 6s infinite; animation-delay: 4s; }
-
-    @keyframes lightning1Strike {
-      0%, 100% { opacity: 0; }
-      49%, 51%, 53% { opacity: 0; }
-      50%, 52% { opacity: 1; }
-    }
-
-    @keyframes lightning2Strike {
-      0%, 100% { opacity: 0; }
-      34%, 36%, 38%, 40% { opacity: 0; }
-      35%, 37%, 39% { opacity: 1; }
-    }
-
-    @keyframes lightning3Strike {
-      0%, 100% { opacity: 0; }
-      59%, 61% { opacity: 0; }
-      60% { opacity: 1; }
-    }
-
-    .storm-flash {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.4), transparent 60%);
-      opacity: 0;
-      animation: stormFlash 5s infinite;
-    }
-
-    @keyframes stormFlash {
-      0%, 100% { opacity: 0; }
-      49%, 51%, 53% { opacity: 0; }
-      50%, 52% { opacity: 0.7; }
-    }
-
-    /* SNOWY SCENE - 3D Realistic Snow */
-    .snowy-scene {
-      background: linear-gradient(180deg, #E8EAF6 0%, #C5CAE9 50%, #D7DCF0 100%);
-    }
-
-    .snowflake {
-      position: absolute;
-      color: white;
-      opacity: 0;
-      text-shadow: 
-        0 0 5px rgba(255, 255, 255, 0.9),
-        0 0 10px rgba(200, 220, 255, 0.5);
-      animation: snowFall linear infinite;
-      will-change: transform, opacity;
-    }
-
-    @keyframes snowFall {
-      0% {
-        transform: translateY(-30px) translateX(0) rotate(0deg) scale(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-        transform: translateY(50px) translateX(10px) rotate(45deg) scale(1);
-      }
-      50% {
-        transform: translateY(250px) translateX(-20px) rotate(180deg) scale(1);
-      }
-      100% {
-        transform: translateY(520px) translateX(30px) rotate(360deg) scale(0.8);
-        opacity: 0.6;
-      }
-    }
-
-    /* Snow Ground Accumulation */
-    .snow-ground {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 80px;
-      background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9));
-      border-radius: 50% 50% 0 0 / 20% 20% 0 0;
-    }
-
-    /* FOGGY SCENE - Volumetric Fog */
-    .foggy-scene {
-      background: linear-gradient(180deg, #778899 0%, #708090 50%, #556B7D 100%);
-    }
-
-    .fog-layer {
-      position: absolute;
-      width: 300%;
-      height: 150%;
-      top: -25%;
-      background: radial-gradient(ellipse at center,
-        transparent 0%,
-        rgba(220, 230, 240, 0.4) 20%,
-        rgba(200, 215, 230, 0.6) 40%,
-        rgba(220, 230, 240, 0.5) 60%,
-        rgba(200, 215, 230, 0.4) 80%,
-        transparent 100%
-      );
-      filter: blur(15px);
-      opacity: 0.8;
-    }
-
-    .fog-layer:nth-child(1) {
-      animation: fogMove1 35s ease-in-out infinite;
-      animation-delay: 0s;
-    }
-
-    .fog-layer:nth-child(2) {
-      animation: fogMove2 45s ease-in-out infinite;
-      animation-delay: -15s;
-      opacity: 0.6;
-    }
-
-    .fog-layer:nth-child(3) {
-      animation: fogMove3 40s ease-in-out infinite;
-      animation-delay: -30s;
-      opacity: 0.5;
-      filter: blur(25px);
-    }
-
-    .fog-layer:nth-child(4) {
-      animation: fogMove1 50s ease-in-out infinite;
-      animation-delay: -10s;
-      opacity: 0.4;
-      filter: blur(20px);
-    }
-
-    @keyframes fogMove1 {
-      0%, 100% { transform: translateX(-60%) translateY(0); }
-      50% { transform: translateX(-40%) translateY(-20px); }
-    }
-
-    @keyframes fogMove2 {
-      0%, 100% { transform: translateX(-70%) translateY(10px); }
-      50% { transform: translateX(-30%) translateY(-10px); }
-    }
-
-    @keyframes fogMove3 {
-      0%, 100% { transform: translateX(-50%) translateY(-10px); }
-      50% { transform: translateX(-65%) translateY(20px); }
-    }
-
-    /* CONTROLS */
-    .weather-controls {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 101;
-      display: flex;
-      gap: 15px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 15px 25px;
-      border-radius: 50px;
-      backdrop-filter: blur(10px);
-    }
-
-    .weather-btn {
-      background: rgba(255, 255, 255, 0.2);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      touch-action: manipulation;
-    }
-
-    .weather-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .weather-btn.active {
-      background: rgba(255, 255, 255, 0.4);
-      border-color: rgba(255, 255, 255, 0.6);
-    }
-
-    .weather-btn:focus-visible {
-      outline: 3px solid rgba(255,255,255,0.7);
-      outline-offset: 3px;
-    }
-
-    .content-section {
-      padding: 60px 40px;
-      background: white;
-      min-height: 300px;
-    }
-
-    .content-section h2 {
-      color: #2d3748;
-      font-size: 36px;
-      margin-bottom: 20px;
-    }
-
-    .content-section p {
-      color: #4a5568;
-      font-size: 18px;
-      line-height: 1.8;
-      max-width: 800px;
-    }
-
-    .raindrop, .splash {
-      will-change: transform, opacity;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
-      }
-    }
-
-    /* Hide UI elements when used as background */
-    .weather-title, .weather-controls, .content-section {
-      display: none !important;
-    }
-    
-    .weather-header {
-      height: 100vh;
-    }
-    
-    .app-wrapper {
-      height: 100%;
-      overflow: hidden;
-    }
-    
-    body, html {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
   </style>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
- <body class="h-full">
-  <div class="app-wrapper">
-   <header class="weather-header"><!-- Sunny Scene -->
-    <div class="weather-scene sunny-scene active" data-weather="sunny">
-     <div class="sun">
-      <div class="sun-ray" style="transform: rotate(0deg);"></div>
-      <div class="sun-ray" style="transform: rotate(45deg);"></div>
-      <div class="sun-ray" style="transform: rotate(90deg);"></div>
-      <div class="sun-ray" style="transform: rotate(135deg);"></div>
-      <div class="sun-ray" style="transform: rotate(180deg);"></div>
-      <div class="sun-ray" style="transform: rotate(225deg);"></div>
-      <div class="sun-ray" style="transform: rotate(270deg);"></div>
-      <div class="sun-ray" style="transform: rotate(315deg);"></div>
-     </div>
-     <div class="cloud cloud1">
-      <div class="cloud-part" style="width: 120px; height: 60px; left: 0; top: 20px;"></div>
-      <div class="cloud-part" style="width: 80px; height: 80px; left: 20px; top: -10px;"></div>
-      <div class="cloud-part" style="width: 100px; height: 70px; left: 50px; top: 0;"></div>
-      <div class="cloud-part" style="width: 90px; height: 65px; left: 80px; top: 15px;"></div>
-     </div>
-     <div class="cloud cloud2">
-      <div class="cloud-part" style="width: 140px; height: 70px; left: 0; top: 25px;"></div>
-      <div class="cloud-part" style="width: 90px; height: 90px; left: 30px; top: -10px;"></div>
-      <div class="cloud-part" style="width: 110px; height: 80px; left: 60px; top: 5px;"></div>
-      <div class="cloud-part" style="width: 100px; height: 75px; left: 95px; top: 18px;"></div>
-     </div>
-     <div class="cloud cloud3">
-      <div class="cloud-part" style="width: 130px; height: 65px; left: 0; top: 22px;"></div>
-      <div class="cloud-part" style="width: 85px; height: 85px; left: 25px; top: -8px;"></div>
-      <div class="cloud-part" style="width: 105px; height: 75px; left: 55px; top: 3px;"></div>
-      <div class="cloud-part" style="width: 95px; height: 70px; left: 88px; top: 16px;"></div>
-     </div>
-    </div><!-- Rainy Scene -->
-    <div class="weather-scene rainy-scene" data-weather="rainy">
-     <div class="storm-cloud"></div>
-     <div class="rain" id="rainContainer"></div>
-     <div class="rain-splash" id="rainSplash"></div>
-    </div><!-- Stormy Scene -->
-    <div class="weather-scene stormy-scene" data-weather="stormy">
-     <div class="storm-cloud" style="height: 250px; background: linear-gradient(to bottom, rgba(20, 25, 35, 0.98) 0%, rgba(30, 35, 45, 0.9) 50%, transparent 100%);"></div>
-     <div class="rain" id="stormRainContainer"></div>
-     <div class="lightning-bolt lightning1">
-      <div class="bolt-segment" style="width: 6px; height: 100px; left: 0; top: 0; transform: rotate(-8deg);"></div>
-      <div class="bolt-segment" style="width: 5px; height: 80px; left: -10px; top: 90px; transform: rotate(15deg);"></div>
-      <div class="bolt-segment" style="width: 4px; height: 60px; left: 5px; top: 165px; transform: rotate(-20deg);"></div>
-     </div>
-     <div class="lightning-bolt lightning2">
-      <div class="bolt-segment" style="width: 7px; height: 110px; left: 0; top: 0; transform: rotate(10deg);"></div>
-      <div class="bolt-segment" style="width: 5px; height: 70px; left: 15px; top: 100px; transform: rotate(-18deg);"></div>
-      <div class="bolt-segment" style="width: 4px; height: 50px; left: -5px; top: 165px; transform: rotate(25deg);"></div>
-     </div>
-     <div class="lightning-bolt lightning3">
-      <div class="bolt-segment" style="width: 6px; height: 95px; left: 0; top: 0; transform: rotate(-5deg);"></div>
-      <div class="bolt-segment" style="width: 5px; height: 75px; left: -12px; top: 88px; transform: rotate(20deg);"></div>
-      <div class="bolt-segment" style="width: 4px; height: 55px; left: 8px; top: 158px; transform: rotate(-15deg);"></div>
-     </div>
-     <div class="storm-flash"></div>
-    </div><!-- Snowy Scene -->
-    <div class="weather-scene snowy-scene" data-weather="snowy">
-     <div id="snowContainer"></div>
-     <div class="snow-ground"></div>
-    </div><!-- Foggy Scene -->
-    <div class="weather-scene foggy-scene" data-weather="foggy">
-     <div class="fog-layer"></div>
-     <div class="fog-layer"></div>
-     <div class="fog-layer"></div>
-     <div class="fog-layer"></div>
+ <body>
+
+  <div id="scene-container">
+    
+    <div class="vignette"></div>
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div id="sky-sunny" class="sky-layer sky-sunny"></div>
+    <div id="sky-cloudy" class="sky-layer sky-cloudy"></div>
+    <div id="sky-rain" class="sky-layer sky-rain"></div>
+    <div id="sky-storm" class="sky-layer sky-storm"></div>
+    <div id="sky-snow" class="sky-layer sky-snow"></div>
+    <div id="sky-clear-night" class="sky-layer sky-clear-night"></div>
+    <div id="sky-cloudy-night" class="sky-layer sky-cloudy-night"></div>
+
+    <div class="celestial-container">
+      <div id="theSun" class="sun"></div>
+      <div id="theMoon" class="moon"></div>
     </div>
-    <div class="weather-title">
-     <h1 id="mainTitle">Vremenska Prognoza</h1>
-     <p id="subtitle">Realistične animacije u realnom vremenu</p>
-     <p id="liveWeather" style="margin:10px 0 0 0; font-size:18px; opacity:.9;"></p>
-    </div>
-    <div class="weather-controls"><button class="weather-btn active" data-weather="sunny">☀️ Sunčano</button> <button class="weather-btn" data-weather="rainy">🌧️ Kiša</button> <button class="weather-btn" data-weather="stormy">⚡ Oluja</button> <button class="weather-btn" data-weather="snowy">❄️ Sneg</button> <button class="weather-btn" data-weather="foggy">🌫️ Magla</button>
-    </div>
-   </header>
-   <section class="content-section">
-    <h2>Interaktivne Vremenske Animacije</h2>
-    <p>Klikni na dugmiće iznad da vidiš spektakularne, realistične animacije različitih vremenskih uslova. Svaka animacija je pažljivo osmišljena da izgleda kao pravi video sa autentičnim efektima kiše, munja, sunčevog sjaja, padajućeg snega i guste magle. Uživaj u realističnim vizuelnim efektima koji oživljavaju vreme na tvom ekranu!</p>
-   </section>
+
+    <div id="clouds-white" class="clouds-layer"></div>
+    <div id="clouds-dark" class="clouds-layer"></div>
+
+    <div id="flash" class="lightning-overlay"></div>
+
   </div>
+
   <script>
-    const defaultConfig = {
-      main_title: "Vremenska Prognoza",
-      subtitle: "Realistične animacije u realnom vremenu",
-      background_color: "#87CEEB",
-      surface_color: "#ffffff",
-      text_color: "#2d3748",
-      primary_action_color: "#667eea",
-      secondary_action_color: "rgba(255, 255, 255, 0.2)",
-      font_family: "Segoe UI",
-      font_size: 16
-    };
+    // --- SETUP CANVAS-A (VISOKE PERFORMANSE) ---
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    
+    let particles = [];
+    let state = { type: 'clean', isNight: false };
 
-    async function onConfigChange(config) {
-      const mainTitle = document.getElementById('mainTitle');
-      const subtitle = document.getElementById('subtitle');
-      
-      if (mainTitle) {
-        mainTitle.textContent = config.main_title || defaultConfig.main_title;
-        const customFont = config.font_family || defaultConfig.font_family;
-        const baseSize = config.font_size || defaultConfig.font_size;
-        mainTitle.style.fontFamily = `${customFont}, Tahoma, Geneva, Verdana, sans-serif`;
-        mainTitle.style.fontSize = `${baseSize * 4}px`;
-        mainTitle.style.color = config.text_color || defaultConfig.text_color;
-      }
-      
-      if (subtitle) {
-        subtitle.textContent = config.subtitle || defaultConfig.subtitle;
-        const customFont = config.font_family || defaultConfig.font_family;
-        const baseSize = config.font_size || defaultConfig.font_size;
-        subtitle.style.fontFamily = `${customFont}, Tahoma, Geneva, Verdana, sans-serif`;
-        subtitle.style.fontSize = `${baseSize * 1.5}px`;
-        subtitle.style.color = config.text_color || defaultConfig.text_color;
-      }
-
-      const buttons = document.querySelectorAll('.weather-btn');
-      buttons.forEach(btn => {
-        const baseSize = config.font_size || defaultConfig.font_size;
-        const customFont = config.font_family || defaultConfig.font_family;
-        btn.style.fontFamily = `${customFont}, Tahoma, Geneva, Verdana, sans-serif`;
-        btn.style.fontSize = `${baseSize}px`;
-        btn.style.background = config.secondary_action_color || defaultConfig.secondary_action_color;
-      });
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
     }
+    window.addEventListener('resize', resize);
+    resize();
 
-    const capabilities = {
-      recolorables: [
-        {
-          get: () => window.elementSdk?.config?.background_color || defaultConfig.background_color,
-          set: (value) => {
-            if (window.elementSdk) {
-              window.elementSdk.setConfig({ background_color: value });
-            }
-          }
-        },
-        {
-          get: () => window.elementSdk?.config?.surface_color || defaultConfig.surface_color,
-          set: (value) => {
-            if (window.elementSdk) {
-              window.elementSdk.setConfig({ surface_color: value });
-            }
-          }
-        },
-        {
-          get: () => window.elementSdk?.config?.text_color || defaultConfig.text_color,
-          set: (value) => {
-            if (window.elementSdk) {
-              window.elementSdk.setConfig({ text_color: value });
-            }
-          }
-        },
-        {
-          get: () => window.elementSdk?.config?.primary_action_color || defaultConfig.primary_action_color,
-          set: (value) => {
-            if (window.elementSdk) {
-              window.elementSdk.setConfig({ primary_action_color: value });
-            }
-          }
-        },
-        {
-          get: () => window.elementSdk?.config?.secondary_action_color || defaultConfig.secondary_action_color,
-          set: (value) => {
-            if (window.elementSdk) {
-              window.elementSdk.setConfig({ secondary_action_color: value });
-            }
-          }
-        }
-      ],
-      borderables: [],
-      fontEditable: {
-        get: () => window.elementSdk?.config?.font_family || defaultConfig.font_family,
-        set: (value) => {
-          if (window.elementSdk) {
-            window.elementSdk.setConfig({ font_family: value });
-          }
-        }
-      },
-      fontSizeable: {
-        get: () => window.elementSdk?.config?.font_size || defaultConfig.font_size,
-        set: (value) => {
-          if (window.elementSdk) {
-            window.elementSdk.setConfig({ font_size: value });
-          }
+    // --- LOGIKA ČESTICA ---
+    class Particle {
+      constructor(type) {
+        this.type = type;
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * -height;
+        
+        if (this.type === 'rain') {
+          this.speed = Math.random() * 15 + 20; // Brža kiša
+          this.len = Math.random() * 20 + 10;
+          this.opacity = Math.random() * 0.3 + 0.1;
+        } else if (this.type === 'snow') {
+          this.speed = Math.random() * 2 + 1;
+          this.size = Math.random() * 3 + 1;
+          this.swing = Math.random() * 2; 
+          this.step = Math.random() * Math.PI;
+        } else if (this.type === 'star') {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height * 0.6; // Samo gornji deo
+          this.size = Math.random() * 1.5;
+          this.opacity = Math.random();
+          this.speed = 0; // Zvezde stoje
         }
       }
-    };
-
-    function mapToEditPanelValues(config) {
-      return new Map([
-        ["main_title", config.main_title || defaultConfig.main_title],
-        ["subtitle", config.subtitle || defaultConfig.subtitle]
-      ]);
-    }
-
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities: () => capabilities,
-        mapToEditPanelValues
-      });
-    }
-
-    // Create realistic rain drops with varying sizes and speeds
-    function createRain(containerId, count) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-      
-      for (let i = 0; i < count; i++) {
-        const drop = document.createElement('div');
-        drop.className = 'raindrop';
-        const size = Math.random() * 2 + 1;
-        const duration = Math.random() * 0.4 + 0.4;
-        
-        drop.style.left = Math.random() * 100 + '%';
-        drop.style.width = size + 'px';
-        drop.style.height = (size * 20) + 'px';
-        drop.style.animationDuration = duration + 's';
-        drop.style.animationDelay = Math.random() * 2 + 's';
-        drop.style.opacity = Math.random() * 0.3 + 0.6;
-        container.appendChild(drop);
-      }
-    }
-
-    // Create rain splash effects
-    function createRainSplashes(count) {
-      const container = document.getElementById('rainSplash');
-      if (!container) return;
-      
-      for (let i = 0; i < count; i++) {
-        const splash = document.createElement('div');
-        splash.className = 'splash';
-        splash.style.left = Math.random() * 100 + '%';
-        splash.style.bottom = Math.random() * 50 + 'px';
-        splash.style.animationDelay = Math.random() * 1.5 + 's';
-        container.appendChild(splash);
-      }
-    }
-
-    // Create realistic 3D snowflakes with varying sizes
-    function createSnow() {
-      const container = document.getElementById('snowContainer');
-      if (!container) return;
-      
-      const snowSymbols = ['❄', '❅', '❆'];
-      
-      for (let i = 0; i < 80; i++) {
-        const flake = document.createElement('div');
-        flake.className = 'snowflake';
-        flake.innerHTML = snowSymbols[Math.floor(Math.random() * snowSymbols.length)];
-        
-        const size = Math.random() * 20 + 12;
-        const drift = (Math.random() - 0.5) * 60;
-        const duration = Math.random() * 4 + 6;
-        
-        flake.style.left = Math.random() * 100 + '%';
-        flake.style.fontSize = size + 'px';
-        flake.style.animationDuration = duration + 's';
-        flake.style.animationDelay = Math.random() * 8 + 's';
-        flake.style.setProperty('--drift', drift + 'px');
-        
-        container.appendChild(flake);
-      }
-    }
-
-    // Initialize weather effects
-    createRain('rainContainer', 150);
-    createRain('stormRainContainer', 200);
-    createRainSplashes(40);
-    createSnow();
-
-    // Auto Weather Detection - Global Variables
-    let manualOverrideUntil = 0;
-    let autoWeatherInterval = null;
-
-    // Manual Override Functions
-    function setManualOverride(minutes = 30) {
-      manualOverrideUntil = Date.now() + (minutes * 60 * 1000);
-    }
-
-    function isManualOverrideActive() {
-      return Date.now() < manualOverrideUntil;
-    }
-
-    // Weather Code to Serbian Text
-    function weatherCodeToText(code) {
-      const codes = {
-        0: 'Vedro',
-        1: 'Pretežno vedro',
-        2: 'Delimično oblačno',
-        3: 'Oblačno',
-        45: 'Magla',
-        48: 'Magla',
-        51: 'Slaba kiša',
-        53: 'Umjerena kiša',
-        55: 'Jaka kiša',
-        56: 'Slaba ledena kiša',
-        57: 'Jaka ledena kiša',
-        61: 'Kiša',
-        63: 'Umjerena kiša',
-        65: 'Jaka kiša',
-        66: 'Ledena kiša',
-        67: 'Jaka ledena kiša',
-        71: 'Slab sneg',
-        73: 'Umjeren sneg',
-        75: 'Jak sneg',
-        77: 'Susnežica',
-        80: 'Slab pljusak',
-        81: 'Umjeren pljusak',
-        82: 'Jak pljusak',
-        85: 'Susnežica',
-        86: 'Jaka susnežica',
-        95: 'Oluja',
-        96: 'Oluja sa gradom',
-        99: 'Jaka oluja sa gradom'
-      };
-      return codes[code] || 'Vedro';
-    }
-
-    // Map Weather Data to Scene
-    function mapToScene({ code, precipitation, visibilityKm, windspeed, temp }) {
-      // Thunderstorm/storm
-      if (code >= 95 && code <= 99) {
-        return 'stormy';
-      }
-      
-      // Snow or freezing with precipitation
-      if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86) || (temp <= 1 && precipitation > 0)) {
-        return 'snowy';
-      }
-      
-      // Fog
-      if (code === 45 || code === 48 || visibilityKm < 1) {
-        return 'foggy';
-      }
-      
-      // Rain
-      if (precipitation > 0 || (code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
-        return 'rainy';
-      }
-      
-      // Default: sunny
-      return 'sunny';
-    }
-
-    // Apply Scene and Pause Inactive Animations
-    function applyScene(weatherKey) {
-      const scenes = document.querySelectorAll('.weather-scene');
-      const buttons = document.querySelectorAll('.weather-btn');
-      
-      // Remove active from all scenes and buttons
-      scenes.forEach(scene => {
-        scene.classList.remove('active');
-        // Pause all animations in inactive scenes
-        const animatedElements = scene.querySelectorAll('*');
-        animatedElements.forEach(el => {
-          if (el.style) {
-            el.style.animationPlayState = 'paused';
-          }
-        });
-      });
-      
-      buttons.forEach(btn => btn.classList.remove('active'));
-      
-      // Activate selected scene
-      const targetScene = document.querySelector(`[data-weather="${weatherKey}"]`);
-      const targetButton = document.querySelector(`.weather-btn[data-weather="${weatherKey}"]`);
-      
-      if (targetScene) {
-        targetScene.classList.add('active');
-        // Resume animations in active scene
-        const animatedElements = targetScene.querySelectorAll('*');
-        animatedElements.forEach(el => {
-          if (el.style) {
-            el.style.animationPlayState = 'running';
-          }
-        });
-      }
-      
-      if (targetButton) {
-        targetButton.classList.add('active');
-      }
-    }
-
-    // Render Live Weather Text
-    function renderLiveWeather(place, temp, code) {
-      const liveWeatherEl = document.getElementById('liveWeather');
-      if (liveWeatherEl) {
-        const desc = weatherCodeToText(code);
-        liveWeatherEl.textContent = `${place} • ${temp}°C • ${desc}`;
-      }
-    }
-
-    // Get User Coordinates
-    function getUserCoords() {
-      return new Promise((resolve) => {
-        if (!navigator.geolocation) {
-          resolve(null);
+      update() {
+        if (this.type === 'star') {
+          this.opacity += (Math.random() - 0.5) * 0.05; // Treperenje
+          if(this.opacity < 0) this.opacity = 0;
+          if(this.opacity > 1) this.opacity = 1;
           return;
         }
-        
-        const timeout = setTimeout(() => {
-          resolve(null);
-        }, 6000);
-        
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            clearTimeout(timeout);
-            resolve({
-              lat: position.coords.latitude,
-              lon: position.coords.longitude
-            });
-          },
-          () => {
-            clearTimeout(timeout);
-            resolve(null);
-          },
-          { timeout: 6000, maximumAge: 300000 }
-        );
-      });
-    }
 
-    // Geocode Fallback to Bovec
-    async function geocodeFallback() {
-      try {
-        const response = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=Bovec&count=1&format=json');
-        const data = await response.json();
-        if (data.results && data.results.length > 0) {
-          return {
-            lat: data.results[0].latitude,
-            lon: data.results[0].longitude,
-            name: data.results[0].name
-          };
+        this.y += this.speed;
+        if (this.type === 'snow') {
+          this.step += 0.02;
+          this.x += Math.sin(this.step) * this.swing;
         }
-      } catch (e) {
-        console.error('Geocoding fallback failed:', e);
-      }
-      // Hardcoded Bovec fallback
-      return { lat: 46.3378, lon: 13.5528, name: 'Bovec' };
-    }
 
-    // Fetch Weather from Open-Meteo
-    async function fetchWeather(lat, lon) {
-      try {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=precipitation,visibility&timezone=auto`;
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.current_weather) {
-          const current = data.current_weather;
-          const hourly = data.hourly || {};
-          const precip = (hourly.precipitation && hourly.precipitation[0]) || 0;
-          const visibility = (hourly.visibility && hourly.visibility[0]) || 10000;
-          
-          return {
-            temp: Math.round(current.temperature),
-            weathercode: current.weathercode,
-            windspeed: current.windspeed || 0,
-            precipitation: precip,
-            visibilityKm: visibility / 1000 // Convert meters to km
-          };
+        if (this.y > height) this.reset();
+      }
+      draw() {
+        ctx.beginPath();
+        if (this.type === 'rain') {
+          ctx.strokeStyle = `rgba(200, 210, 255, ${this.opacity})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(this.x - 2, this.y + this.len); // Kosa kiša (vetar)
+          ctx.stroke();
+        } else if (this.type === 'snow') {
+          ctx.fillStyle = `rgba(255, 255, 255, 0.8)`;
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.type === 'star') {
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
         }
+      }
+    }
+
+    function initParticles(type) {
+      particles = [];
+      let count = 0;
+      if (type === 'rain' || type === 'storm') count = 800; // Gusta kiša
+      if (type === 'snow') count = 200;
+      if (type === 'clear' && state.isNight) count = 200; // Zvezde
+
+      for(let i=0; i<count; i++) {
+        let pType = (type === 'clear' && state.isNight) ? 'star' : (type === 'snow' ? 'snow' : 'rain');
+        particles.push(new Particle(pType));
+      }
+    }
+
+    function loop() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      
+      // Random munje
+      if (state.type === 'storm' && Math.random() > 0.99) {
+        triggerLightning();
+      }
+      
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    function triggerLightning() {
+      const flash = document.getElementById('flash');
+      flash.style.opacity = 0.6;
+      setTimeout(() => { flash.style.opacity = 0; }, 80);
+      setTimeout(() => { 
+        flash.style.opacity = 0.3; 
+        setTimeout(() => { flash.style.opacity = 0; }, 50);
+      }, 150);
+    }
+
+    // --- OBLACI ---
+    function createClouds(isDark) {
+      const container = document.getElementById(isDark ? 'clouds-dark' : 'clouds-white');
+      container.innerHTML = '';
+      const count = isDark ? 10 : 6;
+      
+      for(let i=0; i<count; i++) {
+        const c = document.createElement('div');
+        c.className = isDark ? 'cloud night-cloud' : 'cloud';
+        const w = Math.random() * 400 + 200;
+        c.style.width = w + 'px';
+        c.style.height = (w * 0.35) + 'px';
+        c.style.top = (Math.random() * 50) + '%';
+        c.style.left = (Math.random() * 100) + '%';
+        c.style.opacity = Math.random() * 0.4 + 0.3;
+        c.style.animationDuration = (Math.random() * 60 + 40) + 's';
+        c.style.filter = "blur(8px)"; // Još mekši oblaci
+        container.appendChild(c);
+      }
+    }
+
+    // --- LOGIKA VREMENA ---
+    function setScene(code, isDay) {
+      const isNight = isDay === 0;
+      state.isNight = isNight;
+
+      // Reset
+      document.querySelectorAll('.sky-layer').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.clouds-layer').forEach(el => el.classList.remove('active'));
+      document.getElementById('theSun').classList.remove('visible');
+      document.getElementById('theMoon').classList.remove('visible');
+
+      let type = 'clear';
+      let bgId = isNight ? 'sky-clear-night' : 'sky-sunny';
+      let showClouds = false;
+      let darkClouds = false;
+
+      // Mapiranje kodova
+      if (code >= 95) { // Oluja
+        type = 'storm';
+        bgId = 'sky-storm';
+        showClouds = true;
+        darkClouds = true;
+      } else if (code >= 71 || code === 85 || code === 86) { // Sneg
+        type = 'snow';
+        bgId = isNight ? 'sky-cloudy-night' : 'sky-snow';
+      } else if (code >= 51 || code === 80 || code === 81 || code === 82) { // Kiša
+        type = 'rain';
+        bgId = 'sky-rain';
+        showClouds = true;
+        darkClouds = true;
+      } else if (code >= 1 && code <= 3) { // Oblačno
+        type = 'cloudy';
+        bgId = isNight ? 'sky-cloudy-night' : 'sky-cloudy';
+        showClouds = true;
+        darkClouds = isNight;
+      } else if (code === 45 || code === 48) { // Magla
+        type = 'cloudy'; // Tretiramo kao oblačno vizuelno
+        bgId = 'sky-cloudy';
+        showClouds = true;
+      }
+
+      state.type = type;
+
+      // 1. Postavi pozadinu
+      document.getElementById(bgId).classList.add('active');
+
+      // 2. Nebeska tela
+      if (type === 'clear' || type === 'cloudy') {
+        if (!isNight) document.getElementById('theSun').classList.add('visible');
+        else document.getElementById('theMoon').classList.add('visible');
+      }
+
+      // 3. Oblaci
+      if (showClouds) {
+        const cloudId = darkClouds ? 'clouds-dark' : 'clouds-white';
+        createClouds(darkClouds);
+        document.getElementById(cloudId).classList.add('active');
+      }
+
+      // 4. Čestice
+      initParticles(type);
+
+      // Fade In Scene
+      document.getElementById('scene-container').style.opacity = 1;
+    }
+
+    // --- FETCH DATA ---
+    async function getWeather(lat, lon) {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`;
+        const res = await fetch(url);
+        const data = await res.json();
+        setScene(data.current_weather.weathercode, data.current_weather.is_day);
       } catch (e) {
-        console.error('Weather fetch failed:', e);
-      }
-      return null;
-    }
-
-    // Update Auto Weather
-    async function updateAutoWeather() {
-      if (isManualOverrideActive()) {
-        return; // Don't update if manual override is active
-      }
-      
-      let coords = await getUserCoords();
-      let placeName = 'Bovec';
-      
-      if (!coords) {
-        const fallback = await geocodeFallback();
-        coords = { lat: fallback.lat, lon: fallback.lon };
-        placeName = fallback.name || 'Bovec';
-      }
-      
-      const weather = await fetchWeather(coords.lat, coords.lon);
-      if (weather) {
-        const scene = mapToScene({
-          code: weather.weathercode,
-          precipitation: weather.precipitation,
-          visibilityKm: weather.visibilityKm,
-          windspeed: weather.windspeed,
-          temp: weather.temp
-        });
-        
-        applyScene(scene);
-        renderLiveWeather(placeName, weather.temp, weather.weathercode);
+        console.error(e);
+        // Fallback: Sunčano ako pukne API
+        setScene(0, 1);
       }
     }
 
-    // Initialize Auto Weather
-    function initAutoWeather() {
-      updateAutoWeather();
-      
-      // Refresh every 10 minutes
-      if (autoWeatherInterval) {
-        clearInterval(autoWeatherInterval);
-      }
-      autoWeatherInterval = setInterval(() => {
-        updateAutoWeather();
-      }, 600000); // 10 minutes
+    // --- POKRETANJE ---
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => getWeather(pos.coords.latitude, pos.coords.longitude),
+        () => getWeather(44.7866, 20.4489) // Default BG
+      );
+    } else {
+      getWeather(44.7866, 20.4489);
     }
 
-    // Weather switching
-    const buttons = document.querySelectorAll('.weather-btn');
-    const scenes = document.querySelectorAll('.weather-scene');
-
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        const weather = button.getAttribute('data-weather');
-        
-        // Set manual override for 30 minutes
-        setManualOverride(30);
-        
-        // Apply scene manually
-        applyScene(weather);
-      });
-    });
-
-    // Initialize auto weather on load
-    initAutoWeather();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c4feaea95389f22',t:'MTc2OTU5NzMwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ </body>
 </html>
