@@ -10443,8 +10443,13 @@
    <iframe id="vtFrame" class="vt-iframe" title="Soča modal" src="" loading="lazy"></iframe>
   </div>
  </div>
- <link rel="stylesheet" href="./assets/modals.css">
- <script src="./assets/modals.js"></script>
+ <script>
+ (function(){
+   var __BUILD_ID='2026020701'; /* Bump on each deploy (e.g. YYYYMMDDNN) for cache-bust */
+   document.write('<link rel="stylesheet" href="./assets/modals.css?v='+__BUILD_ID+'">');
+   document.write('<script src="./assets/modals.js?v='+__BUILD_ID+'"><\/script>');
+ })();
+ </script>
  <script>
  (function(){
    function panicUnlockScroll(){
