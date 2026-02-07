@@ -2973,6 +2973,7 @@
         call_host: "Pokliči lastnika",
         navigate: "Navigacija",
         directions: "Do apartmaja",
+        show_on_map: "Prikaži na zemljevidu",
         attractions: "Znamenitosti",
         wifi: "WiFi",
         emergency: "Nujno",
@@ -3028,6 +3029,7 @@
         info_location: "Lokacija",
         copy_address: "Kopiraj naslov",
         directions: "Do apartmaja",
+        show_on_map: "Prikaži na zemljevidu",
         address_copied: "Naslov kopiran!",
         info_checkinout: "Prijava / Odjava",
         checkin_from: "Prijava: od",
@@ -3622,6 +3624,7 @@
         call_host: "Call host",
         navigate: "Navigate",
         directions: "Directions to apartment",
+        show_on_map: "Show on map",
         attractions: "Attractions",
         wifi: "WiFi",
         brand_title: "SOČA VALLEY",
@@ -3683,6 +3686,7 @@
         info_location: "Location",
         copy_address: "Copy address",
         directions: "Directions to apartment",
+        show_on_map: "Show on map",
         address_copied: "Address copied!",
         info_checkinout: "Check-in / Check-out",
         checkin_from: "Check-in: from",
@@ -4279,6 +4283,7 @@
         call_host: "Vermieter anrufen",
         navigate: "Navigation",
         directions: "Zur Unterkunft",
+        show_on_map: "Auf Karte zeigen",
         directions_to_apartment: "Zur Unterkunft",
         brand_title: "SOČA-TAL",
         brand_subtitle: "BOVEC",
@@ -4337,6 +4342,7 @@
         info_location: "Standort",
         copy_address: "Adresse kopieren",
         directions: "Zur Unterkunft",
+        show_on_map: "Auf Karte zeigen",
         address_copied: "Adresse kopiert!",
         info_checkinout: "Check-in / Check-out",
         checkin_from: "Check-in: ab",
@@ -4933,6 +4939,7 @@
         call_host: "Chiama ospite",
         navigate: "Naviga",
         directions: "Verso l'appartamento",
+        show_on_map: "Mostra sulla mappa",
         attractions: "Attrazioni",
         brand_title: "VALLE DELL'ISONZO",
         brand_subtitle: "BOVEC",
@@ -5588,6 +5595,7 @@
         call_host: "Zadzwoń do właściciela",
         navigate: "Nawigacja",
         directions: "Dojazd do apartamentu",
+        show_on_map: "Pokaż na mapie",
         attractions: "Atrakcje",
         wifi: "WiFi",
         emergency: "Pilne",
@@ -6247,6 +6255,7 @@
         call_host: "Zavolat majiteli",
         navigate: "Navigace",
         directions: "Trasa k apartmánu",
+        show_on_map: "Zobrazit na mapě",
         attractions: "Atrakce",
         wifi: "WiFi",
         emergency: "Nouzové",
@@ -7204,7 +7213,7 @@
         }
         html += `<div class="quick-help-service-actions">
           <a href="${service.tel}" class="quick-help-call-btn">${trans.call || 'Pozovi'}</a>
-          <a href="${service.directions}" target="_blank" rel="noopener noreferrer" class="quick-help-directions-btn">${trans.directions || 'Directions'}</a>
+          <a href="${service.directions}" target="_blank" rel="noopener noreferrer" class="quick-help-directions-btn">${trans.show_on_map || 'Show on map'}</a>
         </div>
         </div>`;
       });
