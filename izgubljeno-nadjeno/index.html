@@ -68,12 +68,12 @@
     var touchStartX=null,touchStartY=null,isSwiping=false;
     window.addEventListener('touchstart',function(e){
       var t=e.touches[0];
-      if(t.clientX<=20){ touchStartX=t.clientX; touchStartY=t.clientY; isSwiping=false; }
+      if(t.clientX<=40){ touchStartX=t.clientX; touchStartY=t.clientY; isSwiping=false; }
     },true);
     window.addEventListener('touchmove',function(e){
       if(touchStartX===null) return;
       var t=e.touches[0], deltaX=t.clientX-touchStartX, deltaY=Math.abs(t.clientY-touchStartY);
-      if(deltaX>70&&deltaX>deltaY){
+      if(deltaX>50&&deltaX>deltaY){
         e.preventDefault();
         e.stopPropagation();
         if(!isSwiping){ isSwiping=true; try{ window.parent.postMessage('CLOSE_MODAL','*'); }catch(err){} }
