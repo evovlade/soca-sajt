@@ -100,6 +100,7 @@ const labelsByLang = {
     endText: "Upamo, da ste uživali v odkrivanju Doline Soče. Vsak del regije ima svojo zgodbo in edinstveno lepoto.",
     replay: "OGLEJ SI ZNOVA",
     home: "NAZAJ NA ZAČETEK",
+    back: "← Nazaj",
     title: "Dolina Soče – virtualni ogled",
     subtitle: "Odkrij naravo, kulturo in zgodovino zgornjega Posočja"
   },
@@ -112,6 +113,7 @@ const labelsByLang = {
     endText: "We hope you enjoyed discovering the Soča Valley. Every part of the region has its own story and unique beauty.",
     replay: "WATCH AGAIN",
     home: "BACK TO START",
+    back: "← Back",
     title: "Soča Valley – virtual tour",
     subtitle: "Explore nature, culture and history of the Upper Soča region"
   },
@@ -124,6 +126,7 @@ const labelsByLang = {
     endText: "Wir hoffen, Sie haben die Magie des Soča-Tals genossen. Jeder Teil der Region hat seine eigene Geschichte und einzigartige Schönheit.",
     replay: "NOCHMAL ANSEHEN",
     home: "ZURÜCK ZUM START",
+    back: "← Zurück",
     title: "Soča-Tal – Virtuelle Tour",
     subtitle: "Natur, Kultur und Geschichte im Oberen Soča-Gebiet"
   },
@@ -136,6 +139,7 @@ const labelsByLang = {
     endText: "Mamy nadzieję, że podobało Ci się odkrywanie Doliny Sočy. Każda część regionu ma swoją historię i wyjątkowe piękno.",
     replay: "OBEJRZYJ PONOWNIE",
     home: "WRÓĆ NA START",
+    back: "← Wstecz",
     title: "Dolina Sočy – wirtualna wycieczka",
     subtitle: "Poznaj naturę, kulturę i historię regionu Górnej Sočy"
   },
@@ -148,6 +152,7 @@ const labelsByLang = {
     endText: "Doufáme, že se vám líbilo objevování údolí Soči. Každá část regionu má svůj příběh a jedinečnou krásu.",
     replay: "ZOBRAZIT ZNOVU",
     home: "ZPĚT NA ZAČÁTEK",
+    back: "← Zpět",
     title: "Údolí Soči – virtuální prohlídka",
     subtitle: "Objev přírodu, kulturu a historii oblasti Horní Soči"
   },
@@ -160,6 +165,7 @@ const labelsByLang = {
     endText: "Speriamo che tu abbia apprezzato la magia della Valle dell'Isonzo (Soča). Ogni parte della regione ha una storia e una bellezza unica.",
     replay: "RIVEDI",
     home: "TORNA ALL'INIZIO",
+    back: "← Indietro",
     title: "Valle dell'Isonzo (Soča) – tour virtuale",
     subtitle: "Scopri natura, cultura e storia dell'Alto Isonzo"
   },
@@ -911,11 +917,39 @@ function previousSlide() {
   }
 }
 
+function updateBackButtons() {
+  const lang = getSelectedLang();
+  const L = labelsByLang[lang] || labelsByLang.en;
+  const backLabel = L.back || '← Back';
+  document.querySelectorAll('.btn-back').forEach(el => { el.textContent = backLabel; });
+}
+
+updateBackButtons();
 window.addEventListener('storage', (e) => {
   if (e.key === 'preferredLanguage' || e.key === 'lang' || e.key === 'selectedLang') {
+    updateBackButtons();
     if (document.getElementById('tourScreen').classList.contains('active')) updateSlide();
   }
 });
+
+(function(){
+  var touchStartX=null,touchStartY=null,isSwiping=false;
+  window.addEventListener('touchstart',function(e){
+    var t=e.touches[0];
+    if(t.clientX<=20){ touchStartX=t.clientX; touchStartY=t.clientY; isSwiping=false; }
+  },true);
+  window.addEventListener('touchmove',function(e){
+    if(touchStartX===null) return;
+    var t=e.touches[0], deltaX=t.clientX-touchStartX, deltaY=Math.abs(t.clientY-touchStartY);
+    if(deltaX>70&&deltaX>deltaY){
+      e.preventDefault();
+      e.stopPropagation();
+      if(!isSwiping){ isSwiping=true; try{ window.parent.postMessage('CLOSE_MODAL','*'); }catch(err){} }
+      touchStartX=null;
+    }
+  },{passive:false});
+  window.addEventListener('touchend',function(){ touchStartX=null; touchStartY=null; isSwiping=false; },true);
+})();
 </script>
 </body>
 </html>

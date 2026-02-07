@@ -46,7 +46,7 @@
     return SUPPORTED_LANGS.indexOf(raw) >= 0 ? raw : 'en';
   }
   var labelsByLang = {
-    sl: { back: '← Nazad', title: 'Soča Live', updated: 'Osveženo', all: 'Vse', municipal: '🏛️ Občine', municipalHeading: '🏛️ Obvestila občin', level: 'vodostaj', flow: 'protok', temp: 'temp.', details: 'Detalji (zadnja merenja)', trend_up: 'up', trend_down: 'down', trend_stable: 'stabilno', demo_arso: 'DEMO (kasnije ARSO)' },
+    sl: { back: '← Nazaj', title: 'Soča Live', updated: 'Osveženo', all: 'Vse', municipal: '🏛️ Občine', municipalHeading: '🏛️ Obvestila občin', level: 'vodostaj', flow: 'protok', temp: 'temp.', details: 'Detalji (zadnja merenja)', trend_up: 'up', trend_down: 'down', trend_stable: 'stabilno', demo_arso: 'DEMO (kasnije ARSO)' },
     en: { back: '← Back', title: 'Soča Live', updated: 'Updated', all: 'All', municipal: '🏛️ Municipal', municipalHeading: '🏛️ Municipal notices', level: 'level', flow: 'flow', temp: 'temp.', details: 'Details (last measurements)', trend_up: 'up', trend_down: 'down', trend_stable: 'stable', demo_arso: 'DEMO (ARSO later)' },
     de: { back: '← Zurück', title: 'Soča Live', updated: 'Aktualisiert', all: 'Alle', municipal: '🏛️ Gemeinden', municipalHeading: '🏛️ Gemeindenachrichten', level: 'Pegel', flow: 'Abfluss', temp: 'Temp.', details: 'Details (letzte Messungen)', trend_up: 'auf', trend_down: 'ab', trend_stable: 'stabil', demo_arso: 'DEMO (später ARSO)' },
     pl: { back: '← Wstecz', title: 'Soča Live', updated: 'Zaktualizowano', all: 'Wszystkie', municipal: '🏛️ Gminy', municipalHeading: '🏛️ Komunikaty gmin', level: 'poziom', flow: 'przepływ', temp: 'temp.', details: 'Szczegóły (ostatnie pomiary)', trend_up: 'w górę', trend_down: 'w dół', trend_stable: 'stabilny', demo_arso: 'DEMO (ARSO później)' },
@@ -81,8 +81,27 @@
     window.addEventListener('touchmove',function(e){ if(!tracking) return; curY=e.touches[0].clientY; }, true);
     window.addEventListener('touchend',function(){
       if(!tracking) return; tracking=false;
-      if(curY-startY>120) window.parent && window.parent.postMessage('CLOSE_MODAL','*');
+      var scrollTop=window.scrollY||document.documentElement.scrollTop;
+      if(curY-startY>120&&scrollTop===0) window.parent && window.parent.postMessage('CLOSE_MODAL','*');
     });
+  })();
+  (function(){
+    var touchStartX=null,touchStartY=null,isSwiping=false;
+    window.addEventListener('touchstart',function(e){
+      var t=e.touches[0];
+      if(t.clientX<=20){ touchStartX=t.clientX; touchStartY=t.clientY; isSwiping=false; }
+    },true);
+    window.addEventListener('touchmove',function(e){
+      if(touchStartX===null) return;
+      var t=e.touches[0], deltaX=t.clientX-touchStartX, deltaY=Math.abs(t.clientY-touchStartY);
+      if(deltaX>70&&deltaX>deltaY){
+        e.preventDefault();
+        e.stopPropagation();
+        if(!isSwiping){ isSwiping=true; try{ window.parent.postMessage('CLOSE_MODAL','*'); }catch(err){} }
+        touchStartX=null;
+      }
+    },{passive:false});
+    window.addEventListener('touchend',function(){ touchStartX=null; touchStartY=null; isSwiping=false; },true);
   })();
   var DEMO={updated_at:new Date().toISOString(),stations:[
     {group:'bovec',name:'Soča – Log Čezsoški',metrics:{level_cm:142,flow_m3s:28.5,temp_c:8.2,trend:'stable'},recent:[{t:new Date().toISOString(),level_cm:142,flow_m3s:28.5},{t:new Date(Date.now()-1800000).toISOString(),level_cm:141,flow_m3s:28.1}]},

@@ -43,7 +43,7 @@
     return SUPPORTED_LANGS.indexOf(raw) >= 0 ? raw : 'en';
   }
   var labelsByLang = {
-    sl: { back:'← Nazad', title:'Izgubljeno / Najdeno', intro:'Brez prijave: vnesi e-pošto in sporočilo (max 500 znakov). Isti e-pošti lahko spremeni/objavi max 3-krat. Sporočila starejša od 30 dni se samodejno izbrišejo (DEMO).', yourEmail:'Tvoj email', messageMax:'Sporočilo (max 500)', placeholderMsg:'Npr. Izgubil sem modro jakno v bližini...', publish:'Objavi / Shrani', limitReached:'Dosežena omejitev (max 3 spremembe na e-pošto).', messagesTitle:'Sporočila (zadnjih 30 dni)', noMessages:'Ni sporočil.' },
+    sl: { back:'← Nazaj', title:'Izgubljeno / Najdeno', intro:'Brez prijave: vnesi e-pošto in sporočilo (max 500 znakov). Isti e-pošti lahko spremeni/objavi max 3-krat. Sporočila starejša od 30 dni se samodejno izbrišejo (DEMO).', yourEmail:'Tvoj email', messageMax:'Sporočilo (max 500)', placeholderMsg:'Npr. Izgubil sem modro jakno v bližini...', publish:'Objavi / Shrani', limitReached:'Dosežena omejitev (max 3 spremembe na e-pošto).', messagesTitle:'Sporočila (zadnjih 30 dni)', noMessages:'Ni sporočil.' },
     en: { back:'← Back', title:'Lost & Found', intro:'No login: enter your email and message (max 500 characters). Same email can edit/publish max 3 times. Messages older than 30 days are automatically deleted (DEMO).', yourEmail:'Your email', messageMax:'Message (max 500)', placeholderMsg:'E.g. I lost a blue jacket near...', publish:'Publish / Save', limitReached:'Limit reached (max 3 edits per email).', messagesTitle:'Messages (last 30 days)', noMessages:'No messages.' },
     de: { back:'← Zurück', title:'Verloren / Gefunden', intro:'Ohne Anmeldung: E-Mail und Nachricht eingeben (max 500 Zeichen). Dieselbe E-Mail kann max 3-mal bearbeiten/veröffentlichen. Nachrichten älter als 30 Tage werden automatisch gelöscht (DEMO).', yourEmail:'Deine E-Mail', messageMax:'Nachricht (max 500)', placeholderMsg:'Z.B. Ich habe eine blaue Jacke verloren bei...', publish:'Veröffentlichen / Speichern', limitReached:'Limit erreicht (max 3 Bearbeitungen pro E-Mail).', messagesTitle:'Nachrichten (letzte 30 Tage)', noMessages:'Keine Nachrichten.' },
     pl: { back:'← Wstecz', title:'Zgubione / Znalezione', intro:'Bez logowania: wpisz e-mail i wiadomość (max 500 znaków). Ten sam e-mail może edytować/opublikować max 3 razy. Wiadomości starsze niż 30 dni są automatycznie usuwane (DEMO).', yourEmail:'Twój e-mail', messageMax:'Wiadomość (max 500)', placeholderMsg:'Np. Zgubiłem niebieską kurtkę w okolicy...', publish:'Opublikuj / Zapisz', limitReached:'Osiągnięto limit (max 3 edycje na e-mail).', messagesTitle:'Wiadomości (ostatnie 30 dni)', noMessages:'Brak wiadomości.' },
@@ -64,6 +64,24 @@
     if(typeof render === 'function') render();
   }
   document.getElementById('backBtn').addEventListener('click', () => { window.parent?.postMessage("CLOSE_MODAL", "*"); });
+  (function(){
+    var touchStartX=null,touchStartY=null,isSwiping=false;
+    window.addEventListener('touchstart',function(e){
+      var t=e.touches[0];
+      if(t.clientX<=20){ touchStartX=t.clientX; touchStartY=t.clientY; isSwiping=false; }
+    },true);
+    window.addEventListener('touchmove',function(e){
+      if(touchStartX===null) return;
+      var t=e.touches[0], deltaX=t.clientX-touchStartX, deltaY=Math.abs(t.clientY-touchStartY);
+      if(deltaX>70&&deltaX>deltaY){
+        e.preventDefault();
+        e.stopPropagation();
+        if(!isSwiping){ isSwiping=true; try{ window.parent.postMessage('CLOSE_MODAL','*'); }catch(err){} }
+        touchStartX=null;
+      }
+    },{passive:false});
+    window.addEventListener('touchend',function(){ touchStartX=null; touchStartY=null; isSwiping=false; },true);
+  })();
   applyLang();
   window.addEventListener('storage', function(e){ if(e.key==='preferredLanguage'){ applyLang(); } });
 

@@ -51,7 +51,7 @@
     return SUPPORTED_LANGS.indexOf(raw) >= 0 ? raw : 'en';
   }
   var labelsByLang = {
-    sl: { back:'← Nazad', title:'Rezerviraj znova', what:'Kaj dobiš na e-pošto?', l1:'Ime apartmaja', l2:'Telefon lastnika', l3:'E-pošta lastnika', l4:'Povezava za ponovno rezerviranje (če obstaja)', l5:'Navodila za rezervacijo za naslednje leto', demoNote:'*V DEMO različici se sporočilo ustvari in ga lahko kopiraš ali odpreš mailto. Kasneje bo samodejno pošiljanje z strežnika.', yourEmail:'Tvoj email', placeholder:'npr. marko@gmail.com', send:'Pošlji mi podatke', messageDemo:'Sporočilo (DEMO):', copy:'Kopiraj', openMailto:'Odpri mailto', mailIntro:'Pozdravljeni!\n\nTu so podatki za ponovno rezervacijo:\n\n', mailOutro:'\nKako rezervirati:\n1) Pokliči ali pošlji e-pošto lastniku\n2) Pošlji željene datume\n3) Potrdi ceno in pogoje\n4) Dogovori plačilo / polog\n\nSporočilo prek Soča Guest Guide (DEMO).', subjectPrefix:'Rezervacija – ' },
+    sl: { back:'← Nazaj', title:'Rezerviraj znova', what:'Kaj dobiš na e-pošto?', l1:'Ime apartmaja', l2:'Telefon lastnika', l3:'E-pošta lastnika', l4:'Povezava za ponovno rezerviranje (če obstaja)', l5:'Navodila za rezervacijo za naslednje leto', demoNote:'*V DEMO različici se sporočilo ustvari in ga lahko kopiraš ali odpreš mailto. Kasneje bo samodejno pošiljanje z strežnika.', yourEmail:'Tvoj email', placeholder:'npr. marko@gmail.com', send:'Pošlji mi podatke', messageDemo:'Sporočilo (DEMO):', copy:'Kopiraj', openMailto:'Odpri mailto', mailIntro:'Pozdravljeni!\n\nTu so podatki za ponovno rezervacijo:\n\n', mailOutro:'\nKako rezervirati:\n1) Pokliči ali pošlji e-pošto lastniku\n2) Pošlji željene datume\n3) Potrdi ceno in pogoje\n4) Dogovori plačilo / polog\n\nSporočilo prek Soča Guest Guide (DEMO).', subjectPrefix:'Rezervacija – ' },
     en: { back:'← Back', title:'Book again', what:'What do you get by email?', l1:'Apartment name', l2:'Owner phone', l3:'Owner email', l4:'Booking link (if any)', l5:'How to book for next year', demoNote:'*In DEMO version the message is generated and you can copy or open mailto. Later: automatic send from backend.', yourEmail:'Your email', placeholder:'e.g. mark@example.com', send:'Send me the details', messageDemo:'Message (DEMO):', copy:'Copy', openMailto:'Open mailto', mailIntro:'Hello!\n\nHere are the details for booking again:\n\n', mailOutro:'\nHow to book:\n1) Call or email the owner\n2) Send your preferred dates\n3) Confirm price and conditions\n4) Arrange payment / deposit\n\nMessage via Soča Guest Guide (DEMO).', subjectPrefix:'Booking – ' },
     de: { back:'← Zurück', title:'Erneut buchen', what:'Was bekommst du per E-Mail?', l1:'Apartmentname', l2:'Telefon Vermieter', l3:'E-Mail Vermieter', l4:'Buchungslink (falls vorhanden)', l5:'Anleitung für Buchung im nächsten Jahr', demoNote:'*In der DEMO-Version wird die Nachricht erzeugt; du kannst kopieren oder mailto öffnen. Später: automatischer Versand vom Backend.', yourEmail:'Deine E-Mail', placeholder:'z.B. mark@example.com', send:'Daten an mich senden', messageDemo:'Nachricht (DEMO):', copy:'Kopieren', openMailto:'Mailto öffnen', mailIntro:'Hallo!\n\nHier die Daten für eine erneute Buchung:\n\n', mailOutro:'\nSo buchst du:\n1) Vermieter anrufen oder mailen\n2) Wunschdaten senden\n3) Preis und Bedingungen bestätigen\n4) Zahlung / Anzahlung vereinbaren\n\nNachricht über Soča Guest Guide (DEMO).', subjectPrefix:'Buchung – ' },
     pl: { back:'← Wstecz', title:'Zarezerwuj ponownie', what:'Co otrzymasz e-mailem?', l1:'Nazwa apartamentu', l2:'Telefon właściciela', l3:'E-mail właściciela', l4:'Link do rezerwacji (jeśli jest)', l5:'Jak zarezerwować na następny rok', demoNote:'*W wersji DEMO wiadomość jest generowana – możesz skopiować lub otworzyć mailto. Później: automatyczne wysyłanie z backendu.', yourEmail:'Twój e-mail', placeholder:'np. jan@example.com', send:'Wyślij mi dane', messageDemo:'Wiadomość (DEMO):', copy:'Kopiuj', openMailto:'Otwórz mailto', mailIntro:'Cześć!\n\nOto dane do ponownej rezerwacji:\n\n', mailOutro:'\nJak zarezerwować:\n1) Zadzwoń lub napisz do właściciela\n2) Podaj preferowane daty\n3) Potwierdź cenę i warunki\n4) Uzgodnij płatność / zaliczkę\n\nWiadomość przez Soča Guest Guide (DEMO).', subjectPrefix:'Rezerwacja – ' },
@@ -74,6 +74,24 @@
     document.getElementById('mailto').textContent = t.openMailto;
   }
   document.getElementById('backBtn').addEventListener('click', () => { window.parent?.postMessage("CLOSE_MODAL", "*"); });
+  (function(){
+    var touchStartX=null,touchStartY=null,isSwiping=false;
+    window.addEventListener('touchstart',function(e){
+      var t=e.touches[0];
+      if(t.clientX<=20){ touchStartX=t.clientX; touchStartY=t.clientY; isSwiping=false; }
+    },true);
+    window.addEventListener('touchmove',function(e){
+      if(touchStartX===null) return;
+      var t=e.touches[0], deltaX=t.clientX-touchStartX, deltaY=Math.abs(t.clientY-touchStartY);
+      if(deltaX>70&&deltaX>deltaY){
+        e.preventDefault();
+        e.stopPropagation();
+        if(!isSwiping){ isSwiping=true; try{ window.parent.postMessage('CLOSE_MODAL','*'); }catch(err){} }
+        touchStartX=null;
+      }
+    },{passive:false});
+    window.addEventListener('touchend',function(){ touchStartX=null; touchStartY=null; isSwiping=false; },true);
+  })();
   applyLang();
   window.addEventListener('storage', function(e){ if(e.key==='preferredLanguage') applyLang(); });
 
