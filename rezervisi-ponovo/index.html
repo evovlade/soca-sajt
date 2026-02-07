@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rezerviši ponovo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#0b0f14] text-gray-100">
+  <div class="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur">
+    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button id="backBtn" class="px-3 py-2 rounded-xl border border-white/15 bg-white/5"></button>
+      <div class="font-semibold" id="pageTitle">Rezerviši ponovo</div>
+      <div class="text-xs px-2 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-300">DEMO</div>
+    </div>
+  </div>
+
+  <main class="max-w-xl mx-auto px-4 py-6 space-y-4">
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+      <h2 class="text-lg font-semibold" id="headingWhat">Šta dobijaš na email?</h2>
+      <ul class="mt-2 text-sm text-gray-300 space-y-1 list-disc pl-5" id="listWhat">
+        <li>Naziv apartmana</li>
+        <li>Telefon vlasnika</li>
+        <li>Email vlasnika</li>
+        <li>Link za ponovnu rezervaciju (ako postoji)</li>
+        <li>Uputstvo kako da rezervišeš za sledeću godinu</li>
+      </ul>
+      <p class="mt-3 text-xs text-gray-400" id="demoNote"></p>
+    </div>
+
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+      <label class="block text-sm text-gray-300" id="labelEmail">Tvoj email</label>
+      <input id="email" type="email" class="w-full rounded-xl bg-black/30 border border-white/10 p-3" required />
+      <button id="send" class="w-full py-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-200 font-semibold"></button>
+    </div>
+
+    <div id="result" class="hidden rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+      <div class="text-sm text-gray-300" id="labelMessage">Poruka (DEMO):</div>
+      <pre id="msg" class="whitespace-pre-wrap text-sm bg-black/30 border border-white/10 rounded-xl p-3"></pre>
+      <div class="flex gap-2">
+        <button id="copy" class="flex-1 py-2 rounded-xl border border-white/15 bg-white/5"></button>
+        <a id="mailto" class="flex-1 text-center py-2 rounded-xl border border-white/15 bg-white/5" href="#"></a>
+      </div>
+    </div>
+  </main>
+
+<script>
+  var SUPPORTED_LANGS = ['sl','en','de','pl','cs','it'];
+  function getSelectedLang(){
+    var raw = (localStorage.getItem('preferredLanguage') || localStorage.getItem('lang') || 'en').toLowerCase();
+    return SUPPORTED_LANGS.indexOf(raw) >= 0 ? raw : 'en';
+  }
+  var labelsByLang = {
+    sl: { back:'← Nazad', title:'Rezerviraj znova', what:'Kaj dobiš na e-pošto?', l1:'Ime apartmaja', l2:'Telefon lastnika', l3:'E-pošta lastnika', l4:'Povezava za ponovno rezerviranje (če obstaja)', l5:'Navodila za rezervacijo za naslednje leto', demoNote:'*V DEMO različici se sporočilo ustvari in ga lahko kopiraš ali odpreš mailto. Kasneje bo samodejno pošiljanje z strežnika.', yourEmail:'Tvoj email', placeholder:'npr. marko@gmail.com', send:'Pošlji mi podatke', messageDemo:'Sporočilo (DEMO):', copy:'Kopiraj', openMailto:'Odpri mailto', mailIntro:'Pozdravljeni!\n\nTu so podatki za ponovno rezervacijo:\n\n', mailOutro:'\nKako rezervirati:\n1) Pokliči ali pošlji e-pošto lastniku\n2) Pošlji željene datume\n3) Potrdi ceno in pogoje\n4) Dogovori plačilo / polog\n\nSporočilo prek Soča Guest Guide (DEMO).', subjectPrefix:'Rezervacija – ' },
+    en: { back:'← Back', title:'Book again', what:'What do you get by email?', l1:'Apartment name', l2:'Owner phone', l3:'Owner email', l4:'Booking link (if any)', l5:'How to book for next year', demoNote:'*In DEMO version the message is generated and you can copy or open mailto. Later: automatic send from backend.', yourEmail:'Your email', placeholder:'e.g. mark@example.com', send:'Send me the details', messageDemo:'Message (DEMO):', copy:'Copy', openMailto:'Open mailto', mailIntro:'Hello!\n\nHere are the details for booking again:\n\n', mailOutro:'\nHow to book:\n1) Call or email the owner\n2) Send your preferred dates\n3) Confirm price and conditions\n4) Arrange payment / deposit\n\nMessage via Soča Guest Guide (DEMO).', subjectPrefix:'Booking – ' },
+    de: { back:'← Zurück', title:'Erneut buchen', what:'Was bekommst du per E-Mail?', l1:'Apartmentname', l2:'Telefon Vermieter', l3:'E-Mail Vermieter', l4:'Buchungslink (falls vorhanden)', l5:'Anleitung für Buchung im nächsten Jahr', demoNote:'*In der DEMO-Version wird die Nachricht erzeugt; du kannst kopieren oder mailto öffnen. Später: automatischer Versand vom Backend.', yourEmail:'Deine E-Mail', placeholder:'z.B. mark@example.com', send:'Daten an mich senden', messageDemo:'Nachricht (DEMO):', copy:'Kopieren', openMailto:'Mailto öffnen', mailIntro:'Hallo!\n\nHier die Daten für eine erneute Buchung:\n\n', mailOutro:'\nSo buchst du:\n1) Vermieter anrufen oder mailen\n2) Wunschdaten senden\n3) Preis und Bedingungen bestätigen\n4) Zahlung / Anzahlung vereinbaren\n\nNachricht über Soča Guest Guide (DEMO).', subjectPrefix:'Buchung – ' },
+    pl: { back:'← Wstecz', title:'Zarezerwuj ponownie', what:'Co otrzymasz e-mailem?', l1:'Nazwa apartamentu', l2:'Telefon właściciela', l3:'E-mail właściciela', l4:'Link do rezerwacji (jeśli jest)', l5:'Jak zarezerwować na następny rok', demoNote:'*W wersji DEMO wiadomość jest generowana – możesz skopiować lub otworzyć mailto. Później: automatyczne wysyłanie z backendu.', yourEmail:'Twój e-mail', placeholder:'np. jan@example.com', send:'Wyślij mi dane', messageDemo:'Wiadomość (DEMO):', copy:'Kopiuj', openMailto:'Otwórz mailto', mailIntro:'Cześć!\n\nOto dane do ponownej rezerwacji:\n\n', mailOutro:'\nJak zarezerwować:\n1) Zadzwoń lub napisz do właściciela\n2) Podaj preferowane daty\n3) Potwierdź cenę i warunki\n4) Uzgodnij płatność / zaliczkę\n\nWiadomość przez Soča Guest Guide (DEMO).', subjectPrefix:'Rezerwacja – ' },
+    cs: { back:'← Zpět', title:'Rezervovat znovu', what:'Co dostanete e-mailem?', l1:'Název apartmánu', l2:'Telefon majitele', l3:'E-mail majitele', l4:'Odkaz na rezervaci (pokud je)', l5:'Jak rezervovat na příští rok', demoNote:'*V DEMO verzi se zpráva vygeneruje – můžete kopírovat nebo otevřít mailto. Později: automatické odeslání z backendu.', yourEmail:'Váš e-mail', placeholder:'např. jan@example.com', send:'Pošlete mi údaje', messageDemo:'Zpráva (DEMO):', copy:'Kopírovat', openMailto:'Otevřít mailto', mailIntro:'Ahoj!\n\nZde jsou údaje pro znovu rezervaci:\n\n', mailOutro:'\nJak rezervovat:\n1) Zavolejte nebo napište majiteli\n2) Pošlete požadované termíny\n3) Potvrďte cenu a podmínky\n4) Dohodněte platbu / zálohu\n\nZpráva přes Soča Guest Guide (DEMO).', subjectPrefix:'Rezervace – ' },
+    it: { back:'← Indietro', title:'Prenota di nuovo', what:'Cosa ricevi via email?', l1:'Nome appartamento', l2:'Telefono proprietario', l3:'Email proprietario', l4:'Link prenotazione (se presente)', l5:'Come prenotare per l\'anno prossimo', demoNote:'*Nella versione DEMO il messaggio viene generato e puoi copiarlo o aprire mailto. In seguito: invio automatico dal backend.', yourEmail:'La tua email', placeholder:'es. marco@example.com', send:'Invia i dati', messageDemo:'Messaggio (DEMO):', copy:'Copia', openMailto:'Apri mailto', mailIntro:'Ciao!\n\nEcco i dati per prenotare di nuovo:\n\n', mailOutro:'\nCome prenotare:\n1) Chiama o scrivi al proprietario\n2) Invia le date preferite\n3) Conferma prezzo e condizioni\n4) Concorda pagamento / acconto\n\nMessaggio tramite Soča Guest Guide (DEMO).', subjectPrefix:'Prenotazione – ' }
+  };
+  function applyLang(){
+    var t = labelsByLang[getSelectedLang()] || labelsByLang.en;
+    document.getElementById('backBtn').textContent = t.back;
+    document.getElementById('pageTitle').textContent = t.title;
+    document.getElementById('headingWhat').textContent = t.what;
+    var list = document.getElementById('listWhat');
+    if(list){ list.innerHTML = '<li>'+t.l1+'</li><li>'+t.l2+'</li><li>'+t.l3+'</li><li>'+t.l4+'</li><li>'+t.l5+'</li>'; }
+    document.getElementById('demoNote').textContent = t.demoNote;
+    document.getElementById('labelEmail').textContent = t.yourEmail;
+    document.getElementById('email').placeholder = t.placeholder;
+    document.getElementById('send').textContent = t.send;
+    document.getElementById('labelMessage').textContent = t.messageDemo;
+    document.getElementById('copy').textContent = t.copy;
+    document.getElementById('mailto').textContent = t.openMailto;
+  }
+  document.getElementById('backBtn').addEventListener('click', () => { window.parent?.postMessage("CLOSE_MODAL", "*"); });
+  applyLang();
+  window.addEventListener('storage', function(e){ if(e.key==='preferredLanguage') applyLang(); });
+
+  const APARTMAN = { name: "Apartman Soča (DEMO)", owner_phone: "+386 00 000 000", owner_email: "owner@example.com", booking_link: "https://example.com/rezervacija" };
+  const emailEl = document.getElementById('email');
+  const result = document.getElementById('result');
+  const msgEl = document.getElementById('msg');
+  const mailtoEl = document.getElementById('mailto');
+
+  document.getElementById('send').addEventListener('click', () => {
+    const userEmail = (emailEl.value || "").trim();
+    if (!userEmail) { emailEl.focus(); return; }
+    var t = labelsByLang[getSelectedLang()] || labelsByLang.en;
+    const subject = t.subjectPrefix + APARTMAN.name;
+    const body = t.mailIntro + 'Apartman: ' + APARTMAN.name + '\n' + (t.l2 || 'Phone') + ': ' + APARTMAN.owner_phone + '\n' + (t.l3 || 'Email') + ': ' + APARTMAN.owner_email + '\n' + (t.l4 || 'Link') + ': ' + APARTMAN.booking_link + t.mailOutro;
+    msgEl.textContent = body;
+    result.classList.remove('hidden');
+    mailtoEl.href = 'mailto:' + encodeURIComponent(userEmail) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  });
+  document.getElementById('copy').addEventListener('click', async () => { try { await navigator.clipboard.writeText(msgEl.textContent); } catch(e){} });
+</script>
+</body>
+</html>

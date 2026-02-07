@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Izgubljeno / Nađeno</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#0b0f14] text-gray-100">
+  <div class="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur">
+    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button id="backBtn" class="px-3 py-2 rounded-xl border border-white/15 bg-white/5"></button>
+      <div class="font-semibold" id="pageTitle">Izgubljeno / Nađeno</div>
+      <div class="text-xs px-2 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-300">DEMO</div>
+    </div>
+  </div>
+
+  <main class="max-w-xl mx-auto px-4 py-6 space-y-4">
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-gray-300" id="introText"></div>
+
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-4 space-y-3">
+      <label class="block text-sm text-gray-300" id="labelEmail">Tvoj email</label>
+      <input id="email" type="email" class="w-full rounded-xl bg-black/30 border border-white/10 p-3" />
+
+      <label class="block text-sm text-gray-300" id="labelMsg">Poruka (max 500)</label>
+      <textarea id="msg" maxlength="500" rows="5" class="w-full rounded-xl bg-black/30 border border-white/10 p-3"></textarea>
+
+      <button id="save" class="w-full py-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-200 font-semibold"></button>
+
+      <div id="limit" class="hidden text-xs text-red-300"></div>
+    </div>
+
+    <section class="space-y-3">
+      <h2 class="text-lg font-semibold" id="sectionTitle">Poruke (poslednjih 30 dana)</h2>
+      <div id="list" class="space-y-3"></div>
+    </section>
+  </main>
+
+<script>
+  var SUPPORTED_LANGS = ['sl','en','de','pl','cs','it'];
+  function getSelectedLang(){
+    var raw = (localStorage.getItem('preferredLanguage') || localStorage.getItem('lang') || 'en').toLowerCase();
+    return SUPPORTED_LANGS.indexOf(raw) >= 0 ? raw : 'en';
+  }
+  var labelsByLang = {
+    sl: { back:'← Nazad', title:'Izgubljeno / Najdeno', intro:'Brez prijave: vnesi e-pošto in sporočilo (max 500 znakov). Isti e-pošti lahko spremeni/objavi max 3-krat. Sporočila starejša od 30 dni se samodejno izbrišejo (DEMO).', yourEmail:'Tvoj email', messageMax:'Sporočilo (max 500)', placeholderMsg:'Npr. Izgubil sem modro jakno v bližini...', publish:'Objavi / Shrani', limitReached:'Dosežena omejitev (max 3 spremembe na e-pošto).', messagesTitle:'Sporočila (zadnjih 30 dni)', noMessages:'Ni sporočil.' },
+    en: { back:'← Back', title:'Lost & Found', intro:'No login: enter your email and message (max 500 characters). Same email can edit/publish max 3 times. Messages older than 30 days are automatically deleted (DEMO).', yourEmail:'Your email', messageMax:'Message (max 500)', placeholderMsg:'E.g. I lost a blue jacket near...', publish:'Publish / Save', limitReached:'Limit reached (max 3 edits per email).', messagesTitle:'Messages (last 30 days)', noMessages:'No messages.' },
+    de: { back:'← Zurück', title:'Verloren / Gefunden', intro:'Ohne Anmeldung: E-Mail und Nachricht eingeben (max 500 Zeichen). Dieselbe E-Mail kann max 3-mal bearbeiten/veröffentlichen. Nachrichten älter als 30 Tage werden automatisch gelöscht (DEMO).', yourEmail:'Deine E-Mail', messageMax:'Nachricht (max 500)', placeholderMsg:'Z.B. Ich habe eine blaue Jacke verloren bei...', publish:'Veröffentlichen / Speichern', limitReached:'Limit erreicht (max 3 Bearbeitungen pro E-Mail).', messagesTitle:'Nachrichten (letzte 30 Tage)', noMessages:'Keine Nachrichten.' },
+    pl: { back:'← Wstecz', title:'Zgubione / Znalezione', intro:'Bez logowania: wpisz e-mail i wiadomość (max 500 znaków). Ten sam e-mail może edytować/opublikować max 3 razy. Wiadomości starsze niż 30 dni są automatycznie usuwane (DEMO).', yourEmail:'Twój e-mail', messageMax:'Wiadomość (max 500)', placeholderMsg:'Np. Zgubiłem niebieską kurtkę w okolicy...', publish:'Opublikuj / Zapisz', limitReached:'Osiągnięto limit (max 3 edycje na e-mail).', messagesTitle:'Wiadomości (ostatnie 30 dni)', noMessages:'Brak wiadomości.' },
+    cs: { back:'← Zpět', title:'Ztraceno / Nalezeno', intro:'Bez přihlášení: zadejte e-mail a zprávu (max 500 znaků). Stejný e-mail může upravit/zveřejnit max 3×. Zprávy starší než 30 dní se automaticky smažou (DEMO).', yourEmail:'Váš e-mail', messageMax:'Zpráva (max 500)', placeholderMsg:'Např. Ztratil jsem modrou bundu u...', publish:'Publikovat / Uložit', limitReached:'Dosažen limit (max 3 úpravy na e-mail).', messagesTitle:'Zprávy (posledních 30 dní)', noMessages:'Žádné zprávy.' },
+    it: { back:'← Indietro', title:'Perso / Trovato', intro:'Senza accesso: inserisci email e messaggio (max 500 caratteri). Stessa email può modificare/pubblicare max 3 volte. Messaggi più vecchi di 30 giorni vengono cancellati automaticamente (DEMO).', yourEmail:'La tua email', messageMax:'Messaggio (max 500)', placeholderMsg:'Es. Ho perso una giacca blu vicino a...', publish:'Pubblica / Salva', limitReached:'Limite raggiunto (max 3 modifiche per email).', messagesTitle:'Messaggi (ultimi 30 giorni)', noMessages:'Nessun messaggio.' }
+  };
+  function applyLang(){
+    var t = labelsByLang[getSelectedLang()] || labelsByLang.en;
+    document.getElementById('backBtn').textContent = t.back;
+    document.getElementById('pageTitle').textContent = t.title;
+    document.getElementById('introText').textContent = t.intro;
+    document.getElementById('labelEmail').textContent = t.yourEmail;
+    document.getElementById('labelMsg').textContent = t.messageMax;
+    document.getElementById('msg').placeholder = t.placeholderMsg;
+    document.getElementById('save').textContent = t.publish;
+    document.getElementById('limit').textContent = t.limitReached;
+    document.getElementById('sectionTitle').textContent = t.messagesTitle;
+    if(typeof render === 'function') render();
+  }
+  document.getElementById('backBtn').addEventListener('click', () => { window.parent?.postMessage("CLOSE_MODAL", "*"); });
+  applyLang();
+  window.addEventListener('storage', function(e){ if(e.key==='preferredLanguage'){ applyLang(); } });
+
+  const KEY = "lost_found_v1";
+
+  function loadAll(){
+    const raw = localStorage.getItem(KEY);
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  function saveAll(items){
+    localStorage.setItem(KEY, JSON.stringify(items));
+  }
+
+  function purgeOld(items){
+    const now = Date.now();
+    const limit = 30 * 24 * 60 * 60 * 1000;
+    return items.filter(x => (now - x.ts) <= limit);
+  }
+
+  function render(){
+    let items = purgeOld(loadAll());
+    saveAll(items);
+    var t = labelsByLang[getSelectedLang()] || labelsByLang.en;
+
+    const list = document.getElementById("list");
+    if (!items.length){
+      list.innerHTML = '<div class="text-sm text-gray-400">' + t.noMessages + '</div>';
+      return;
+    }
+
+    items.sort((a,b)=>b.ts-a.ts);
+
+    list.innerHTML = items.map(x => `
+      <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-gray-300">${x.email}</div>
+          <div class="text-xs text-gray-400">${new Date(x.ts).toLocaleString()}</div>
+        </div>
+        <div class="mt-2 text-sm">${escapeHtml(x.msg)}</div>
+      </div>
+    `).join("");
+  }
+
+  function escapeHtml(s){
+    return (s||"").replace(/[&<>"']/g, (m)=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  function getEditCount(email){
+    const items = loadAll();
+    const found = items.find(x => x.email === email);
+    return found ? (found.edits || 0) : 0;
+  }
+
+  document.getElementById("save").addEventListener("click", () => {
+    const email = (document.getElementById("email").value || "").trim().toLowerCase();
+    const msg = (document.getElementById("msg").value || "").trim();
+
+    if (!email || !msg) return;
+
+    let items = purgeOld(loadAll());
+
+    const existing = items.find(x => x.email === email);
+    const limitEl = document.getElementById("limit");
+
+    if (existing){
+      const edits = existing.edits || 0;
+      if (edits >= 3){
+        limitEl.classList.remove("hidden");
+        return;
+      }
+      existing.msg = msg;
+      existing.ts = Date.now();
+      existing.edits = edits + 1;
+      limitEl.classList.add("hidden");
+    } else {
+      items.push({ email, msg, ts: Date.now(), edits: 1 });
+      limitEl.classList.add("hidden");
+    }
+
+    saveAll(items);
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

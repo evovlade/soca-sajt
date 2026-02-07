@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="sr">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinematic Weather</title>
+  <style>
+    /* --- PURE CINEMATIC STYLE --- */
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Glavni kontejner koji drži sve layere */
+    #scene-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0; /* Počinje crno */
+      transition: opacity 2s ease-in-out;
+    }
+
+    /* VINJETA - Daje filmski izgled (tamni uglovi) */
+    .vignette {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%);
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    /* CANVAS ZA PADAVINE (Najbolje performanse) */
+    #particleCanvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    /* POZADINSKI GRADIJENTI (Skybox) */
+    .sky-layer {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      transition: opacity 2s ease-in-out;
+      opacity: 0;
+      z-index: 1;
+    }
+    .sky-layer.active { opacity: 1; }
+
+    /* DEFINICIJE BOJA NEBA (Dublje, modernije boje) */
+    .sky-sunny { background: linear-gradient(to bottom, #1E90FF 0%, #87CEFA 100%); }
+    .sky-cloudy { background: linear-gradient(to bottom, #5D6D7E 0%, #BFC9CA 100%); }
+    .sky-rain { background: linear-gradient(to bottom, #2C3E50 0%, #4A5868 100%); }
+    .sky-storm { background: linear-gradient(to bottom, #17202A 0%, #283747 100%); }
+    .sky-snow { background: linear-gradient(to bottom, #85929E 0%, #D6EAF8 100%); }
+    
+    /* NOĆNE VARIJANTE */
+    .sky-clear-night { background: linear-gradient(to bottom, #020111 0%, #191629 100%); }
+    .sky-cloudy-night { background: linear-gradient(to bottom, #111 0%, #2c3e50 100%); }
+
+    /* CELESTIAL BODIES (Sunce/Mesec sa GLOW efektom) */
+    .celestial-container {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .sun {
+      position: absolute;
+      top: 8%; right: 8%;
+      width: 100px; height: 100px;
+      background: #FFD700;
+      border-radius: 50%;
+      box-shadow: 0 0 80px rgba(255, 215, 0, 0.8), 0 0 150px rgba(255, 140, 0, 0.4);
+      opacity: 0;
+      transition: opacity 2s, transform 10s ease-out;
+      transform: translateY(20px);
+    }
+    
+    .moon {
+      position: absolute;
+      top: 10%; right: 10%;
+      width: 80px; height: 80px;
+      background: #FDFEFE;
+      border-radius: 50%;
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.6), 0 0 100px rgba(255, 255, 255, 0.2);
+      opacity: 0;
+      transition: opacity 2s;
+    }
+
+    .visible { opacity: 1 !important; transform: translateY(0) !important; }
+
+    /* OBLACI (Mekani, proceduralni) */
+    .clouds-layer {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 20;
+      opacity: 0;
+      transition: opacity 2s;
+      filter: blur(3px); /* Filmski blur za dubinu */
+    }
+    .clouds-layer.active { opacity: 1; }
+
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 100px;
+      animation: float 60s linear infinite;
+    }
+    .night-cloud { background: rgba(149, 165, 166, 0.2); }
+
+    @keyframes float {
+      from { transform: translateX(-150%); }
+      to { transform: translateX(150vw); }
+    }
+
+    /* MUNJA (Flash) */
+    .lightning-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #fff;
+      opacity: 0;
+      z-index: 90;
+      mix-blend-mode: overlay;
+    }
+
+  </style>
+ </head>
+ <body>
+
+  <div id="scene-container">
+    
+    <div class="vignette"></div>
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div id="sky-sunny" class="sky-layer sky-sunny"></div>
+    <div id="sky-cloudy" class="sky-layer sky-cloudy"></div>
+    <div id="sky-rain" class="sky-layer sky-rain"></div>
+    <div id="sky-storm" class="sky-layer sky-storm"></div>
+    <div id="sky-snow" class="sky-layer sky-snow"></div>
+    <div id="sky-clear-night" class="sky-layer sky-clear-night"></div>
+    <div id="sky-cloudy-night" class="sky-layer sky-cloudy-night"></div>
+
+    <div class="celestial-container">
+      <div id="theSun" class="sun"></div>
+      <div id="theMoon" class="moon"></div>
+    </div>
+
+    <div id="clouds-white" class="clouds-layer"></div>
+    <div id="clouds-dark" class="clouds-layer"></div>
+
+    <div id="flash" class="lightning-overlay"></div>
+
+  </div>
+
+  <script>
+    // --- SETUP CANVAS-A (VISOKE PERFORMANSE) ---
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    
+    let particles = [];
+    let state = { type: 'clean', isNight: false };
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // --- LOGIKA ČESTICA ---
+    class Particle {
+      constructor(type) {
+        this.type = type;
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * -height;
+        
+        if (this.type === 'rain') {
+          this.speed = Math.random() * 15 + 20; // Brža kiša
+          this.len = Math.random() * 20 + 10;
+          this.opacity = Math.random() * 0.3 + 0.1;
+        } else if (this.type === 'snow') {
+          this.speed = Math.random() * 2 + 1;
+          this.size = Math.random() * 3 + 1;
+          this.swing = Math.random() * 2; 
+          this.step = Math.random() * Math.PI;
+        } else if (this.type === 'star') {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height * 0.6; // Samo gornji deo
+          this.size = Math.random() * 1.5;
+          this.opacity = Math.random();
+          this.speed = 0; // Zvezde stoje
+        }
+      }
+      update() {
+        if (this.type === 'star') {
+          this.opacity += (Math.random() - 0.5) * 0.05; // Treperenje
+          if(this.opacity < 0) this.opacity = 0;
+          if(this.opacity > 1) this.opacity = 1;
+          return;
+        }
+
+        this.y += this.speed;
+        if (this.type === 'snow') {
+          this.step += 0.02;
+          this.x += Math.sin(this.step) * this.swing;
+        }
+
+        if (this.y > height) this.reset();
+      }
+      draw() {
+        ctx.beginPath();
+        if (this.type === 'rain') {
+          ctx.strokeStyle = `rgba(200, 210, 255, ${this.opacity})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(this.x - 2, this.y + this.len); // Kosa kiša (vetar)
+          ctx.stroke();
+        } else if (this.type === 'snow') {
+          ctx.fillStyle = `rgba(255, 255, 255, 0.8)`;
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.type === 'star') {
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    function initParticles(type) {
+      particles = [];
+      let count = 0;
+      if (type === 'rain' || type === 'storm') count = 800; // Gusta kiša
+      if (type === 'snow') count = 200;
+      if (type === 'clear' && state.isNight) count = 200; // Zvezde
+
+      for(let i=0; i<count; i++) {
+        let pType = (type === 'clear' && state.isNight) ? 'star' : (type === 'snow' ? 'snow' : 'rain');
+        particles.push(new Particle(pType));
+      }
+    }
+
+    function loop() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      
+      // Random munje
+      if (state.type === 'storm' && Math.random() > 0.99) {
+        triggerLightning();
+      }
+      
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    function triggerLightning() {
+      const flash = document.getElementById('flash');
+      flash.style.opacity = 0.6;
+      setTimeout(() => { flash.style.opacity = 0; }, 80);
+      setTimeout(() => { 
+        flash.style.opacity = 0.3; 
+        setTimeout(() => { flash.style.opacity = 0; }, 50);
+      }, 150);
+    }
+
+    // --- OBLACI ---
+    function createClouds(isDark) {
+      const container = document.getElementById(isDark ? 'clouds-dark' : 'clouds-white');
+      container.innerHTML = '';
+      const count = isDark ? 10 : 6;
+      
+      for(let i=0; i<count; i++) {
+        const c = document.createElement('div');
+        c.className = isDark ? 'cloud night-cloud' : 'cloud';
+        const w = Math.random() * 400 + 200;
+        c.style.width = w + 'px';
+        c.style.height = (w * 0.35) + 'px';
+        c.style.top = (Math.random() * 50) + '%';
+        c.style.left = (Math.random() * 100) + '%';
+        c.style.opacity = Math.random() * 0.4 + 0.3;
+        c.style.animationDuration = (Math.random() * 60 + 40) + 's';
+        c.style.filter = "blur(8px)"; // Još mekši oblaci
+        container.appendChild(c);
+      }
+    }
+
+    // --- LOGIKA VREMENA ---
+    function setScene(code, isDay) {
+      const isNight = isDay === 0;
+      state.isNight = isNight;
+
+      // Reset
+      document.querySelectorAll('.sky-layer').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.clouds-layer').forEach(el => el.classList.remove('active'));
+      document.getElementById('theSun').classList.remove('visible');
+      document.getElementById('theMoon').classList.remove('visible');
+
+      let type = 'clear';
+      let bgId = isNight ? 'sky-clear-night' : 'sky-sunny';
+      let showClouds = false;
+      let darkClouds = false;
+
+      // Mapiranje kodova
+      if (code >= 95) { // Oluja
+        type = 'storm';
+        bgId = 'sky-storm';
+        showClouds = true;
+        darkClouds = true;
+      } else if (code >= 71 || code === 85 || code === 86) { // Sneg
+        type = 'snow';
+        bgId = isNight ? 'sky-cloudy-night' : 'sky-snow';
+      } else if (code >= 51 || code === 80 || code === 81 || code === 82) { // Kiša
+        type = 'rain';
+        bgId = 'sky-rain';
+        showClouds = true;
+        darkClouds = true;
+      } else if (code >= 1 && code <= 3) { // Oblačno
+        type = 'cloudy';
+        bgId = isNight ? 'sky-cloudy-night' : 'sky-cloudy';
+        showClouds = true;
+        darkClouds = isNight;
+      } else if (code === 45 || code === 48) { // Magla
+        type = 'cloudy'; // Tretiramo kao oblačno vizuelno
+        bgId = 'sky-cloudy';
+        showClouds = true;
+      }
+
+      state.type = type;
+
+      // 1. Postavi pozadinu
+      document.getElementById(bgId).classList.add('active');
+
+      // 2. Nebeska tela
+      if (type === 'clear' || type === 'cloudy') {
+        if (!isNight) document.getElementById('theSun').classList.add('visible');
+        else document.getElementById('theMoon').classList.add('visible');
+      }
+
+      // 3. Oblaci
+      if (showClouds) {
+        const cloudId = darkClouds ? 'clouds-dark' : 'clouds-white';
+        createClouds(darkClouds);
+        document.getElementById(cloudId).classList.add('active');
+      }
+
+      // 4. Čestice
+      initParticles(type);
+
+      // Fade In Scene
+      document.getElementById('scene-container').style.opacity = 1;
+    }
+
+    // --- FETCH DATA ---
+    async function getWeather(lat, lon) {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`;
+        const res = await fetch(url);
+        const data = await res.json();
+        setScene(data.current_weather.weathercode, data.current_weather.is_day);
+      } catch (e) {
+        console.error(e);
+        // Fallback: Sunčano ako pukne API
+        setScene(0, 1);
+      }
+    }
+
+    // --- POKRETANJE ---
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => getWeather(pos.coords.latitude, pos.coords.longitude),
+        () => getWeather(44.7866, 20.4489) // Default BG
+      );
+    } else {
+      getWeather(44.7866, 20.4489);
+    }
+
+  </script>
+ </body>
+</html>

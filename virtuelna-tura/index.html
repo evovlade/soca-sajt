@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soča Dolina - Virtuelna Tura</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;font-family:'Georgia',serif;overflow:hidden}
+#app{width:100%;height:100%;background:#0a0a0a;color:#f5f1e8;display:flex;flex-direction:column}
+.screen{position:absolute;width:100%;height:100%;opacity:0;transition:opacity .8s ease;pointer-events:none}
+.screen.active{opacity:1;pointer-events:auto;z-index:10}
+#startScreen{background:linear-gradient(135deg,#1a472a,#0d4a47,#0a2f2a);display:flex;justify-content:center;align-items:center;text-align:center;padding:20px}
+.start-content h1{font-size:3.2rem;color:#e8d4b8;letter-spacing:2px;margin-bottom:10px}
+.start-content p{font-size:1.2rem;color:#b8a88f;margin-bottom:30px}
+.btn-start{padding:15px 50px;background:#8b6f47;color:#f5f1e8;border:2px solid #d4a574;border-radius:6px;cursor:pointer}
+.btn-back{padding:10px 24px;background:transparent;color:#d4a574;border:2px solid #8b6f47;border-radius:6px;cursor:pointer;margin-bottom:20px}
+#tourScreen{display:flex;flex-direction:column;background:linear-gradient(to bottom,#1a1a1a,#0d1a1a);height:100%}
+.tour-visual{flex:none;height:140px;min-height:140px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#1a1a1a 0%,#0d1a1a 100%)}
+.tour-visual-icon{font-size:4.5rem;opacity:.4}
+.tour-info{flex:1;min-height:0;display:flex;flex-direction:column;padding:20px;background:linear-gradient(135deg,#0a2f2a,#1a472a);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.tour-title{font-size:1.8rem;color:#e8d4b8;margin-bottom:15px}
+.tour-text{line-height:1.8;color:#d4c5b8;margin-bottom:16px}
+.tour-highlight{background:rgba(139,111,71,.15);border-left:3px solid #8b6f47;padding:10px 12px;margin:12px 0;border-radius:0 6px 6px 0;color:#d4c5b8;font-size:0.95rem}
+.tour-facts{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.fact-box{background:rgba(0,0,0,.2);padding:8px 12px;border-radius:6px;font-size:0.9rem;color:#c4b5a8}
+.tour-navigation{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:auto;padding-top:18px;border-top:1px solid #8b6f47}
+.tour-navigation button{flex:1;min-width:100px}
+button{border:2px solid #8b6f47;color:#d4a574;padding:10px 16px;background:none;cursor:pointer;border-radius:6px;font-size:0.95rem}
+#endScreen{background:linear-gradient(135deg,#1a472a,#0d4a47,#0a2f2a);display:flex;justify-content:center;align-items:center;text-align:center;padding:20px}
+#endScreen h2{font-size:1.8rem;color:#e8d4b8;margin-bottom:12px}
+#endScreen p{font-size:1.1rem;color:#b8a88f;margin-bottom:24px;max-width:480px}
+.btn-end{padding:12px 28px;margin:6px;background:#8b6f47;color:#f5f1e8;border:2px solid #d4a574;border-radius:6px;cursor:pointer}
+@media (min-width:640px){
+.tour-visual{height:180px;min-height:180px}
+.tour-visual-icon{font-size:6rem}
+.tour-info{padding:24px 28px}
+.tour-title{font-size:1.8rem}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div id="startScreen" class="screen active">
+  <div class="start-content">
+    <button class="btn-back" onclick="try{window.parent.postMessage('CLOSE_MODAL','*')}catch(e){}">← Nazad</button>
+    <h1>SOČA DOLINA</h1>
+    <p>Virtuelna tura kroz smaragdnu dolinu</p>
+    <button class="btn-start" onclick="startTour()">ZAPOČNI TURU</button>
+  </div>
+</div>
+
+<div id="tourScreen" class="screen">
+  <div class="tour-visual">
+    <div class="tour-visual-icon" id="tourIcon">🏔️</div>
+  </div>
+  <div class="tour-info" tabindex="-1">
+    <div id="tourStep" style="font-size:0.85rem;color:#8b6f47;margin-bottom:4px"></div>
+    <h2 id="tourTitle" class="tour-title"></h2>
+    <div id="tourCategory" style="font-size:0.9rem;color:#b8a88f;margin-bottom:8px"></div>
+    <div id="tourContent"></div>
+    <div style="height:4px;background:rgba(139,111,71,.2);border-radius:2px;margin:8px 0"><div id="progressFill" style="height:100%;width:0%;background:#8b6f47;border-radius:2px;transition:width .2s"></div></div>
+    <div id="navText" style="font-size:0.85rem;color:#8b6f47;margin-bottom:8px"></div>
+    <div class="tour-navigation">
+      <button class="btn-back" onclick="try{window.parent.postMessage('CLOSE_MODAL','*')}catch(e){}">← Nazad</button>
+      <button id="prevBtn" onclick="previousSlide()">← PRETHODNO</button>
+      <button id="nextBtn" onclick="nextSlide()">SLEDEĆE →</button>
+    </div>
+  </div>
+</div>
+
+<div id="endScreen" class="screen">
+  <div class="start-content">
+    <h2 id="endTitle">HVALA</h2>
+    <p id="endText">Upamo, da ste uživali v odkrivanju Doline Soče.</p>
+    <button class="btn-end" id="endReplayBtn" onclick="startTour()">OGLEJ SI ZNOVA</button>
+    <button class="btn-end" id="endHomeBtn" onclick="goHome()">NAZAJ NA ZAČETEK</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+// i18n PATCH — supported languages
+const SUPPORTED_LANGS = ["sl", "en", "de", "pl", "cs", "it"];
+
+function getSelectedLang() {
+  const raw = (localStorage.getItem("preferredLanguage") || localStorage.getItem("lang") || localStorage.getItem("selectedLang") || "en").toLowerCase();
+  return SUPPORTED_LANGS.includes(raw) ? raw : "en";
+}
+
+const labelsByLang = {
+  sl: {
+    step: (i, n) => `Korak ${i} od ${n}`,
+    prev: "← PREJŠNJE",
+    next: "NASLEDNJE →",
+    finish: "ZAKLJUČI OGLED →",
+    endTitle: "HVALA, KER STE OBISKALI",
+    endText: "Upamo, da ste uživali v odkrivanju Doline Soče. Vsak del regije ima svojo zgodbo in edinstveno lepoto.",
+    replay: "OGLEJ SI ZNOVA",
+    home: "NAZAJ NA ZAČETEK",
+    title: "Dolina Soče – virtualni ogled",
+    subtitle: "Odkrij naravo, kulturo in zgodovino zgornjega Posočja"
+  },
+  en: {
+    step: (i, n) => `Step ${i} of ${n}`,
+    prev: "← PREVIOUS",
+    next: "NEXT →",
+    finish: "FINISH TOUR →",
+    endTitle: "THANK YOU FOR VISITING",
+    endText: "We hope you enjoyed discovering the Soča Valley. Every part of the region has its own story and unique beauty.",
+    replay: "WATCH AGAIN",
+    home: "BACK TO START",
+    title: "Soča Valley – virtual tour",
+    subtitle: "Explore nature, culture and history of the Upper Soča region"
+  },
+  de: {
+    step: (i, n) => `Schritt ${i} von ${n}`,
+    prev: "← ZURÜCK",
+    next: "WEITER →",
+    finish: "TOUR BEENDEN →",
+    endTitle: "DANKE FÜR IHREN BESUCH",
+    endText: "Wir hoffen, Sie haben die Magie des Soča-Tals genossen. Jeder Teil der Region hat seine eigene Geschichte und einzigartige Schönheit.",
+    replay: "NOCHMAL ANSEHEN",
+    home: "ZURÜCK ZUM START",
+    title: "Soča-Tal – Virtuelle Tour",
+    subtitle: "Natur, Kultur und Geschichte im Oberen Soča-Gebiet"
+  },
+  pl: {
+    step: (i, n) => `Krok ${i} z ${n}`,
+    prev: "← POPRZEDNIE",
+    next: "DALEJ →",
+    finish: "ZAKOŃCZ WYCIECZKĘ →",
+    endTitle: "DZIĘKUJEMY ZA WIZYTĘ",
+    endText: "Mamy nadzieję, że podobało Ci się odkrywanie Doliny Sočy. Każda część regionu ma swoją historię i wyjątkowe piękno.",
+    replay: "OBEJRZYJ PONOWNIE",
+    home: "WRÓĆ NA START",
+    title: "Dolina Sočy – wirtualna wycieczka",
+    subtitle: "Poznaj naturę, kulturę i historię regionu Górnej Sočy"
+  },
+  cs: {
+    step: (i, n) => `Krok ${i} z ${n}`,
+    prev: "← PŘEDCHOZÍ",
+    next: "DALŠÍ →",
+    finish: "DOKONČIT PROHLÍDKU →",
+    endTitle: "DĚKUJEME ZA NÁVŠTĚVU",
+    endText: "Doufáme, že se vám líbilo objevování údolí Soči. Každá část regionu má svůj příběh a jedinečnou krásu.",
+    replay: "ZOBRAZIT ZNOVU",
+    home: "ZPĚT NA ZAČÁTEK",
+    title: "Údolí Soči – virtuální prohlídka",
+    subtitle: "Objev přírodu, kulturu a historii oblasti Horní Soči"
+  },
+  it: {
+    step: (i, n) => `Tappa ${i} di ${n}`,
+    prev: "← PRECEDENTE",
+    next: "AVANTI →",
+    finish: "TERMINA IL TOUR →",
+    endTitle: "GRAZIE PER LA VISITA",
+    endText: "Speriamo che tu abbia apprezzato la magia della Valle dell'Isonzo (Soča). Ogni parte della regione ha una storia e una bellezza unica.",
+    replay: "RIVEDI",
+    home: "TORNA ALL'INIZIO",
+    title: "Valle dell'Isonzo (Soča) – tour virtuale",
+    subtitle: "Scopri natura, cultura e storia dell'Alto Isonzo"
+  },
+};
+
+// CONTENT: 12 slides x 6 languages (facts only when verified)
+const tourDataByLang = {
+  sl: [
+    { id: 1, title: "Soča – smaragdna reka", category: "Uvod", icon: "🌊", content: `
+      <p class="tour-text">Dobrodošli v Dolini Soče – alpski pokrajini, kjer reka navdušuje z izjemno bistro vodo in značilnim zelenim odtenkom.</p>
+      <div class="tour-highlight">Soča izvira v Trenti in je dolga približno 138 km; izliva se v Tržaški zaliv (Jadransko morje).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Izvir:</strong> Trenta</div>
+        <div class="fact-box"><strong>Dolžina:</strong> ~138 km</div>
+        <div class="fact-box"><strong>Izliv:</strong> Tržaški zaliv</div>
+        <div class="fact-box"><strong>Regija:</strong> zgornje Posočje</div>
+      </div>`},
+    { id: 2, title: "Triglavski narodni park – srce Julijskih Alp", category: "Narava", icon: "🏞️", content: `
+      <p class="tour-text">Velik del območja je povezan s Triglavskim narodnim parkom – edinim narodnim parkom v Sloveniji.</p>
+      <div class="tour-highlight">Park obsega 840 km², najvišja točka je Triglav (2.864 m).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Površina:</strong> 840 km²</div>
+        <div class="fact-box"><strong>Najvišji vrh:</strong> Triglav 2.864 m</div>
+        <div class="fact-box"><strong>Tip:</strong> alpski park</div>
+        <div class="fact-box"><strong>Pristop:</strong> spoštuj pravila parka</div>
+      </div>`},
+    { id: 3, title: "Pravila v naravi – najprej varnost, potem doživetje", category: "Varnost", icon: "⚠️", content: `
+      <p class="tour-text">V gorah se vreme hitro spremeni. Za ture imejte primerno obutev, vodo in osnovno plast oblačil.</p>
+      <div class="tour-highlight">Najboljša praksa: ostani na označenih poteh, ne tvegaj na mokrih skalah ob reki.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Obutev:</strong> nedrseča</div>
+        <div class="fact-box"><strong>Oprema:</strong> voda + jakna</div>
+        <div class="fact-box"><strong>Pot:</strong> označene steze</div>
+        <div class="fact-box"><strong>Reka:</strong> tok je lahko močan</div>
+      </div>`},
+    { id: 4, title: "Bovec – vstopna točka za avanturo", category: "Kraji", icon: "🏔️", content: `
+      <p class="tour-text">Bovec je središče aktivnosti: od sprehodov do doživljajskih športov, odvisno od sezone in razmer.</p>
+      <div class="tour-highlight">Za obiskovalce: izberi aktivnost glede na izkušnje in vedno preveri razmere.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Okolica:</strong> Kanin, Soča</div>
+        <div class="fact-box"><strong>Tip doživetja:</strong> narava + šport</div>
+        <div class="fact-box"><strong>Sezona:</strong> celo leto</div>
+        <div class="fact-box"><strong>Nasvet:</strong> planiraj po vremenu</div>
+      </div>`},
+    { id: 5, title: "Slap Boka – mogočen slap pri Bovcu", category: "Naravne znamenitosti", icon: "💧", content: `
+      <p class="tour-text">Slap Boka velja za najbolj vodnat in najmogočnejši slap v Sloveniji.</p>
+      <div class="tour-highlight">Skupna višina je 144 m, širina 18 m; voda najprej pade 106 m, nato še 30 m.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Višina:</strong> 144 m</div>
+        <div class="fact-box"><strong>Širina:</strong> 18 m</div>
+        <div class="fact-box"><strong>Pad:</strong> 106 m + 30 m</div>
+        <div class="fact-box"><strong>Dostop:</strong> razgledišče/peš</div>
+      </div>`},
+    { id: 6, title: "Kobarid – zgodovina Soške fronte", category: "Zgodovina", icon: "🪖", content: `
+      <p class="tour-text">Kobarid je ključno mesto za razumevanje Soške fronte in dogajanja v prvi svetovni vojni.</p>
+      <div class="tour-highlight">Kobariški muzej je najboljša "vstopna točka" v zgodbo terena, ki ga vidiš zunaj.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Kraj:</strong> Kobarid</div>
+        <div class="fact-box"><strong>Tema:</strong> Soška fronta</div>
+        <div class="fact-box"><strong>Tip:</strong> muzej + spominske poti</div>
+        <div class="fact-box"><strong>Nasvet:</strong> kombiniraj z ogledom na terenu</div>
+      </div>`},
+    { id: 7, title: "Mostovi in soteske – naravna moč reke", category: "Pokrajina", icon: "🌉", content: `
+      <p class="tour-text">Soča se na nekaterih mestih stisne v ozke soteske, kar ustvarja spektakularne razglede in močan tok.</p>
+      <div class="tour-highlight">Drži se poti in ograj – mokre skale ob vodi so nevarne.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Doživetje:</strong> razgledi + fotografije</div>
+        <div class="fact-box"><strong>Tveganje:</strong> zdrs ob vodi</div>
+        <div class="fact-box"><strong>Pravilo:</strong> ostani na poti</div>
+        <div class="fact-box"><strong>Nasvet:</strong> pridi zgodaj za mir</div>
+      </div>`},
+    { id: 8, title: "Tolmin – stik reke in kulture", category: "Kraji", icon: "🏘️", content: `
+      <p class="tour-text">Tolmin povezuje rečne doline in lokalno življenje; od tu so odlični izleti na soteske in okoliške poti.</p>
+      <div class="tour-highlight">Za "guest guide": Tolmin je super kot baza za mirnejše raziskovanje.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Tip:</strong> izhodišče za izlete</div>
+        <div class="fact-box"><strong>Ritem:</strong> bolj umirjeno</div>
+        <div class="fact-box"><strong>Primerno za:</strong> družine</div>
+        <div class="fact-box"><strong>Nasvet:</strong> kombiniraj naravo + lokalno hrano</div>
+      </div>`},
+    { id: 9, title: "Tolminc – sir z zaščiteno označbo (PDO)", category: "Kulinarika", icon: "🧀", content: `
+      <p class="tour-text">Tolminc je v EU registru geografskih označb vpisan kot PDO (zaščitena označba porekla).</p>
+      <div class="tour-highlight">PDO pomeni, da sta izvor in način pridelave vezana na določeno območje in pravila.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Status:</strong> EU PDO</div>
+        <div class="fact-box"><strong>Izdelek:</strong> mlečni</div>
+        <div class="fact-box"><strong>Zakaj pomembno:</strong> pristnost</div>
+        <div class="fact-box"><strong>Za turiste:</strong> poskusi lokalno</div>
+      </div>`},
+    { id: 10, title: "Trajnost – kako ostati 'dobr' gost", category: "Ekologija", icon: "♻️", content: `
+      <p class="tour-text">Najlepša dolina ostane le, če jo obiskujemo spoštljivo: brez smeti, brez hrupa in brez "bližnjic" čez občutljiva območja.</p>
+      <div class="tour-highlight">Tri pravila: poberi za seboj, ostani na stezah, ne moti živali.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Smeti:</strong> odnesi s seboj</div>
+        <div class="fact-box"><strong>Steze:</strong> brez bližnjic</div>
+        <div class="fact-box"><strong>Voda:</strong> ne onesnažuj</div>
+        <div class="fact-box"><strong>Živali:</strong> brez hranjenja</div>
+      </div>`},
+    { id: 11, title: "Ideja za tvoj obisk – 1 dan, 3 postanki", category: "Praktično", icon: "🗺️", content: `
+      <p class="tour-text">Predlog: (1) razgledna točka ob Soči, (2) kratek pohod do slapa ali soteske, (3) lokalna večerja.</p>
+      <div class="tour-highlight">Najboljše doživetje je vedno tisto, ki je varno in brez stresa.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>1:</strong> reka / razgled</div>
+        <div class="fact-box"><strong>2:</strong> slap / soteska</div>
+        <div class="fact-box"><strong>3:</strong> lokalna hrana</div>
+        <div class="fact-box"><strong>Bonus:</strong> muzej ob slabem vremenu</div>
+      </div>`},
+    { id: 12, title: "Zaključek – dolina, ki si jo zapomniš", category: "Zaključek", icon: "✨", content: `
+      <p class="tour-text">Dolina Soče združuje naravo, kulturo in zgodovino. Najlepše je, ko jo doživiš mirno, spoštljivo in po svoje.</p>
+      <div class="tour-highlight">Namig za spletni vodič: dodaj "LIVE alert" za vreme, vodostaj in zapore poti.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Ključ:</strong> načrt + vreme</div>
+        <div class="fact-box"><strong>Varnost:</strong> vedno prva</div>
+        <div class="fact-box"><strong>Spoštovanje:</strong> narave in ljudi</div>
+        <div class="fact-box"><strong>Cilj:</strong> doživetje brez škode</div>
+      </div>`},
+  ],
+
+  en: [
+    { id: 1, title: "Soča Valley – the Emerald River", category: "Introduction", icon: "🌊", content: `
+      <p class="tour-text">Welcome to the Soča Valley, an Alpine landscape shaped by clear waters, steep mountains and unforgettable views.</p>
+      <div class="tour-highlight">The Soča springs in Trenta and is about 138 km long; it flows into the Gulf of Trieste (Adriatic Sea).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Source:</strong> Trenta</div>
+        <div class="fact-box"><strong>Length:</strong> ~138 km</div>
+        <div class="fact-box"><strong>Mouth:</strong> Gulf of Trieste</div>
+        <div class="fact-box"><strong>Region:</strong> Upper Soča</div>
+      </div>`},
+    { id: 2, title: "Triglav National Park – the heart of the Julian Alps", category: "Nature", icon: "🏞️", content: `
+      <p class="tour-text">Much of the area is linked to Triglav National Park, the only national park in Slovenia.</p>
+      <div class="tour-highlight">The park covers 840 km², with Mount Triglav at 2,864 m as its highest point.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Area:</strong> 840 km²</div>
+        <div class="fact-box"><strong>Highest peak:</strong> Triglav 2,864 m</div>
+        <div class="fact-box"><strong>Type:</strong> Alpine protected area</div>
+        <div class="fact-box"><strong>Tip:</strong> follow park rules</div>
+      </div>`},
+    { id: 3, title: "Safety first – mountains change fast", category: "Safety", icon: "⚠️", content: `
+      <p class="tour-text">In the Alps, weather can change quickly. Wear proper shoes, carry water, and add a warm layer.</p>
+      <div class="tour-highlight">Best practice: stay on marked trails and avoid wet rocks near the river.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Shoes:</strong> grippy</div>
+        <div class="fact-box"><strong>Gear:</strong> water + jacket</div>
+        <div class="fact-box"><strong>Route:</strong> marked trails</div>
+        <div class="fact-box"><strong>River:</strong> can be powerful</div>
+      </div>`},
+    { id: 4, title: "Bovec – a gateway to adventure", category: "Places", icon: "🏔️", content: `
+      <p class="tour-text">Bovec is a hub for outdoor experiences—from scenic walks to adrenaline activities, depending on season and conditions.</p>
+      <div class="tour-highlight">Choose activities that match your experience level and always check conditions.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Nearby:</strong> Kanin, Soča</div>
+        <div class="fact-box"><strong>Style:</strong> nature + sport</div>
+        <div class="fact-box"><strong>Season:</strong> year-round</div>
+        <div class="fact-box"><strong>Tip:</strong> plan around weather</div>
+      </div>`},
+    { id: 5, title: "Boka Waterfall – one of Slovenia's most impressive", category: "Natural sights", icon: "💧", content: `
+      <p class="tour-text">Boka is described as Slovenia's most water-rich and powerful waterfall.</p>
+      <div class="tour-highlight">Total height is 144 m and width about 18 m; the water drops ~106 m, then ~30 m.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Height:</strong> 144 m</div>
+        <div class="fact-box"><strong>Width:</strong> ~18 m</div>
+        <div class="fact-box"><strong>Drops:</strong> ~106 m + ~30 m</div>
+        <div class="fact-box"><strong>Access:</strong> viewpoint / hike</div>
+      </div>`},
+    { id: 6, title: "Kobarid – understanding the Isonzo Front", category: "History", icon: "🪖", content: `
+      <p class="tour-text">Kobarid is key to understanding the Isonzo Front and the World War I landscape in these mountains.</p>
+      <div class="tour-highlight">The Kobarid Museum is the best "starting point" to connect the stories with the places you'll see outside.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Town:</strong> Kobarid</div>
+        <div class="fact-box"><strong>Theme:</strong> Isonzo Front</div>
+        <div class="fact-box"><strong>Type:</strong> museum + trails</div>
+        <div class="fact-box"><strong>Tip:</strong> combine indoor/outdoor</div>
+      </div>`},
+    { id: 7, title: "Gorges & bridges – the river's raw power", category: "Landscape", icon: "🌉", content: `
+      <p class="tour-text">In several sections, the river narrows into gorges—creating dramatic views and strong current.</p>
+      <div class="tour-highlight">Stay on paths and behind fences—wet rocks near water are dangerous.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Best for:</strong> views + photos</div>
+        <div class="fact-box"><strong>Risk:</strong> slipping</div>
+        <div class="fact-box"><strong>Rule:</strong> stay on trail</div>
+        <div class="fact-box"><strong>Tip:</strong> visit early for peace</div>
+      </div>`},
+    { id: 8, title: "Tolmin – nature meets local life", category: "Places", icon: "🏘️", content: `
+      <p class="tour-text">Tolmin connects valleys and everyday local life, with great access to gorges and nearby trails.</p>
+      <div class="tour-highlight">For a "guest guide", Tolmin works well as a calmer base for exploring.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Type:</strong> excursion base</div>
+        <div class="fact-box"><strong>Vibe:</strong> calmer</div>
+        <div class="fact-box"><strong>Good for:</strong> families</div>
+        <div class="fact-box"><strong>Tip:</strong> nature + local food</div>
+      </div>`},
+    { id: 9, title: "Tolminc – Protected Designation of Origin (PDO)", category: "Food", icon: "🧀", content: `
+      <p class="tour-text">Tolminc is registered in the EU geographical indications system as PDO.</p>
+      <div class="tour-highlight">PDO means origin and production method are tied to a specific region and defined rules.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Status:</strong> EU PDO</div>
+        <div class="fact-box"><strong>Type:</strong> dairy</div>
+        <div class="fact-box"><strong>Why it matters:</strong> authenticity</div>
+        <div class="fact-box"><strong>For guests:</strong> try local</div>
+      </div>`},
+    { id: 10, title: "Sustainability – be a good guest", category: "Ecology", icon: "♻️", content: `
+      <p class="tour-text">The valley stays beautiful when visits are respectful: no litter, no shortcuts, and no disturbance to wildlife.</p>
+      <div class="tour-highlight">Three rules: pack out trash, stay on trails, don't feed animals.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Trash:</strong> take it with you</div>
+        <div class="fact-box"><strong>Trails:</strong> no shortcuts</div>
+        <div class="fact-box"><strong>Water:</strong> keep it clean</div>
+        <div class="fact-box"><strong>Wildlife:</strong> don't disturb</div>
+      </div>`},
+    { id: 11, title: "1 day plan – 3 simple stops", category: "Practical", icon: "🗺️", content: `
+      <p class="tour-text">Suggestion: (1) a river viewpoint, (2) a short hike to a waterfall or gorge, (3) a local dinner.</p>
+      <div class="tour-highlight">The best experience is always safe and stress-free.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>1:</strong> river/view</div>
+        <div class="fact-box"><strong>2:</strong> waterfall/gorge</div>
+        <div class="fact-box"><strong>3:</strong> local food</div>
+        <div class="fact-box"><strong>Bonus:</strong> museum on rainy day</div>
+      </div>`},
+    { id: 12, title: "Final note – take memories, leave no trace", category: "Wrap-up", icon: "✨", content: `
+      <p class="tour-text">Soča Valley blends nature, culture and history. Enjoy it calmly and respectfully—and it will stay magical for everyone.</p>
+      <div class="tour-highlight">Website tip: add a LIVE alert bar for weather, river conditions and trail closures.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Key:</strong> plan + forecast</div>
+        <div class="fact-box"><strong>Safety:</strong> always first</div>
+        <div class="fact-box"><strong>Respect:</strong> nature & locals</div>
+        <div class="fact-box"><strong>Goal:</strong> no damage</div>
+      </div>`},
+  ],
+
+  de: [
+    { id: 1, title: "Soča-Tal – der smaragdgrüne Fluss", category: "Einführung", icon: "🌊", content: `
+      <p class="tour-text">Willkommen im Soča-Tal – eine Alpenlandschaft mit klarem Wasser, steilen Bergen und eindrucksvollen Ausblicken.</p>
+      <div class="tour-highlight">Die Soča entspringt in Trenta, ist ca. 138 km lang und mündet in den Golf von Triest (Adria).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Quelle:</strong> Trenta</div>
+        <div class="fact-box"><strong>Länge:</strong> ~138 km</div>
+        <div class="fact-box"><strong>Mündung:</strong> Golf von Triest</div>
+        <div class="fact-box"><strong>Region:</strong> Oberes Soča-Gebiet</div>
+      </div>`},
+    { id: 2, title: "Nationalpark Triglav – das Herz der Julischen Alpen", category: "Natur", icon: "🏞️", content: `
+      <p class="tour-text">Ein großer Teil der Region ist mit dem Nationalpark Triglav verbunden – dem einzigen Nationalpark Sloweniens.</p>
+      <div class="tour-highlight">Der Park umfasst 840 km²; höchster Punkt ist der Triglav (2.864 m).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Fläche:</strong> 840 km²</div>
+        <div class="fact-box"><strong>Höchster Gipfel:</strong> Triglav 2.864 m</div>
+        <div class="fact-box"><strong>Typ:</strong> Alpines Schutzgebiet</div>
+        <div class="fact-box"><strong>Tipp:</strong> Regeln beachten</div>
+      </div>`},
+    { id: 3, title: "Sicherheit – Berge ändern sich schnell", category: "Sicherheit", icon: "⚠️", content: `
+      <p class="tour-text">Im Gebirge kann das Wetter rasch umschlagen. Gute Schuhe, Wasser und eine zusätzliche Schicht sind Pflicht.</p>
+      <div class="tour-highlight">Bleib auf markierten Wegen und meide nasse Felsen am Fluss.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Schuhe:</strong> rutschfest</div>
+        <div class="fact-box"><strong>Ausrüstung:</strong> Wasser + Jacke</div>
+        <div class="fact-box"><strong>Route:</strong> markiert</div>
+        <div class="fact-box"><strong>Fluss:</strong> starke Strömung möglich</div>
+      </div>`},
+    { id: 4, title: "Bovec – Tor zur Outdoor-Welt", category: "Orte", icon: "🏔️", content: `
+      <p class="tour-text">Bovec ist ein Zentrum für Erlebnisse: von leichten Spaziergängen bis zu sportlichen Aktivitäten – je nach Saison.</p>
+      <div class="tour-highlight">Wähle Aktivitäten passend zu deiner Erfahrung und prüfe Bedingungen.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Umgebung:</strong> Kanin, Soča</div>
+        <div class="fact-box"><strong>Stil:</strong> Natur + Sport</div>
+        <div class="fact-box"><strong>Saison:</strong> ganzjährig</div>
+        <div class="fact-box"><strong>Tipp:</strong> nach Wetter planen</div>
+      </div>`},
+    { id: 5, title: "Boka-Wasserfall – einer der beeindruckendsten Sloweniens", category: "Natur", icon: "💧", content: `
+      <p class="tour-text">Der Boka gilt als der wasserreichste und mächtigste Wasserfall Sloweniens.</p>
+      <div class="tour-highlight">Gesamthöhe 144 m, Breite ca. 18 m; Fallstufen ~106 m und ~30 m.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Höhe:</strong> 144 m</div>
+        <div class="fact-box"><strong>Breite:</strong> ~18 m</div>
+        <div class="fact-box"><strong>Stufen:</strong> ~106 m + ~30 m</div>
+        <div class="fact-box"><strong>Zugang:</strong> Aussicht / Fußweg</div>
+      </div>`},
+    { id: 6, title: "Kobarid – die Geschichte der Isonzo-Front", category: "Geschichte", icon: "🪖", content: `
+      <p class="tour-text">Kobarid ist zentral, um die Isonzo-Front und die Spuren des Ersten Weltkriegs in dieser Landschaft zu verstehen.</p>
+      <div class="tour-highlight">Das Museum in Kobarid verbindet die Geschichten mit Orten, die du draußen siehst.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Ort:</strong> Kobarid</div>
+        <div class="fact-box"><strong>Thema:</strong> Isonzo-Front</div>
+        <div class="fact-box"><strong>Typ:</strong> Museum + Wege</div>
+        <div class="fact-box"><strong>Tipp:</strong> drinnen + draußen kombinieren</div>
+      </div>`},
+    { id: 7, title: "Schluchten & Brücken – Kraft des Flusses", category: "Landschaft", icon: "🌉", content: `
+      <p class="tour-text">An einigen Stellen verengt sich der Fluss zu Schluchten – dramatische Ausblicke inklusive.</p>
+      <div class="tour-highlight">Auf Wegen bleiben: nasse Felsen am Wasser sind gefährlich.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Ideal für:</strong> Aussicht + Fotos</div>
+        <div class="fact-box"><strong>Risiko:</strong> Ausrutschen</div>
+        <div class="fact-box"><strong>Regel:</strong> auf dem Weg bleiben</div>
+        <div class="fact-box"><strong>Tipp:</strong> früh kommen</div>
+      </div>`},
+    { id: 8, title: "Tolmin – Natur trifft Alltag", category: "Orte", icon: "🏘️", content: `
+      <p class="tour-text">Tolmin verbindet Täler und lokales Leben – guter Ausgangspunkt für Schluchten und Wanderungen.</p>
+      <div class="tour-highlight">Für einen ruhigen Aufenthalt ist Tolmin oft ideal als Basis.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Typ:</strong> Ausgangspunkt</div>
+        <div class="fact-box"><strong>Atmosphäre:</strong> ruhiger</div>
+        <div class="fact-box"><strong>Gut für:</strong> Familien</div>
+        <div class="fact-box"><strong>Tipp:</strong> Natur + regionale Küche</div>
+      </div>`},
+    { id: 9, title: "Tolminc – EU PDO (geschützte Ursprungsbezeichnung)", category: "Kulinarik", icon: "🧀", content: `
+      <p class="tour-text">Tolminc ist im EU-System geografischer Angaben als PDO registriert.</p>
+      <div class="tour-highlight">PDO bedeutet: Herkunft und Herstellung sind an Region und Regeln gebunden.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Status:</strong> EU PDO</div>
+        <div class="fact-box"><strong>Produkt:</strong> Milchprodukt</div>
+        <div class="fact-box"><strong>Wert:</strong> Authentizität</div>
+        <div class="fact-box"><strong>Tipp:</strong> lokal probieren</div>
+      </div>`},
+    { id: 10, title: "Nachhaltig reisen – guter Gast sein", category: "Ökologie", icon: "♻️", content: `
+      <p class="tour-text">Die Region bleibt schön, wenn wir respektvoll reisen: kein Müll, keine Abkürzungen, keine Störung der Tiere.</p>
+      <div class="tour-highlight">Drei Regeln: Müll mitnehmen, auf Wegen bleiben, Tiere nicht füttern.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Müll:</strong> mitnehmen</div>
+        <div class="fact-box"><strong>Wege:</strong> keine Abkürzungen</div>
+        <div class="fact-box"><strong>Wasser:</strong> sauber halten</div>
+        <div class="fact-box"><strong>Tiere:</strong> nicht stören</div>
+      </div>`},
+    { id: 11, title: "Tagesplan – 3 einfache Stopps", category: "Praktisch", icon: "🗺️", content: `
+      <p class="tour-text">Vorschlag: (1) Fluss-Aussichtspunkt, (2) kurzer Weg zu Wasserfall/Schlucht, (3) regionales Abendessen.</p>
+      <div class="tour-highlight">Das beste Erlebnis ist sicher und ohne Stress.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>1:</strong> Aussicht</div>
+        <div class="fact-box"><strong>2:</strong> Wasserfall/Schlucht</div>
+        <div class="fact-box"><strong>3:</strong> regionale Küche</div>
+        <div class="fact-box"><strong>Bonus:</strong> Museum bei Regen</div>
+      </div>`},
+    { id: 12, title: "Abschluss – Erinnerungen mitnehmen, keine Spuren lassen", category: "Abschluss", icon: "✨", content: `
+      <p class="tour-text">Das Soča-Tal vereint Natur, Kultur und Geschichte. Genieße es ruhig und respektvoll.</p>
+      <div class="tour-highlight">Website-Idee: LIVE-Infoleiste für Wetter, Wasserstand und Wegsperren.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Schlüssel:</strong> Planung + Prognose</div>
+        <div class="fact-box"><strong>Sicherheit:</strong> zuerst</div>
+        <div class="fact-box"><strong>Respekt:</strong> Natur & Menschen</div>
+        <div class="fact-box"><strong>Ziel:</strong> kein Schaden</div>
+      </div>`},
+  ],
+
+  pl: [
+    { id: 1, title: "Dolina Sočy – szmaragdowa rzeka", category: "Wstęp", icon: "🌊", content: `
+      <p class="tour-text">Witamy w Dolinie Sočy – alpejskim krajobrazie czystej wody, stromych gór i niezwykłych widoków.</p>
+      <div class="tour-highlight">Soča ma źródło w Trencie, ma ok. 138 km i uchodzi do Zatoki Trieste (Adriatyk).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Źródło:</strong> Trenta</div>
+        <div class="fact-box"><strong>Długość:</strong> ~138 km</div>
+        <div class="fact-box"><strong>Ujście:</strong> Zatoka Trieste</div>
+        <div class="fact-box"><strong>Region:</strong> Górna Soča</div>
+      </div>`},
+    { id: 2, title: "Park Narodowy Triglav – serce Alp Julijskich", category: "Natura", icon: "🏞️", content: `
+      <p class="tour-text">Duża część regionu jest związana z Parkiem Narodowym Triglav – jedynym parkiem narodowym Słowenii.</p>
+      <div class="tour-highlight">Park ma 840 km², a najwyższy szczyt to Triglav (2 864 m).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Powierzchnia:</strong> 840 km²</div>
+        <div class="fact-box"><strong>Najwyższy szczyt:</strong> Triglav 2 864 m</div>
+        <div class="fact-box"><strong>Typ:</strong> obszar chroniony</div>
+        <div class="fact-box"><strong>Wskazówka:</strong> przestrzegaj zasad</div>
+      </div>`},
+    { id: 3, title: "Bezpieczeństwo – góry zmieniają się szybko", category: "Bezpieczeństwo", icon: "⚠️", content: `
+      <p class="tour-text">W Alpach pogoda potrafi zmienić się w kilka minut. Dobre buty, woda i dodatkowa warstwa są obowiązkowe.</p>
+      <div class="tour-highlight">Zostań na oznakowanych szlakach i unikaj mokrych skał przy rzece.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Buty:</strong> antypoślizgowe</div>
+        <div class="fact-box"><strong>Sprzęt:</strong> woda + kurtka</div>
+        <div class="fact-box"><strong>Szlak:</strong> oznakowany</div>
+        <div class="fact-box"><strong>Rzeka:</strong> bywa silna</div>
+      </div>`},
+    { id: 4, title: "Bovec – baza przygody", category: "Miejsca", icon: "🏔️", content: `
+      <p class="tour-text">Bovec to centrum aktywności: od spacerów po sporty przygodowe – zależnie od sezonu i warunków.</p>
+      <div class="tour-highlight">Wybierz aktywność zgodnie z doświadczeniem i sprawdź warunki.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Okolica:</strong> Kanin, Soča</div>
+        <div class="fact-box"><strong>Styl:</strong> natura + sport</div>
+        <div class="fact-box"><strong>Sezon:</strong> cały rok</div>
+        <div class="fact-box"><strong>Tip:</strong> planuj wg pogody</div>
+      </div>`},
+    { id: 5, title: "Wodospad Boka – jeden z najbardziej imponujących", category: "Atrakcje", icon: "💧", content: `
+      <p class="tour-text">Boka jest opisywana jako najbardziej wodny i potężny wodospad w Słowenii.</p>
+      <div class="tour-highlight">Wysokość 144 m, szerokość ok. 18 m; spadki ~106 m i ~30 m.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Wysokość:</strong> 144 m</div>
+        <div class="fact-box"><strong>Szerokość:</strong> ~18 m</div>
+        <div class="fact-box"><strong>Spadki:</strong> ~106 m + ~30 m</div>
+        <div class="fact-box"><strong>Dostęp:</strong> punkt widokowy / pieszo</div>
+      </div>`},
+    { id: 6, title: "Kobarid – historia Frontu Isonzo", category: "Historia", icon: "🪖", content: `
+      <p class="tour-text">Kobarid pomaga zrozumieć Front Isonzo i ślady I wojny światowej w górach.</p>
+      <div class="tour-highlight">Muzeum w Kobaridzie łączy opowieści z miejscami, które zobaczysz na zewnątrz.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Miasto:</strong> Kobarid</div>
+        <div class="fact-box"><strong>Temat:</strong> Front Isonzo</div>
+        <div class="fact-box"><strong>Typ:</strong> muzeum + szlaki</div>
+        <div class="fact-box"><strong>Tip:</strong> w deszczu idealne</div>
+      </div>`},
+    { id: 7, title: "Wąwozy i mosty – siła rzeki", category: "Krajobraz", icon: "🌉", content: `
+      <p class="tour-text">W kilku miejscach rzeka zwęża się w wąwozach – widoki są spektakularne.</p>
+      <div class="tour-highlight">Trzymaj się ścieżek: mokre skały przy wodzie są niebezpieczne.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Najlepsze dla:</strong> zdjęć</div>
+        <div class="fact-box"><strong>Ryzyko:</strong> poślizg</div>
+        <div class="fact-box"><strong>Zasada:</strong> zostań na trasie</div>
+        <div class="fact-box"><strong>Tip:</strong> przyjdź wcześnie</div>
+      </div>`},
+    { id: 8, title: "Tolmin – natura i lokalne życie", category: "Miejsca", icon: "🏘️", content: `
+      <p class="tour-text">Tolmin to dobre miejsce wypadowe do wąwozów i spokojniejszych tras.</p>
+      <div class="tour-highlight">Świetna baza dla rodzin i osób, które wolą spokojne tempo.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Typ:</strong> baza</div>
+        <div class="fact-box"><strong>Tempo:</strong> spokojniejsze</div>
+        <div class="fact-box"><strong>Dla:</strong> rodzin</div>
+        <div class="fact-box"><strong>Tip:</strong> natura + jedzenie</div>
+      </div>`},
+    { id: 9, title: "Tolminc – PDO (Chroniona Nazwa Pochodzenia)", category: "Kuchnia", icon: "🧀", content: `
+      <p class="tour-text">Tolminc jest zarejestrowany w UE jako PDO.</p>
+      <div class="tour-highlight">PDO oznacza, że pochodzenie i produkcja są związane z regionem i zasadami.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Status:</strong> UE PDO</div>
+        <div class="fact-box"><strong>Typ:</strong> nabiał</div>
+        <div class="fact-box"><strong>Wartość:</strong> autentyczność</div>
+        <div class="fact-box"><strong>Dla gości:</strong> spróbuj lokalnie</div>
+      </div>`},
+    { id: 10, title: "Zrównoważenie – bądź dobrym gościem", category: "Ekologia", icon: "♻️", content: `
+      <p class="tour-text">Dolina pozostaje piękna, gdy odwiedzamy ją z szacunkiem: bez śmieci, bez skrótów, bez płoszenia zwierząt.</p>
+      <div class="tour-highlight">3 zasady: zabierz śmieci, trzymaj się szlaków, nie karm zwierząt.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Śmieci:</strong> zabierz ze sobą</div>
+        <div class="fact-box"><strong>Szlaki:</strong> bez skrótów</div>
+        <div class="fact-box"><strong>Woda:</strong> nie zanieczyszczaj</div>
+        <div class="fact-box"><strong>Zwierzęta:</strong> nie przeszkadzaj</div>
+      </div>`},
+    { id: 11, title: "Plan na 1 dzień – 3 przystanki", category: "Praktycznie", icon: "🗺️", content: `
+      <p class="tour-text">Propozycja: (1) punkt widokowy nad rzeką, (2) krótki spacer do wodospadu/wąwozu, (3) lokalna kolacja.</p>
+      <div class="tour-highlight">Najlepsze wrażenia są bezpieczne i bez stresu.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>1:</strong> widok</div>
+        <div class="fact-box"><strong>2:</strong> wodospad/wąwóz</div>
+        <div class="fact-box"><strong>3:</strong> kuchnia lokalna</div>
+        <div class="fact-box"><strong>Bonus:</strong> muzeum przy deszczu</div>
+      </div>`},
+    { id: 12, title: "Podsumowanie – zabierz wspomnienia, nie zostawiaj śladu", category: "Koniec", icon: "✨", content: `
+      <p class="tour-text">Dolina Sočy łączy naturę, kulturę i historię. Odkrywaj spokojnie i z szacunkiem.</p>
+      <div class="tour-highlight">Wskazówka: dodaj LIVE alerty o pogodzie i warunkach.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Klucz:</strong> plan + prognoza</div>
+        <div class="fact-box"><strong>Bezpieczeństwo:</strong> najpierw</div>
+        <div class="fact-box"><strong>Szacunek:</strong> natura i ludzie</div>
+        <div class="fact-box"><strong>Cel:</strong> bez szkód</div>
+      </div>`},
+  ],
+
+  cs: [
+    { id: 1, title: "Údolí Soči – smaragdová řeka", category: "Úvod", icon: "🌊", content: `
+      <p class="tour-text">Vítejte v údolí Soči – alpské krajině čisté vody, strmých hor a skvělých výhledů.</p>
+      <div class="tour-highlight">Soča pramení v Trentě, měří asi 138 km a ústí do Terstského zálivu (Jadran).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Pramen:</strong> Trenta</div>
+        <div class="fact-box"><strong>Délka:</strong> ~138 km</div>
+        <div class="fact-box"><strong>Ústí:</strong> Terstský záliv</div>
+        <div class="fact-box"><strong>Oblast:</strong> Horní Soča</div>
+      </div>`},
+    { id: 2, title: "Národní park Triglav – srdce Julských Alp", category: "Příroda", icon: "🏞️", content: `
+      <p class="tour-text">Velká část regionu souvisí s Národním parkem Triglav – jediným národním parkem ve Slovinsku.</p>
+      <div class="tour-highlight">Park má 840 km² a nejvyšší bod je Triglav (2 864 m).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Plocha:</strong> 840 km²</div>
+        <div class="fact-box"><strong>Nejvyšší vrchol:</strong> Triglav 2 864 m</div>
+        <div class="fact-box"><strong>Typ:</strong> chráněné území</div>
+        <div class="fact-box"><strong>Tip:</strong> respektuj pravidla</div>
+      </div>`},
+    { id: 3, title: "Bezpečnost – v horách se vše mění rychle", category: "Bezpečnost", icon: "⚠️", content: `
+      <p class="tour-text">Počasí se v Alpách může rychle změnit. Vezmi si vodu, vhodné boty a vrstvu navíc.</p>
+      <div class="tour-highlight">Drž se značených cest a vyhýbej se mokrým skalám u řeky.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Boty:</strong> protiskluzové</div>
+        <div class="fact-box"><strong>Výbava:</strong> voda + bunda</div>
+        <div class="fact-box"><strong>Trasa:</strong> značená</div>
+        <div class="fact-box"><strong>Řeka:</strong> proud může být silný</div>
+      </div>`},
+    { id: 4, title: "Bovec – brána k zážitkům", category: "Místa", icon: "🏔️", content: `
+      <p class="tour-text">Bovec je centrum aktivit: od klidných procházek po adrenalínové zážitky (dle sezóny a podmínek).</p>
+      <div class="tour-highlight">Vyber si aktivitu podle zkušeností a ověř podmínky.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Okolí:</strong> Kanin, Soča</div>
+        <div class="fact-box"><strong>Styl:</strong> příroda + sport</div>
+        <div class="fact-box"><strong>Sezóna:</strong> celoročně</div>
+        <div class="fact-box"><strong>Tip:</strong> plánuj dle počasí</div>
+      </div>`},
+    { id: 5, title: "Vodopád Boka – mimořádná přírodní atrakce", category: "Příroda", icon: "💧", content: `
+      <p class="tour-text">Boka je popisována jako nejvodnatější a nejmohutnější vodopád ve Slovinsku.</p>
+      <div class="tour-highlight">Celková výška 144 m, šířka asi 18 m; pády ~106 m a ~30 m.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Výška:</strong> 144 m</div>
+        <div class="fact-box"><strong>Šířka:</strong> ~18 m</div>
+        <div class="fact-box"><strong>Pády:</strong> ~106 m + ~30 m</div>
+        <div class="fact-box"><strong>Přístup:</strong> vyhlídka / pěšky</div>
+      </div>`},
+    { id: 6, title: "Kobarid – příběh Isonzské fronty", category: "Historie", icon: "🪖", content: `
+      <p class="tour-text">Kobarid je klíčový pro pochopení Isonzské fronty a stop první světové války v horách.</p>
+      <div class="tour-highlight">Muzeum v Kobaridu propojí příběhy s místy, která uvidíš venku.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Město:</strong> Kobarid</div>
+        <div class="fact-box"><strong>Téma:</strong> Isonzská fronta</div>
+        <div class="fact-box"><strong>Typ:</strong> muzeum + stezky</div>
+        <div class="fact-box"><strong>Tip:</strong> ideální za deště</div>
+      </div>`},
+    { id: 7, title: "Soutěsky a mosty – síla řeky", category: "Krajina", icon: "🌉", content: `
+      <p class="tour-text">Řeka se místy zužuje do soutěsek a vytváří dramatické scenérie.</p>
+      <div class="tour-highlight">Drž se cest: mokré skály u vody jsou nebezpečné.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Nejlepší pro:</strong> fotky</div>
+        <div class="fact-box"><strong>Riziko:</strong> uklouznutí</div>
+        <div class="fact-box"><strong>Pravidlo:</strong> zůstaň na stezce</div>
+        <div class="fact-box"><strong>Tip:</strong> přijď brzy</div>
+      </div>`},
+    { id: 8, title: "Tolmin – příroda a místní život", category: "Místa", icon: "🏘️", content: `
+      <p class="tour-text">Tolmin je dobrá základna pro klidnější objevování soutěsek a okolních tras.</p>
+      <div class="tour-highlight">Skvělé pro rodiny a pohodové tempo.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Typ:</strong> základna</div>
+        <div class="fact-box"><strong>Tempo:</strong> klidnější</div>
+        <div class="fact-box"><strong>Pro:</strong> rodiny</div>
+        <div class="fact-box"><strong>Tip:</strong> příroda + jídlo</div>
+      </div>`},
+    { id: 9, title: "Tolminc – PDO (chráněné označení původu)", category: "Gastronomie", icon: "🧀", content: `
+      <p class="tour-text">Tolminc je zapsán v EU jako PDO.</p>
+      <div class="tour-highlight">PDO znamená, že původ a výroba jsou vázány na region a pravidla.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Status:</strong> EU PDO</div>
+        <div class="fact-box"><strong>Typ:</strong> mléčný výrobek</div>
+        <div class="fact-box"><strong>Hodnota:</strong> autenticita</div>
+        <div class="fact-box"><strong>Tip:</strong> ochutnej místně</div>
+      </div>`},
+    { id: 10, title: "Udržitelnost – buď dobrý host", category: "Ekologie", icon: "♻️", content: `
+      <p class="tour-text">Údolí zůstane krásné, když se chováme ohleduplně: žádný odpad, žádné zkratky, nerušit zvířata.</p>
+      <div class="tour-highlight">3 pravidla: odpad odnes, drž se cest, nekrm zvířata.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Odpad:</strong> odnes s sebou</div>
+        <div class="fact-box"><strong>Stezky:</strong> bez zkratek</div>
+        <div class="fact-box"><strong>Voda:</strong> nešpinit</div>
+        <div class="fact-box"><strong>Zvířata:</strong> nerušit</div>
+      </div>`},
+    { id: 11, title: "Plán na 1 den – 3 zastávky", category: "Prakticky", icon: "🗺️", content: `
+      <p class="tour-text">Návrh: (1) vyhlídka u řeky, (2) krátká túra k vodopádu/soutěsce, (3) místní večeře.</p>
+      <div class="tour-highlight">Nejlepší zážitek je bezpečný a bez stresu.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>1:</strong> vyhlídka</div>
+        <div class="fact-box"><strong>2:</strong> vodopád/soutěska</div>
+        <div class="fact-box"><strong>3:</strong> místní jídlo</div>
+        <div class="fact-box"><strong>Bonus:</strong> muzeum za deště</div>
+      </div>`},
+    { id: 12, title: "Závěr – vezmi si vzpomínky, nezanechávej stopy", category: "Závěr", icon: "✨", content: `
+      <p class="tour-text">Údolí Soči spojuje přírodu, kulturu i historii. Objevuj ho v klidu a s respektem.</p>
+      <div class="tour-highlight">Tip: LIVE upozornění na počasí a podmínky výrazně zlepší průvodce.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Klíč:</strong> plán + předpověď</div>
+        <div class="fact-box"><strong>Bezpečnost:</strong> vždy první</div>
+        <div class="fact-box"><strong>Respekt:</strong> příroda i lidé</div>
+        <div class="fact-box"><strong>Cíl:</strong> bez škod</div>
+      </div>`},
+  ],
+
+  it: [
+    { id: 1, title: "Valle dell'Isonzo (Soča) – il fiume smeraldo", category: "Introduzione", icon: "🌊", content: `
+      <p class="tour-text">Benvenuti nella Valle dell'Isonzo (Soča): paesaggi alpini, acqua limpida e panorami indimenticabili.</p>
+      <div class="tour-highlight">La Soča nasce a Trenta, è lunga circa 138 km e sfocia nel Golfo di Trieste (Adriatico).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Sorgente:</strong> Trenta</div>
+        <div class="fact-box"><strong>Lunghezza:</strong> ~138 km</div>
+        <div class="fact-box"><strong>Foce:</strong> Golfo di Trieste</div>
+        <div class="fact-box"><strong>Area:</strong> Alto Isonzo</div>
+      </div>`},
+    { id: 2, title: "Parco Nazionale del Triglav – cuore delle Alpi Giulie", category: "Natura", icon: "🏞️", content: `
+      <p class="tour-text">Gran parte dell'area è legata al Parco Nazionale del Triglav, l'unico parco nazionale della Slovenia.</p>
+      <div class="tour-highlight">Il parco copre 840 km²; la vetta più alta è il Triglav (2.864 m).</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Superficie:</strong> 840 km²</div>
+        <div class="fact-box"><strong>Vetta:</strong> Triglav 2.864 m</div>
+        <div class="fact-box"><strong>Tipo:</strong> area protetta alpina</div>
+        <div class="fact-box"><strong>Consiglio:</strong> rispetta le regole</div>
+      </div>`},
+    { id: 3, title: "Sicurezza – in montagna cambia tutto velocemente", category: "Sicurezza", icon: "⚠️", content: `
+      <p class="tour-text">Nelle Alpi il meteo può cambiare in fretta. Scarpe adeguate, acqua e uno strato in più sono essenziali.</p>
+      <div class="tour-highlight">Rimani sui sentieri segnalati ed evita rocce bagnate vicino al fiume.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Scarpe:</strong> antiscivolo</div>
+        <div class="fact-box"><strong>Dotazione:</strong> acqua + giacca</div>
+        <div class="fact-box"><strong>Percorso:</strong> segnalato</div>
+        <div class="fact-box"><strong>Fiume:</strong> corrente forte possibile</div>
+      </div>`},
+    { id: 4, title: "Bovec – porta d'ingresso all'avventura", category: "Luoghi", icon: "🏔️", content: `
+      <p class="tour-text">Bovec è un centro per attività all'aperto: passeggiate panoramiche o esperienze più sportive (in base alla stagione).</p>
+      <div class="tour-highlight">Scegli attività adatte al tuo livello e controlla sempre le condizioni.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Vicino:</strong> Kanin, Soča</div>
+        <div class="fact-box"><strong>Stile:</strong> natura + sport</div>
+        <div class="fact-box"><strong>Stagione:</strong> tutto l'anno</div>
+        <div class="fact-box"><strong>Tip:</strong> pianifica col meteo</div>
+      </div>`},
+    { id: 5, title: "Cascata Boka – tra le più spettacolari", category: "Natura", icon: "💧", content: `
+      <p class="tour-text">La Boka è descritta come la cascata più ricca d'acqua e potente della Slovenia.</p>
+      <div class="tour-highlight">Altezza totale 144 m, larghezza circa 18 m; salti ~106 m e ~30 m.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Altezza:</strong> 144 m</div>
+        <div class="fact-box"><strong>Larghezza:</strong> ~18 m</div>
+        <div class="fact-box"><strong>Salti:</strong> ~106 m + ~30 m</div>
+        <div class="fact-box"><strong>Accesso:</strong> belvedere / a piedi</div>
+      </div>`},
+    { id: 6, title: "Kobarid – la storia del fronte dell'Isonzo", category: "Storia", icon: "🪖", content: `
+      <p class="tour-text">Kobarid è fondamentale per comprendere il fronte dell'Isonzo e le tracce della Prima guerra mondiale.</p>
+      <div class="tour-highlight">Il museo di Kobarid collega la storia ai luoghi reali che puoi visitare.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Città:</strong> Kobarid</div>
+        <div class="fact-box"><strong>Tema:</strong> fronte dell'Isonzo</div>
+        <div class="fact-box"><strong>Tipo:</strong> museo + sentieri</div>
+        <div class="fact-box"><strong>Tip:</strong> perfetto con pioggia</div>
+      </div>`},
+    { id: 7, title: "Gole e ponti – la forza del fiume", category: "Paesaggio", icon: "🌉", content: `
+      <p class="tour-text">In alcuni tratti il fiume si stringe in gole spettacolari, con viste mozzafiato.</p>
+      <div class="tour-highlight">Resta sui sentieri: le rocce bagnate vicino all'acqua sono pericolose.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Ideale per:</strong> foto</div>
+        <div class="fact-box"><strong>Rischio:</strong> scivolare</div>
+        <div class="fact-box"><strong>Regola:</strong> resta sul percorso</div>
+        <div class="fact-box"><strong>Tip:</strong> vai presto</div>
+      </div>`},
+    { id: 8, title: "Tolmin – natura e vita locale", category: "Luoghi", icon: "🏘️", content: `
+      <p class="tour-text">Tolmin è una buona base per esplorazioni più tranquille: gole, sentieri e paesaggi.</p>
+      <div class="tour-highlight">Ottimo per famiglie e per chi preferisce un ritmo calmo.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Tipo:</strong> base</div>
+        <div class="fact-box"><strong>Ritmo:</strong> più calmo</div>
+        <div class="fact-box"><strong>Per:</strong> famiglie</div>
+        <div class="fact-box"><strong>Tip:</strong> natura + cibo locale</div>
+      </div>`},
+    { id: 9, title: "Tolminc – PDO (Denominazione di Origine Protetta)", category: "Gastronomia", icon: "🧀", content: `
+      <p class="tour-text">Tolminc è registrato nell'UE come PDO.</p>
+      <div class="tour-highlight">PDO: origine e produzione sono legate a un'area specifica e a regole definite.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Status:</strong> UE PDO</div>
+        <div class="fact-box"><strong>Tipo:</strong> latticino</div>
+        <div class="fact-box"><strong>Valore:</strong> autenticità</div>
+        <div class="fact-box"><strong>Per ospiti:</strong> assaggia in zona</div>
+      </div>`},
+    { id: 10, title: "Sostenibilità – essere un buon ospite", category: "Ecologia", icon: "♻️", content: `
+      <p class="tour-text">La valle resta bellissima se la visitiamo con rispetto: niente rifiuti, niente scorciatoie, niente disturbo alla fauna.</p>
+      <div class="tour-highlight">3 regole: porta via i rifiuti, resta sui sentieri, non nutrire gli animali.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Rifiuti:</strong> porta via</div>
+        <div class="fact-box"><strong>Sentieri:</strong> niente scorciatoie</div>
+        <div class="fact-box"><strong>Acqua:</strong> non inquinare</div>
+        <div class="fact-box"><strong>Fauna:</strong> non disturbare</div>
+      </div>`},
+    { id: 11, title: "Itinerario 1 giorno – 3 tappe semplici", category: "Pratico", icon: "🗺️", content: `
+      <p class="tour-text">Suggerimento: (1) belvedere sul fiume, (2) breve camminata a cascata/gola, (3) cena locale.</p>
+      <div class="tour-highlight">L'esperienza migliore è sempre sicura e senza stress.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>1:</strong> vista</div>
+        <div class="fact-box"><strong>2:</strong> cascata/gola</div>
+        <div class="fact-box"><strong>3:</strong> cucina locale</div>
+        <div class="fact-box"><strong>Bonus:</strong> museo con pioggia</div>
+      </div>`},
+    { id: 12, title: "Conclusione – porta via ricordi, lascia zero tracce", category: "Finale", icon: "✨", content: `
+      <p class="tour-text">La valle unisce natura, cultura e storia. Vivila con calma e rispetto: resterà magica per tutti.</p>
+      <div class="tour-highlight">Idea sito: barra LIVE con meteo, condizioni del fiume e chiusure sentieri.</div>
+      <div class="tour-facts">
+        <div class="fact-box"><strong>Chiave:</strong> piano + meteo</div>
+        <div class="fact-box"><strong>Sicurezza:</strong> prima di tutto</div>
+        <div class="fact-box"><strong>Rispetto:</strong> natura e locali</div>
+        <div class="fact-box"><strong>Obiettivo:</strong> nessun danno</div>
+      </div>`},
+  ],
+};
+
+let currentSlide = 0;
+
+function switchScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goHome() {
+  try { window.parent.postMessage('CLOSE_MODAL', '*'); } catch (e) {}
+}
+
+function startTour() {
+  currentSlide = 0;
+  switchScreen('tourScreen');
+  updateSlide();
+}
+
+function updateSlide() {
+  const lang = getSelectedLang();
+  const L = labelsByLang[lang] || labelsByLang.en;
+  const data = tourDataByLang[lang] || tourDataByLang.en;
+
+  const slide = data[currentSlide];
+
+  document.getElementById('tourStep').textContent = L.step(currentSlide + 1, data.length);
+  document.getElementById('tourTitle').textContent = slide.title;
+  document.getElementById('tourCategory').textContent = slide.category;
+  document.getElementById('tourContent').innerHTML = slide.content;
+  document.getElementById('tourIcon').textContent = slide.icon;
+  document.getElementById('navText').textContent = `${currentSlide + 1} / ${data.length}`;
+
+  const progress = ((currentSlide + 1) / data.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  prevBtn.disabled = currentSlide === 0;
+  nextBtn.disabled = currentSlide === data.length - 1;
+
+  prevBtn.textContent = L.prev;
+  nextBtn.textContent = (currentSlide === data.length - 1) ? L.finish : L.next;
+
+  const info = document.querySelector('.tour-info');
+  if (info) { info.scrollTop = 0; info.focus?.(); }
+}
+
+function nextSlide() {
+  const lang = getSelectedLang();
+  const L = labelsByLang[lang] || labelsByLang.en;
+  const data = tourDataByLang[lang] || tourDataByLang.en;
+
+  if (currentSlide < data.length - 1) {
+    currentSlide++;
+    updateSlide();
+  } else {
+    const t = document.getElementById('endTitle');
+    const p = document.getElementById('endText');
+    const r = document.getElementById('endReplayBtn');
+    const h = document.getElementById('endHomeBtn');
+
+    if (t) t.textContent = L.endTitle;
+    if (p) p.textContent = L.endText;
+    if (r) r.textContent = L.replay;
+    if (h) h.textContent = L.home;
+
+    switchScreen('endScreen');
+  }
+}
+
+function previousSlide() {
+  if (currentSlide > 0) {
+    currentSlide--;
+    updateSlide();
+  }
+}
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'preferredLanguage' || e.key === 'lang' || e.key === 'selectedLang') {
+    if (document.getElementById('tourScreen').classList.contains('active')) updateSlide();
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+.vt-modal{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.68);
+  opacity:0; pointer-events:none;
+  visibility:hidden;
+  transition:opacity .22s ease;
+  z-index:9999;
+}
+.vt-modal.open{ opacity:1; pointer-events:auto; visibility:visible; }
+.vt-overlay{ position:absolute; inset:0; }
+.vt-sheet{
+  position:absolute; inset:0;
+  background:#0b0f14;
+  overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.vt-topbar{
+  height:56px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 12px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  background:rgba(10,15,20,.86);
+  backdrop-filter: blur(10px);
+}
+.vt-badge{
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.76);
+}
+.vt-close{
+  width:40px; height:40px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+  color:rgba(255,255,255,.88);
+  cursor:pointer;
+}
+.vt-close:active{ transform: scale(.98); }
+.vt-iframe{
+  width:100%;
+  height:calc(100vh - 56px);
+  border:0;
+  background:#0a0a0a;
+}

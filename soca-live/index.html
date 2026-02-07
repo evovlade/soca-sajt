@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soča Live</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#0b0f14] text-gray-100">
+
+  <div class="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <button id="backBtn" class="px-3 py-2 rounded-xl border border-white/15 bg-white/5"></button>
+      <div class="text-center">
+        <div class="font-semibold" id="pageTitle">Soča Live</div>
+        <div id="updated" class="text-xs text-gray-400"></div>
+      </div>
+      <div class="text-xs px-2 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-300">DEMO</div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 pb-3 overflow-x-auto">
+      <div id="chips" class="flex gap-2 whitespace-nowrap">
+        <button class="chip px-3 py-2 rounded-full border border-white/10 bg-white/5" data-filter="all"></button>
+        <button class="chip px-3 py-2 rounded-full border border-white/10 bg-white/5" data-filter="bovec">Bovec/Čezsoča</button>
+        <button class="chip px-3 py-2 rounded-full border border-white/10 bg-white/5" data-filter="kobarid">Kobarid</button>
+        <button class="chip px-3 py-2 rounded-full border border-white/10 bg-white/5" data-filter="tolmin">Tolmin</button>
+        <button class="chip px-3 py-2 rounded-full border border-white/10 bg-white/5" data-filter="zaga">Žaga</button>
+        <button class="chip px-3 py-2 rounded-full border border-white/10 bg-white/5" data-filter="koritnica">Koritnica</button>
+        <button class="chip px-3 py-2 rounded-full border border-white/10 bg-white/5" data-filter="municipal"></button>
+      </div>
+    </div>
+  </div>
+
+  <main class="max-w-4xl mx-auto px-4 py-5 space-y-4">
+    <section id="stations"></section>
+    <section id="municipal" class="space-y-3">
+      <h2 class="text-lg font-semibold" id="municipalTitle"></h2>
+      <div id="municipalList" class="space-y-3"></div>
+    </section>
+  </main>
+
+<script>
+  var SUPPORTED_LANGS = ['sl','en','de','pl','cs','it'];
+  function getSelectedLang(){
+    var raw = (localStorage.getItem('preferredLanguage') || localStorage.getItem('lang') || 'en').toLowerCase();
+    return SUPPORTED_LANGS.indexOf(raw) >= 0 ? raw : 'en';
+  }
+  var labelsByLang = {
+    sl: { back: '← Nazad', title: 'Soča Live', updated: 'Osveženo', all: 'Vse', municipal: '🏛️ Občine', municipalHeading: '🏛️ Obvestila občin', level: 'vodostaj', flow: 'protok', temp: 'temp.', details: 'Detalji (zadnja merenja)', trend_up: 'up', trend_down: 'down', trend_stable: 'stabilno', demo_arso: 'DEMO (kasnije ARSO)' },
+    en: { back: '← Back', title: 'Soča Live', updated: 'Updated', all: 'All', municipal: '🏛️ Municipal', municipalHeading: '🏛️ Municipal notices', level: 'level', flow: 'flow', temp: 'temp.', details: 'Details (last measurements)', trend_up: 'up', trend_down: 'down', trend_stable: 'stable', demo_arso: 'DEMO (ARSO later)' },
+    de: { back: '← Zurück', title: 'Soča Live', updated: 'Aktualisiert', all: 'Alle', municipal: '🏛️ Gemeinden', municipalHeading: '🏛️ Gemeindenachrichten', level: 'Pegel', flow: 'Abfluss', temp: 'Temp.', details: 'Details (letzte Messungen)', trend_up: 'auf', trend_down: 'ab', trend_stable: 'stabil', demo_arso: 'DEMO (später ARSO)' },
+    pl: { back: '← Wstecz', title: 'Soča Live', updated: 'Zaktualizowano', all: 'Wszystkie', municipal: '🏛️ Gminy', municipalHeading: '🏛️ Komunikaty gmin', level: 'poziom', flow: 'przepływ', temp: 'temp.', details: 'Szczegóły (ostatnie pomiary)', trend_up: 'w górę', trend_down: 'w dół', trend_stable: 'stabilny', demo_arso: 'DEMO (ARSO później)' },
+    cs: { back: '← Zpět', title: 'Soča Live', updated: 'Aktualizováno', all: 'Vše', municipal: '🏛️ Obce', municipalHeading: '🏛️ Oznámení obcí', level: 'stav', flow: 'průtok', temp: 'tepl.', details: 'Detail (poslední měření)', trend_up: 'nahoru', trend_down: 'dolů', trend_stable: 'stabilní', demo_arso: 'DEMO (později ARSO)' },
+    it: { back: '← Indietro', title: 'Soča Live', updated: 'Aggiornato', all: 'Tutti', municipal: '🏛️ Comuni', municipalHeading: '🏛️ Avvisi comunali', level: 'livello', flow: 'portata', temp: 'temp.', details: 'Dettagli (ultime misure)', trend_up: 'su', trend_down: 'giù', trend_stable: 'stabile', demo_arso: 'DEMO (ARSO più tardi)' }
+  };
+  function applyLang(){
+    var lang = getSelectedLang();
+    var t = labelsByLang[lang] || labelsByLang.en;
+    var backBtn = document.getElementById('backBtn');
+    if(backBtn) backBtn.textContent = t.back;
+    var titleEl = document.getElementById('pageTitle');
+    if(titleEl) titleEl.textContent = t.title;
+    var updatedEl = document.getElementById('updated');
+    if(updatedEl) updatedEl.textContent = t.updated + ': --:--';
+    var chips = document.getElementById('chips');
+    if(chips){
+      var allBtn = chips.querySelector('[data-filter="all"]');
+      if(allBtn) allBtn.textContent = t.all;
+      var munBtn = chips.querySelector('[data-filter="municipal"]');
+      if(munBtn) munBtn.textContent = t.municipal;
+    }
+    var municipalTitle = document.getElementById('municipalTitle');
+    if(municipalTitle) municipalTitle.textContent = t.municipalHeading;
+    if(typeof renderStations === 'function') renderStations(currentFilter);
+    if(typeof renderMunicipal === 'function') renderMunicipal(currentFilter === 'all' || currentFilter === 'municipal');
+  }
+  document.getElementById('backBtn').addEventListener('click', function(){ window.parent && window.parent.postMessage('CLOSE_MODAL','*'); });
+  (function(){
+    var startY=0,curY=0,tracking=false;
+    window.addEventListener('touchstart',function(e){ tracking=true; startY=e.touches[0].clientY; curY=startY; }, true);
+    window.addEventListener('touchmove',function(e){ if(!tracking) return; curY=e.touches[0].clientY; }, true);
+    window.addEventListener('touchend',function(){
+      if(!tracking) return; tracking=false;
+      if(curY-startY>120) window.parent && window.parent.postMessage('CLOSE_MODAL','*');
+    });
+  })();
+  var DEMO={updated_at:new Date().toISOString(),stations:[
+    {group:'bovec',name:'Soča – Log Čezsoški',metrics:{level_cm:142,flow_m3s:28.5,temp_c:8.2,trend:'stable'},recent:[{t:new Date().toISOString(),level_cm:142,flow_m3s:28.5},{t:new Date(Date.now()-1800000).toISOString(),level_cm:141,flow_m3s:28.1}]},
+    {group:'kobarid',name:'Soča – Kobarid',metrics:{level_cm:198,flow_m3s:52.3,temp_c:9.1,trend:'up'},recent:[{t:new Date().toISOString(),level_cm:198,flow_m3s:52.3},{t:new Date(Date.now()-1800000).toISOString(),level_cm:195,flow_m3s:50.1}]},
+    {group:'tolmin',name:'Tolminka – Tolmin I',metrics:{level_cm:86,flow_m3s:12.1,temp_c:7.5,trend:'down'},recent:[{t:new Date().toISOString(),level_cm:86,flow_m3s:12.1},{t:new Date(Date.now()-1800000).toISOString(),level_cm:89,flow_m3s:13.2}]},
+    {group:'koritnica',name:'Koritnica – Kal-Koritnica',metrics:{level_cm:52,flow_m3s:4.8,temp_c:6.3,trend:'stable'},recent:[{t:new Date().toISOString(),level_cm:52,flow_m3s:4.8},{t:new Date(Date.now()-1800000).toISOString(),level_cm:51,flow_m3s:4.6}]},
+    {group:'zaga',name:'Učja – Žaga',metrics:{level_cm:68,flow_m3s:8.2,temp_c:7.8,trend:'up'},recent:[{t:new Date().toISOString(),level_cm:68,flow_m3s:8.2},{t:new Date(Date.now()-1800000).toISOString(),level_cm:65,flow_m3s:7.5}]}
+  ],municipal:[
+    {name:'Občina Bovec',items:[{title:'Obvestilo: zapora ceste',date:'2026-02-05'}]},
+    {name:'Občina Kobarid',items:[{title:'Razpis: štipendije',date:'2026-02-04'}]},
+    {name:'Občina Tolmin',items:[{title:'Nova kolesarska steza',date:'2026-02-03'}]}
+  ]};
+  var updated=document.getElementById('updated'),stationsEl=document.getElementById('stations'),municipalEl=document.getElementById('municipal'),municipalList=document.getElementById('municipalList'),chips=document.getElementById('chips');
+  var currentFilter='all';
+  function trendIcon(t){return t==='up'?'↑':t==='down'?'↓':'→';}
+  function trendColor(t){return t==='up'?'text-red-400':t==='down'?'text-emerald-300':'text-amber-300';}
+  function renderStations(filter){
+    if(filter==='municipal'){stationsEl.innerHTML='';return;}
+    var t = labelsByLang[getSelectedLang()] || labelsByLang.en;
+    var list=DEMO.stations.filter(function(s){return filter==='all'?true:s.group===filter;});
+    stationsEl.innerHTML=list.map(function(s){
+      var trendLabel = s.metrics.trend==='up'?t.trend_up:s.metrics.trend==='down'?t.trend_down:t.trend_stable;
+      return '<div class="rounded-2xl border border-white/10 bg-white/5 p-4 mb-3"><div class="flex items-start justify-between gap-3"><div><div class="font-semibold">'+s.name+'</div><div class="text-xs text-emerald-300 opacity-80">'+t.demo_arso+'</div></div><div class="px-2 py-1 rounded-lg border border-white/10 bg-black/20 flex items-center gap-2"><span class="'+trendColor(s.metrics.trend)+' font-bold text-lg">'+trendIcon(s.metrics.trend)+'</span><span class="text-xs text-gray-400">'+trendLabel+'</span></div></div><div class="grid grid-cols-3 gap-2 mt-3"><div class="rounded-xl bg-black/20 border border-white/10 p-3 text-center"><div class="text-2xl font-bold">'+s.metrics.level_cm+'</div><div class="text-xs text-gray-400">cm • '+t.level+'</div></div><div class="rounded-xl bg-black/20 border border-white/10 p-3 text-center"><div class="text-2xl font-bold text-cyan-300">'+s.metrics.flow_m3s+'</div><div class="text-xs text-gray-400">m³/s • '+t.flow+'</div></div><div class="rounded-xl bg-black/20 border border-white/10 p-3 text-center"><div class="text-2xl font-bold text-amber-300">'+s.metrics.temp_c+'</div><div class="text-xs text-gray-400">°C • '+t.temp+'</div></div></div><details class="mt-3"><summary class="cursor-pointer text-sm text-gray-300">'+t.details+'</summary><div class="mt-2 space-y-2">'+s.recent.map(function(r){return '<div class="flex justify-between text-xs text-gray-300 bg-black/20 border border-white/10 rounded-lg px-2 py-2"><span>'+new Date(r.t).toLocaleString()+'</span><span>'+r.level_cm+' cm</span><span>'+r.flow_m3s+' m³/s</span></div>';}).join('')+'</div></details></div>';
+    }).join('');
+  }
+  function renderMunicipal(show){
+    municipalEl.style.display=show?'block':'none';
+    if(!show)return;
+    municipalList.innerHTML=DEMO.municipal.map(function(m){return '<div class="rounded-2xl border border-white/10 bg-white/5 p-4"><div class="font-semibold">'+m.name+'</div><div class="mt-2 space-y-2">'+m.items.slice(0,3).map(function(i){return '<div class="rounded-xl bg-black/20 border border-white/10 p-3"><div class="text-sm">'+i.title+'</div><div class="text-xs text-gray-400 mt-1">'+i.date+'</div></div>';}).join('')+'</div></div>';}).join('');
+  }
+  function setActiveChip(filter){
+    [].slice.call(chips.querySelectorAll('.chip')).forEach(function(b){b.classList.remove('bg-emerald-500/20','border-emerald-500/30');if(b.dataset.filter===filter)b.classList.add('bg-emerald-500/20','border-emerald-500/30');});
+  }
+  chips.addEventListener('click',function(e){var btn=e.target.closest('.chip');if(!btn)return;currentFilter=btn.dataset.filter;setActiveChip(currentFilter);renderStations(currentFilter);renderMunicipal(currentFilter==='all'||currentFilter==='municipal');if(currentFilter==='municipal')stationsEl.innerHTML='';});
+  setActiveChip('all');
+  applyLang();
+  updated.textContent = (labelsByLang[getSelectedLang()] || labelsByLang.en).updated + ': ' + new Date(DEMO.updated_at).toLocaleString();
+  window.addEventListener('storage', function(e){ if(e.key==='preferredLanguage'){ applyLang(); updated.textContent = (labelsByLang[getSelectedLang()] || labelsByLang.en).updated + ': ' + new Date(DEMO.updated_at).toLocaleString(); } });
+</script>
+</body>
+</html>
