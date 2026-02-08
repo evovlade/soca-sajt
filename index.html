@@ -6914,8 +6914,8 @@
     let langChangeTime = null;
     let langChangeTimer = null;
 
-    // Load saved language preference
-    const savedLang = localStorage.getItem('preferredLanguage');
+    // Load saved language preference (normalize so "SL"/" sl " etc. work)
+    const savedLang = (localStorage.getItem('preferredLanguage') || '').trim().toLowerCase();
     if (savedLang && translations[savedLang]) {
       currentLang = savedLang;
     }
@@ -6960,32 +6960,39 @@
 
     // Language switching with 10 second timer
     function updateLanguage(lang) {
+      // Normalize and validate: ensure we always have a valid translations key
+      lang = (lang && String(lang).trim().toLowerCase()) || currentLang || 'sl';
+      if (!translations[lang]) {
+        lang = 'sl';
+      }
       currentLang = lang;
       const trans = translations[lang];
       
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (trans[key]) {
-          el.textContent = trans[key];
+        const val = trans[key];
+        if (val != null && val !== '') {
+          el.textContent = val;
         }
       });
       
       // Handle data-i18n-placeholder attributes
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
-        if (trans[key]) {
-          el.placeholder = trans[key];
+        const val = trans[key];
+        if (val != null && val !== '') {
+          el.placeholder = val;
         }
       });
       
       // Welcome text stays static in English - don't update it
       const appSubtitle = document.getElementById('app-subtitle');
-      if (appSubtitle) appSubtitle.textContent = trans.guest_guide;
+      if (appSubtitle) appSubtitle.textContent = trans.guest_guide ?? '';
       const heroBadge = document.getElementById('hero-badge');
-      if (heroBadge) heroBadge.textContent = trans.guest_badge;
+      if (heroBadge) heroBadge.textContent = trans.guest_badge ?? '';
       const weatherDescEl2 = document.getElementById('weather-desc');
       if (weatherDescEl2 && (weatherDescEl2.textContent === 'Loading...' || weatherDescEl2.textContent === 'Nalaganje...' || weatherDescEl2.textContent === 'Laden...' || weatherDescEl2.textContent === 'Caricamento...')) {
-        weatherDescEl2.textContent = trans.weather_loading;
+        weatherDescEl2.textContent = trans.weather_loading ?? 'Loading...';
       }
       
       const langSelect = document.getElementById('lang-select');
